@@ -4,41 +4,41 @@ public class Menu {
     Scanner scanner = new Scanner(System.in);
     private int choice = 0;
 
-    public Menu() {
 
+    public Menu() {
+    String[] startmeny = {"Welcome! Please choose menu option: ", "1: Play", "2: Load Player", "3: Save Player", "4: Quit"};
+    show(startmeny);
     }
 
     public Menu(int menuChoice) {
 
     }
-
-    public void show() {
-        System.out.println("Welcome! Please choose menu option:");
-        System.out.println("1: Play");
-        System.out.println("2: Load Player");
-        System.out.println("3: Save Player");
-        System.out.println("4: Quit");
+    public void show(String[] argument) {
+        String[] meny = argument;
+        for(int i=0; i < 5; i++){
+            System.out.println(meny[i]);
+        }
+        //Behöver hantera större intar än 4
         int menuChoice = getInt();
-        switch (menuChoice) {
-            case 1: {
-                //play();
-                break;
-            }
-            case 2: {
-                //loadPlayer();
-                break;
-            }
-            case 3: {
-                //savePlayer();
-                break;
-            }
-            case 4: {
-                //quit();
-                break;
+            switch (menuChoice) {
+                case 1: {
+                    //new Game();
+                    break;
+                }
+                case 2: {
+                    //loadPlayer();
+                    break;
+                }
+                case 3: {
+                    //savePlayer();
+                    break;
+                }
+                case 4: {
+                    //quit();
+                    break;
+                }
             }
         }
-    }
-
     /*
 
         choice = scanner.nextInt();

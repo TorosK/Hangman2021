@@ -6,5 +6,6 @@ public class Main {
         System.out.println(game.random);
         double number = Math.ceil(game.random);
         System.out.println(number);*/
+
     }
 }

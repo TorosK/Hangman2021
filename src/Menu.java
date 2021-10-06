@@ -1,8 +1,13 @@
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Menu {
     Scanner scanner = new Scanner(System.in);
     private int choice = 0;
+    File playerInfo = new File("hangman.txt");
+    //PrintWriter out = new PrintWriter("hangman.txt");
+    Player currentPlayer = null;
 
 
     public Menu() {
@@ -22,6 +27,13 @@ public class Menu {
         int menuChoice = getInt();
             switch (menuChoice) {
                 case 1: {
+                    if(currentPlayer == null){
+                        System.out.println("Please give your player a name: ");
+                        String playerName = getString();
+                        Player player = new Player(playerName);
+                        currentPlayer = player;
+                        System.out.println(currentPlayer.getName());
+                    }
                     //new Game();
                     break;
                 }
@@ -59,6 +71,21 @@ public class Menu {
             } else {
                 System.out.println("Incorrect input. Try again");
                 scanner.nextLine();
+            }
+        }
+        return input;
+    }
+    public String getString(){
+        String input = "";
+        boolean loop = true;
+        while (loop) {
+            if (scanner.hasNext()) {
+                input = scanner.next();
+                loop = false;
+                //scanner.nextLine();
+            } else {
+                System.out.println("Incorrect input. Try again");
+                //scanner.nextLine();
             }
         }
         return input;

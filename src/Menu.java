@@ -7,6 +7,7 @@ public class Menu {
     Scanner scanner = new Scanner(System.in);
     private int choice = 0;
 
+    File hangMan2021 = new File("hangman2021.txt");
    // int [][] playerData = new int[4][2];
     //String[] playerNames = new String[4];//
 
@@ -30,7 +31,7 @@ public class Menu {
         //Behöver hantera större intar än 4
         int menuChoice = getInt();
             switch (menuChoice) {
-                case 1: {
+                case 1: { //new Game();
                     if(currentPlayer == null){
                         System.out.println("Please give your player a name: ");
                         String playerName = getString();
@@ -39,35 +40,37 @@ public class Menu {
                         System.out.println(currentPlayer.getName());
                         show(currentMenu);
                     }
-                    //new Game();
+
                     break;
                 }
-                case 2: {
+                case 2: { //loadPlayer();
+                    try{
                         System.out.println("Input name of player: ");
                         String name = getString();
-                        Scanner scannerFile = new Scanner("hangman"+ name +".txt");
+                        File file = new File("hangman"+ name + ".txt");
+                        Scanner scannerFile = new Scanner(file);
+                    //Scanner scannerFile = new Scanner(hangMan2021);
                         while(scannerFile.hasNext()) {
-                            System.out.println("Hej");
+                            System.out.println("Hello");
                             if(name.equals(scannerFile.next())){                         //Error
-                                System.out.println("Hej2");
-                                Player player2 = new Player(name, scannerFile.nextInt(), scannerFile.nextInt());
-                                currentPlayer = player2;
-                                System.out.println("Hej3");
+                                System.out.println("Hello2");
+                                currentPlayer = new Player(name, scannerFile.nextInt(), scannerFile.nextInt());
                                 System.out.println(currentPlayer.getName());
-                                System.out.println("Hej4");
                                 System.out.println(currentPlayer.getGamesPlayed());
-                                System.out.println("Hej5");
                                 System.out.println(currentPlayer.getGamesWon());
-                                System.out.println("Hej6");
                                 show(currentMenu);
                             }
                         }
-                    //loadPlayer();
+                        scannerFile.close();
+                    }
+                    catch (FileNotFoundException e){}
                     break;
                 }
-                case 3: {
+                case 3: { //savePlayer();
                     try{
-                        PrintWriter out = new PrintWriter("hangman"+ currentPlayer.getName() +".txt");
+                       PrintWriter out = new PrintWriter("hangman"+ currentPlayer.getName() +".txt");
+                        //PrintWriter out = new PrintWriter(hangMan2021);
+
                         out.println(currentPlayer.getName());
                         out.println(currentPlayer.getGamesPlayed());
                         out.println(currentPlayer.getGamesWon());
@@ -76,11 +79,11 @@ public class Menu {
                     }
                     catch(FileNotFoundException exception){
                     }
-                    //savePlayer();
+
                     break;
                 }
                 case 4: {
-                    scanner.close();
+
                     System.exit(0);
                     //quit();
                     break;
@@ -118,10 +121,10 @@ public class Menu {
             if (scanner.hasNext()) {
                 input = scanner.next();
                 loop = false;
-                //scanner.nextLine();
+                scanner.nextLine();
             } else {
                 System.out.println("Incorrect input. Try again");
-                //scanner.nextLine();
+                scanner.nextLine();
             }
         }
         return input;

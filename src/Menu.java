@@ -7,8 +7,6 @@ public class Menu {
     Scanner scanner = new Scanner(System.in);
     private int choice = 0;
 
-   // int [][] playerData = new int[4][2];
-    //String[] playerNames = new String[4];//
 
     Player currentPlayer = null;
     String[] currentMenu = null;
@@ -18,9 +16,7 @@ public class Menu {
     currentMenu = startMenu;
     show(startMenu);
     }
-
     public Menu(int menuChoice) {
-
     }
     public void show(String[] argument) {
         String[] meny = argument;
@@ -30,7 +26,7 @@ public class Menu {
         //Behöver hantera större intar än 4
         int menuChoice = getInt();
             switch (menuChoice) {
-                case 1: {
+                case 1: {  //new Game();
                     if(currentPlayer == null){
                         System.out.println("Please give your player a name: ");
                         String playerName = getString();
@@ -39,10 +35,9 @@ public class Menu {
                         System.out.println(currentPlayer.getName());
                         show(currentMenu);
                     }
-                    //new Game();
                     break;
                 }
-                case 2: {
+                case 2: { //loadPlayer();
                         System.out.println("Input name of player: ");
                         String name = getString();
                         Scanner scannerFile = new Scanner("hangman"+ name +".txt");
@@ -62,10 +57,10 @@ public class Menu {
                                 show(currentMenu);
                             }
                         }
-                    //loadPlayer();
+                    scanner.close();
                     break;
                 }
-                case 3: {
+                case 3: { //savePlayer();
                     try{
                         PrintWriter out = new PrintWriter("hangman"+ currentPlayer.getName() +".txt");
                         out.println(currentPlayer.getName());
@@ -76,25 +71,15 @@ public class Menu {
                     }
                     catch(FileNotFoundException exception){
                     }
-                    //savePlayer();
                     break;
                 }
-                case 4: {
-                    scanner.close();
+                case 4: { //quit();
                     System.exit(0);
-                    //quit();
                     break;
                 }
             }
         }
     /*
-
-        choice = scanner.nextInt();
-        switch (
-        int choice)
-
-        case 1:
-            )
 */
     public int getInt() {
         int input = 0;

@@ -38,7 +38,8 @@ public class Menu {
                         Player player = new Player(playerName);
                         currentPlayer = player;
                         System.out.println(currentPlayer.getName());
-                        show(currentMenu);
+                        Game game = new Game(currentPlayer);
+                        //show(currentMenu);
                     }
 
                     break;

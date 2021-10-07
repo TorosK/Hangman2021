@@ -51,9 +51,7 @@ public class Menu {
                         Scanner scannerFile = new Scanner(file);
                     //Scanner scannerFile = new Scanner(hangMan2021);
                         while(scannerFile.hasNext()) {
-                            System.out.println("Hello");
-                            if(name.equals(scannerFile.next())){                         //Error
-                                System.out.println("Hello2");
+                            if(name.equals(scannerFile.next())){
                                 currentPlayer = new Player(name, scannerFile.nextInt(), scannerFile.nextInt());
                                 System.out.println(currentPlayer.getName());
                                 System.out.println(currentPlayer.getGamesPlayed());
@@ -76,6 +74,7 @@ public class Menu {
                         out.println(currentPlayer.getGamesWon());
                         out.close();
                         show(currentMenu);
+                        System.out.println("Saved");
                     }
                     catch(FileNotFoundException exception){
                     }

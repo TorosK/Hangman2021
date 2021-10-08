@@ -2,15 +2,17 @@ import java.util.Scanner;
 
 public class Game {
 
-    public boolean sol = false;
+    //public boolean sol = false;
     private Player player = null;
     private String hiddenWord = "";
     private String usedChars = "";
     private String hangMeterAsterisk = "";
     public String theWord = "";
     public char[] charArray = new char[20];
-    public String[] updatedArray = new String[20];    // ändra till charArray
+    public String[] updatedArray = new String[20];
     private int numberOfChars = 0;
+    private int incorrectGuessCounter = 0;
+    private int correctGuessCounter = 0;
     private Scanner scanner = new Scanner(System.in);
 
     public Game(Player player){
@@ -26,17 +28,26 @@ public class Game {
         }
     }
     public void update(String alpha) {
+        correctGuessCounter = 0;
         usedChars += alpha;
+        String string = "";
+        char[] charAlpha = alpha.toCharArray();
         for (int i = 0; i < numberOfChars; i++) {
-            if (alpha.equals(charArray[i])) {
+            if (charAlpha[0]==charArray[i]) {
                 updatedArray[i] = alpha;
-                for (int j = 0; j < numberOfChars; j++){
-                    String string = "";
-                    string += updatedArray[j];
-                    hiddenWord = string;
-                }
-                //hiddenWord = hiddenWord.replace(x[i], y[j]);
+                correctGuessCounter++;
             }
+        }
+        if(correctGuessCounter == 0){
+            hangMeterAsterisk += "*";
+            if(hangMeterAsterisk.equals("**********")){//Hit kom vi. Vi behöver förmodligen nya menyer för seger och förlust.
+                hangMeterAsterisk = "Game Over";
+            }
+            //incorrectGuessCounter++;
+        }
+        for (int j = 0; j < numberOfChars; j++){
+            string += updatedArray[j];
+            hiddenWord = string;
         }
         showGame();
     }
@@ -53,9 +64,8 @@ public class Game {
         numberOfChars = charArray.length;
         for(int i = 0; i < numberOfChars; i++){
             hiddenWord += "_";
-            updatedArray[i] += "_";
+            updatedArray[i] = "_";
         }
-        //System.out.println(charArray[0]);
         return theWord;
     }
 }

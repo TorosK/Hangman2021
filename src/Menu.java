@@ -6,11 +6,7 @@ import java.util.Scanner;
 public class Menu {
     Scanner scanner = new Scanner(System.in);
     private int choice = 0;
-
     File hangMan2021 = new File("hangman2021.txt");
-   // int [][] playerData = new int[4][2];
-    //String[] playerNames = new String[4];//
-
     Player currentPlayer = null;
     String[] currentMenu = null;
 

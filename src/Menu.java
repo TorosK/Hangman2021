@@ -9,83 +9,97 @@ public class Menu {
     File hangMan2021 = new File("hangman2021.txt");
     Player currentPlayer = null;
     String[] currentMenu = null;
+    String[] startMenu = {"Welcome! Please choose menu option: ", "1: Play", "2: Load Player", "3: Save Player", "4: Quit"};
+    String[] endOfGameMenu = {"1: Play again", "5: Return to Main Menu"};
 
     public Menu() {
-    String[] startMenu = {"Welcome! Please choose menu option: ", "1: Play", "2: Load Player", "3: Save Player", "4: Quit"};
-    currentMenu = startMenu;
-    show(startMenu);
+        currentMenu = startMenu;
+        show(startMenu);
     }
 
-    public Menu(int menuChoice) {
-
+    public Menu(Player player) {
+        currentPlayer = player;
+        currentMenu = endOfGameMenu;
+        show(endOfGameMenu);
     }
+
     public void show(String[] argument) {
         String[] meny = argument;
-        for(int i=0; i < 5; i++){
+        for (int i = 0; i < argument.length; i++) {
             System.out.println(meny[i]);
         }
         //Behöver hantera större intar än 4
         int menuChoice = getInt();
-            switch (menuChoice) {
-                case 1: { //new Game();
-                    if(currentPlayer == null){
-                        System.out.println("Please give your player a name: ");
-                        String playerName = getString();
-                        Player player = new Player(playerName);
-                        currentPlayer = player;
-                        System.out.println(currentPlayer.getName());
-                        Game game = new Game(currentPlayer);
-                        //show(currentMenu);
-                    }
-
-                    break;
+        switch (menuChoice) {
+            case 1: { //new Game();
+                if (currentPlayer == null) {
+                    System.out.println("Please give your player a name: ");
+                    String playerName = getString();
+                    Player player = new Player(playerName);
+                    currentPlayer = player;
+                    System.out.println(currentPlayer.getName());
+                    new Game(currentPlayer);
+                    //show(currentMenu);
                 }
-                case 2: { //loadPlayer();
-                    try{
-                        System.out.println("Input name of player: ");
-                        String name = getString();
-                        File file = new File("hangman"+ name + ".txt");
-                        Scanner scannerFile = new Scanner(file);
+                else {
+                    new Game(currentPlayer);
+                }
+
+                break;
+            }
+            case 2: { //loadPlayer();
+                try {
+                    System.out.println("Input name of player: ");
+                    String name = getString();
+                    File file = new File("hangman" + name + ".txt");
+                    Scanner scannerFile = new Scanner(file);
                     //Scanner scannerFile = new Scanner(hangMan2021);
-                        while(scannerFile.hasNext()) {
-                            if(name.equals(scannerFile.next())){
-                                currentPlayer = new Player(name, scannerFile.nextInt(), scannerFile.nextInt());
-                                System.out.println(currentPlayer.getName());
-                                System.out.println(currentPlayer.getGamesPlayed());
-                                System.out.println(currentPlayer.getGamesWon());
-                                show(currentMenu);
-                            }
+                    while (scannerFile.hasNext()) {
+                        if (name.equals(scannerFile.next())) {
+                            currentPlayer = new Player(name, scannerFile.nextInt(), scannerFile.nextInt());
+                            System.out.println();
+                            System.out.println("Name of player: " + currentPlayer.getName());
+                            System.out.println("Games played: " + currentPlayer.getGamesPlayed());
+                            System.out.println("Games won: " + currentPlayer.getGamesWon());
+                            System.out.println();
+                            show(currentMenu);
                         }
-                        scannerFile.close();
                     }
-                    catch (FileNotFoundException e){}
-                    break;
+                    scannerFile.close();
+                } catch (FileNotFoundException e) {
                 }
-                case 3: { //savePlayer();
-                    try{
-                       PrintWriter out = new PrintWriter("hangman"+ currentPlayer.getName() +".txt");
-                        //PrintWriter out = new PrintWriter(hangMan2021);
+                break;
+            }
+            case 3: { //savePlayer();
+                try {
+                    PrintWriter out = new PrintWriter("hangman" + currentPlayer.getName() + ".txt");
+                    //PrintWriter out = new PrintWriter(hangMan2021);
 
-                        out.println(currentPlayer.getName());
-                        out.println(currentPlayer.getGamesPlayed());
-                        out.println(currentPlayer.getGamesWon());
-                        out.close();
-                        show(currentMenu);
-                        System.out.println("Saved");
-                    }
-                    catch(FileNotFoundException exception){
-                    }
-
-                    break;
+                    out.println(currentPlayer.getName());
+                    out.println(currentPlayer.getGamesPlayed());
+                    out.println(currentPlayer.getGamesWon());
+                    out.close();
+                    show(currentMenu);
+                    System.out.println("Saved");
+                } catch (FileNotFoundException exception) {
                 }
-                case 4: {
 
-                    System.exit(0);
-                    //quit();
-                    break;
-                }
+                break;
+            }
+            case 4: {
+
+                System.exit(0);
+                //quit();
+                break;
+            }
+            case 5: {
+                currentMenu = startMenu;
+                show(startMenu);
+                break;
             }
         }
+    }
+
     /*
 
         choice = scanner.nextInt();
@@ -110,7 +124,8 @@ public class Menu {
         }
         return input;
     }
-    public String getString(){
+
+    public String getString() {
         String input = "";
         boolean loop = true;
         while (loop) {

@@ -32,7 +32,7 @@ public class Player {
     }
 
     public void setGamesPlayed(int gamesPlayed) {
-        this.gamesPlayed = gamesPlayed;
+        this.gamesPlayed += gamesPlayed;
     }
 
     public int getGamesWon() {
@@ -40,7 +40,7 @@ public class Player {
     }
 
     public void setGamesWon(int gamesWon) {
-        this.gamesWon = gamesWon;
+        this.gamesWon += gamesWon;
     }
 
     public File getPlayerInfo() {

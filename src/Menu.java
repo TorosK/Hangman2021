@@ -1,7 +1,11 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.sql.SQLOutput;
+import java.util.Locale;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Menu {
     Scanner scanner = new Scanner(System.in);
@@ -38,11 +42,9 @@ public class Menu {
                     Player player = new Player(playerName);
                     currentPlayer = player;
                     System.out.println(currentPlayer.getName());
-                    new Game(currentPlayer);
-                    //show(currentMenu);
-                }
-                else {
-                    new Game(currentPlayer);
+                    new Game(currentPlayer, this);
+                } else {
+                    new Game(currentPlayer, this);
                 }
 
                 break;
@@ -71,19 +73,23 @@ public class Menu {
                 break;
             }
             case 3: { //savePlayer();
-                try {
-                    PrintWriter out = new PrintWriter("hangman" + currentPlayer.getName() + ".txt");
-                    //PrintWriter out = new PrintWriter(hangMan2021);
-
-                    out.println(currentPlayer.getName());
-                    out.println(currentPlayer.getGamesPlayed());
-                    out.println(currentPlayer.getGamesWon());
-                    out.close();
-                    show(currentMenu);
-                    System.out.println("Saved");
-                } catch (FileNotFoundException exception) {
+                if (currentPlayer != null) {
+                    try {
+                        PrintWriter out = new PrintWriter("hangman" + currentPlayer.getName() + ".txt");
+                        out.println(currentPlayer.getName());
+                        out.println(currentPlayer.getGamesPlayed());
+                        out.println(currentPlayer.getGamesWon());
+                        out.close();
+                        show(currentMenu);
+                        System.out.println("Saved");
+                    } catch (FileNotFoundException exception) {
+                    }
                 }
-
+                else {
+                    System.out.println("Before You save a player, You must first create a player");
+                    System.out.println();
+                    show(currentMenu);
+                }
                 break;
             }
             case 4: {
@@ -100,15 +106,6 @@ public class Menu {
         }
     }
 
-    /*
-
-        choice = scanner.nextInt();
-        switch (
-        int choice)
-
-        case 1:
-            )
-*/
     public int getInt() {
         int input = 0;
         boolean loop = true;
@@ -139,5 +136,38 @@ public class Menu {
             }
         }
         return input;
+    }
+    // blir error med fel inmatning
+    // Vi behöver fixa mer
+    public char getAlpha() { //getChar()
+        String input = "";
+        char ch = ' ';
+        boolean loop = true;
+        while (loop) {
+            if (scanner.hasNext()) {
+                input = scanner.next();
+                if (input.length() == 1) {
+                    ch = input.charAt(0);
+                    boolean isLetter = Character.isLetter(ch);
+                    if (isLetter) {
+                        loop = false;
+                        scanner.nextLine();
+                    }
+                    else {
+                        scanner.nextLine();
+                        System.out.println("1Incorrect input. Try again");
+                    }
+                }
+                else {
+                    scanner.nextLine();
+                    System.out.println("2Incorrect input. Try again");
+                }
+            }
+            else {
+                scanner.nextLine();
+                System.out.println("3Incorrect input. Try again");
+            }
+        }
+        return ch;
     }
 }

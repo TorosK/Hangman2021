@@ -4,30 +4,32 @@ import java.util.Scanner;
 
 public class Game {
 
-    //public boolean sol = false;
     private Player player = null;
+    private Menu menu = null;
     private String hiddenWord = "";
     private String usedChars = "";
     private String hangMeterAsterisk = "";
     public String theWord = "";
     public char[] charArray = new char[20];
-    private String[] wordArray194k = new String[194433]; // vi ska dra ur ord från textfil
-    // fyll array från textfil
-    public String[] updatedArray = new String[20];
+    private String[] wordArray194k = new String[194433];
+    public String[] updatedArray = new String[30];
     private int numberOfChars = 0;
     private int incorrectGuessCounter = 0;
     private int correctGuessCounter = 0;
-    private final int GAMEOVER = 3;
+    private final int GAMEOVER = 10;
+    File wordFile = new File("english3.txt");
     private Scanner scanner = new Scanner(System.in);
+    private Scanner scannerWordFile;
 
-    public Game(Player player) {
+    public Game(Player player, Menu menu) {
         this.player = player;
+        this.menu = menu;
         String word = getWord();
         showGame();
         boolean flag = true;
         while (flag) {
             if (scanner.hasNext()) {
-                String guessedChar = scanner.next();
+                String guessedChar = String.valueOf(menu.getAlpha());
                 update(guessedChar);
             }
         }
@@ -47,7 +49,7 @@ public class Game {
         if (correctGuessCounter == 0) {
             incorrectGuessCounter++;
             hangMeterAsterisk += "*";
-            if (incorrectGuessCounter == GAMEOVER) {      //Hit kom vi. Vi behöver förmodligen nya menyer för seger och förlust.
+            if (incorrectGuessCounter == GAMEOVER) {
                 showGame();
             }
         }
@@ -91,16 +93,16 @@ public class Game {
     }
 
     public String getWord() {
-        File wordFile = new File("english3.txt");
         try {
-            Scanner scannerWordFile = new Scanner(wordFile);
+            scannerWordFile = new Scanner(wordFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         long wordRandomizeNr = Math.round(Math.random() * 194433);
-
-
-        theWord = "apple";
+        for (int i = 0; scannerWordFile.hasNext(); i++) {
+            wordArray194k[i] = scannerWordFile.next();
+        }
+        theWord = wordArray194k[(int) wordRandomizeNr];
         charArray = theWord.toCharArray();
         numberOfChars = charArray.length;
         for (int i = 0; i < numberOfChars; i++) {

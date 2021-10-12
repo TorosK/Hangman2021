@@ -18,7 +18,6 @@ public class Game {
     private int correctGuessCounter = 0;
     private final int GAMEOVER = 10;
     File wordFile = new File("english3.txt");
-    private Scanner scanner = new Scanner(System.in);
     private Scanner scannerWordFile;
 
     public Game(Player player, Menu menu) {
@@ -28,7 +27,7 @@ public class Game {
         showGame();
         boolean flag = true;
         while (flag) {
-            if (scanner.hasNext()) {
+            if (menu.scanner.hasNext()) {
                 String guessedChar = String.valueOf(menu.getAlpha());
                 update(guessedChar);
             }
@@ -61,8 +60,8 @@ public class Game {
     }
 
     public void showGame() {
-        System.out.println("Hi " + player.getName() + "! Im thinking about a word with: " + numberOfChars + " characters");
-        System.out.println("So far you have guessed: " + hiddenWord);
+        System.out.println("Hi " + player.getName() + "! I'm thinking about an English word with: " + numberOfChars + " characters");
+        System.out.println("So far you have correctly guessed: " + hiddenWord);
         System.out.println("You have guessed the following letters: " + usedChars);
         System.out.println("Hang-O-meter: " + hangMeterAsterisk);
         if (hiddenWord.equals(theWord)) {

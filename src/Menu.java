@@ -1,11 +1,9 @@
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.sql.SQLOutput;
-import java.util.Locale;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 public class Menu {
     Scanner scanner = new Scanner(System.in);
@@ -32,7 +30,7 @@ public class Menu {
         for (int i = 0; i < argument.length; i++) {
             System.out.println(meny[i]);
         }
-        //Behöver hantera större intar än 4
+        //kontroll
         int menuChoice = getInt();
         switch (menuChoice) {
             case 1: { //new Game();
@@ -55,7 +53,6 @@ public class Menu {
                     String name = getString();
                     File file = new File("hangman" + name + ".txt");
                     Scanner scannerFile = new Scanner(file);
-                    //Scanner scannerFile = new Scanner(hangMan2021);
                     while (scannerFile.hasNext()) {
                         if (name.equals(scannerFile.next())) {
                             currentPlayer = new Player(name, scannerFile.nextInt(), scannerFile.nextInt());
@@ -106,15 +103,22 @@ public class Menu {
         }
     }
 
-    public int getInt() {
+    public int getInt() {//Fånga upp felaktig inmatning
         int input = 0;
         boolean loop = true;
         while (loop) {
             if (scanner.hasNextInt()) {
                 input = scanner.nextInt();
-                loop = false;
-                scanner.nextLine();
-            } else {
+                if(input < 1 || input > 5){
+                    System.out.println("Incorrect input. Try again");
+                    scanner.nextLine();
+                }
+                else {
+                    loop = false;
+                    scanner.nextLine();
+                }
+            }
+            else {
                 System.out.println("Incorrect input. Try again");
                 scanner.nextLine();
             }
@@ -122,30 +126,35 @@ public class Menu {
         return input;
     }
 
-    public String getString() {
+    public String getString() {//Lite kvar att jobba med
         String input = "";
+        String inputTrim = "";
         boolean loop = true;
         while (loop) {
             if (scanner.hasNext()) {
                 input = scanner.next();
+                inputTrim = input.trim();
+                if(inputTrim.length() == 0) {
+                    System.out.println("1Incorrect input. Try again");
+                    scanner.nextLine();
+                }
                 loop = false;
-                scanner.nextLine();
+                //scanner.nextLine();
             } else {
-                System.out.println("Incorrect input. Try again");
+                System.out.println("2Incorrect input. Try again");
                 scanner.nextLine();
             }
         }
-        return input;
+        return inputTrim;
     }
-    // blir error med fel inmatning
-    // Vi behöver fixa mer
-    public char getAlpha() { //getChar()
+
+    public char getAlpha() {
         String input = "";
         char ch = ' ';
         boolean loop = true;
         while (loop) {
             if (scanner.hasNext()) {
-                input = scanner.next();
+                input = scanner.next();//Vi vill fånga upp tex e t - alltså e mellanrum t.
                 if (input.length() == 1) {
                     ch = input.charAt(0);
                     boolean isLetter = Character.isLetter(ch);
@@ -163,7 +172,7 @@ public class Menu {
                     System.out.println("2Incorrect input. Try again");
                 }
             }
-            else {
+            else {//försöka fånga bara ENTER tryckning
                 scanner.nextLine();
                 System.out.println("3Incorrect input. Try again");
             }

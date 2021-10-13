@@ -9,15 +9,18 @@ public class Game {
     private String hiddenWord = "";
     private String usedChars = "";
     private String hangMeterAsterisk = "";
-    public String theWord = "";
-    public char[] charArray = new char[20];
+
+    //public to pri
+    private String theWord = "";
+    private char[] charArray = new char[20];
+    private String[] updatedArray = new String[30];
+
     private String[] wordArray194k = new String[194433];
-    public String[] updatedArray = new String[30];
     private int numberOfChars = 0;
     private int incorrectGuessCounter = 0;
     private int correctGuessCounter = 0;
     private final int GAMEOVER = 10;
-    File wordFile = new File("english3.txt");
+    private File wordFile = new File("english3.txt");
     private Scanner scannerWordFile;
 
     public Game(Player player, Menu menu) {
@@ -27,7 +30,7 @@ public class Game {
         showGame();
         boolean flag = true;
         while (flag) {
-            if (menu.scanner.hasNext()) {
+            if (menu.getScanner().hasNext()) {
                 String guessedChar = String.valueOf(menu.getAlpha());
                 update(guessedChar);
             }

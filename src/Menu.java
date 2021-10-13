@@ -6,13 +6,13 @@ import java.util.Scanner;
 
 
 public class Menu {
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
     private int choice = 0;
-    File hangMan2021 = new File("hangman2021.txt");
-    Player currentPlayer = null;
-    String[] currentMenu = null;
-    String[] startMenu = {"Welcome! Please choose menu option: ", "1: Play", "2: Load Player", "3: Save Player", "4: Quit"};
-    String[] endOfGameMenu = {"1: Play again", "5: Return to Main Menu"};
+    private File hangMan2021 = new File("hangman2021.txt");
+    private Player currentPlayer = null;
+    private String[] currentMenu = null;
+    private String[] startMenu = {"Welcome! Please choose menu option: ", "1: Play", "2: Load Player", "3: Save Player", "4: Quit"};
+    private String[] endOfGameMenu = {"1: Play again", "5: Return to Main Menu"};
 
     public Menu() {
         currentMenu = startMenu;
@@ -44,7 +44,6 @@ public class Menu {
                 } else {
                     new Game(currentPlayer, this);
                 }
-
                 break;
             }
             case 2: { //loadPlayer();
@@ -103,18 +102,22 @@ public class Menu {
         }
     }
 
-    public int getInt() {//Fånga upp felaktig inmatning
+    public int getInt() {
         int input = 0;
         boolean loop = true;
         while (loop) {
             if (scanner.hasNextInt()) {
                 input = scanner.nextInt();
-                if(input < 1 || input > 5){
-                    System.out.println("Incorrect input. Try again");
+                if(input > 0 && input < 5 && currentMenu == startMenu){
+                    loop = false;
+                    scanner.nextLine();
+                }
+                else if (input == 1 || input == 5 && currentMenu == endOfGameMenu){
+                    loop = false;
                     scanner.nextLine();
                 }
                 else {
-                    loop = false;
+                    System.out.println("Incorrect input. Try again");
                     scanner.nextLine();
                 }
             }
@@ -126,7 +129,7 @@ public class Menu {
         return input;
     }
 
-    public String getString() {//Lite kvar att jobba med
+    public String getString() {
         String input = "";
         String inputTrim = "";
         boolean loop = true;
@@ -135,13 +138,13 @@ public class Menu {
                 input = scanner.next();
                 inputTrim = input.trim();
                 if(inputTrim.length() == 0) {
-                    System.out.println("1Incorrect input. Try again");
+                    System.out.println("Incorrect input. Try again");
                     scanner.nextLine();
                 }
                 loop = false;
-                //scanner.nextLine();
+                scanner.nextLine();
             } else {
-                System.out.println("2Incorrect input. Try again");
+                System.out.println("Incorrect input. Try again");
                 scanner.nextLine();
             }
         }
@@ -154,7 +157,7 @@ public class Menu {
         boolean loop = true;
         while (loop) {
             if (scanner.hasNext()) {
-                input = scanner.next();//Vi vill fånga upp tex e t - alltså e mellanrum t.
+                input = scanner.next();
                 if (input.length() == 1) {
                     ch = input.charAt(0);
                     boolean isLetter = Character.isLetter(ch);
@@ -164,19 +167,22 @@ public class Menu {
                     }
                     else {
                         scanner.nextLine();
-                        System.out.println("1Incorrect input. Try again");
+                        System.out.println("Incorrect input. Try again");
                     }
                 }
                 else {
                     scanner.nextLine();
-                    System.out.println("2Incorrect input. Try again");
+                    System.out.println("Incorrect input. Try again");
                 }
             }
-            else {//försöka fånga bara ENTER tryckning
+            else {
                 scanner.nextLine();
-                System.out.println("3Incorrect input. Try again");
+                System.out.println("Incorrect input. Try again");
             }
         }
         return ch;
+    }
+    public Scanner getScanner(){
+        return scanner;
     }
 }

@@ -10,7 +10,6 @@ import java.util.Scanner;
 public class Menu {
     private Scanner scanner = new Scanner(System.in);
     private int choice = 0;
-    private File hangMan2021 = new File("hangman2021.txt");
     private Player currentPlayer = null;
     private String[] currentMenu = null;
     private String[] startMenu = {"Welcome! Please choose menu option: ", "1: Play", "2: Load Player", "3: Save Player", "4: Quit"};
@@ -206,7 +205,6 @@ public class Menu {
         }
         return ch;
     }
-
     public Scanner getScanner() {
         return scanner;
     }

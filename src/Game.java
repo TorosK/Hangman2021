@@ -46,7 +46,8 @@ public class Game {
      * till en char[] charAlpha. Vi for-loopar sedan igenom och kollar om den bokstaven finns i vår andra char[]
      * charArray som innehåller hela det korrekta ordet. Om den finns så lägger vi till den till en String[]
      * updatedArray och räknar upp vår räknare. Om bokstaven inte var korrekt lägger vi till en asterisk till vår
-     * hangMeterAsterisk.
+     * hangMeterAsterisk. Vi använder sedan en for-loop för att bygga ordet som det just nu ser ut med understreck och
+     * rätt gissade bokstäver.
      * @param alpha
      */
     public void update(String alpha) {
@@ -73,7 +74,10 @@ public class Game {
         }
         showGame();
     }
-
+    /**
+     * Den här metoden skriver ut "spelet" rad för rad. Variabler uppdateras i update och sedan skrivs spelet ut på
+     * nytt. Vi kollar om seger eller förlust har uppnåtts och vi uppdaterar även spelarens data.
+     */
     public void showGame() {
         System.out.println("Hi " + player.getName() + "! I'm thinking about an English word with: " + numberOfChars + " characters");
         System.out.println("So far you have correctly guessed: " + hiddenWord);
@@ -109,7 +113,15 @@ public class Game {
             new Menu(player);
         }
     }
-
+    /**
+     * Den här metoden slumpar fram ett ord ur en ordlista som är 194433 ord lång. Vi kopplar scannern till filen och
+     * fyller vår array wordArray194k med hjälp av en for-loop. Vi slumpar fram ett tal mellan 0 och 194433 som vi
+     * använder som index för att välja ett ord i arrayen. Vi stoppar in det framslumpade ordet i en charArray och
+     * räknar antalet tecken som vi sparar i variabeln numberOfChars.
+     * Vi fyller även variabeln hiddenword med det antal understreck som motsvarar ordets längd och vi fyller även vår
+     * hjälp-array updatedArray med rätt antal understreck.
+     * @return
+     */
     public String getWord() {
         try {
             scannerWordFile = new Scanner(wordFile);

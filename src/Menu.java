@@ -2,9 +2,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
-/** Vi har skapat två stringarrayer där vi lagt in strängar för de menyval vi vill ha med. Vi har använt oss av två stycken
- * konstruktorer för att skapa menyerna.*/
 
+/**
+ * Vi har skapat två stringarrayer där vi lagt in strängar för de menyval vi vill ha med. Vi har använt oss av två stycken
+ * konstruktorer för att skapa menyerna.
+ */
 public class Menu {
     private Scanner scanner = new Scanner(System.in);
     private int choice = 0;
@@ -18,19 +20,32 @@ public class Menu {
         currentMenu = startMenu;
         show(startMenu);
     }
-//Den här konstruktorn tar emot spelaren här för att kunna spela igen direkt.
+
+    /**Den här konstruktorn tar emot spelaren för att kunna starta nytt spel igen.
+     */
     public Menu(Player player) {
         currentPlayer = player;
         currentMenu = endOfGameMenu;
         show(endOfGameMenu);
     }
 
+    /**
+     * show visar våra menyer.
+     * Vi har en switch för att välja menyval. Vi använder metoden getInt för att fånga upp
+     * användarens inmatning i menyerna.
+     * case 1 vi kollar om det redan finns en spelare, annars frågar vi efter ett namn och skapar då en ny spelare.
+     * case 2 Vi frågar efter ett namn, skapar en fil kopplad till en scanner och läser in textfilen på disken kopplad
+     * till spelaren. Skapar en ny spelare med den infon från disken. Sen skriver vi ut spelarens instansvariabler.
+     * case 3 Vi kollar först att det verkligen finns en spelare att spara. Vi skapar ett printwriter objekt och skriver
+     * spelarens instansvariabler till textfilen.
+     *
+     * @param argument är den array vi skickar till metoden.
+     */
     public void show(String[] argument) {
         String[] meny = argument;
         for (int i = 0; i < argument.length; i++) {
             System.out.println(meny[i]);
         }
-        //kontroll
         int menuChoice = getInt();
         switch (menuChoice) {
             case 1: { //new Game();
@@ -76,22 +91,22 @@ public class Menu {
                         out.println(currentPlayer.getGamesPlayed());
                         out.println(currentPlayer.getGamesWon());
                         out.close();
+                        System.out.println();
+                        System.out.println("Saved player: " + currentPlayer.getName());
+                        System.out.println();
                         show(currentMenu);
-                        System.out.println("Saved");
+
                     } catch (FileNotFoundException exception) {
                     }
-                }
-                else {
+                } else {
                     System.out.println("Before You save a player, You must first create a player");
                     System.out.println();
                     show(currentMenu);
                 }
                 break;
             }
-            case 4: {
-
+            case 4: { //quit();
                 System.exit(0);
-                //quit();
                 break;
             }
             case 5: {
@@ -102,26 +117,30 @@ public class Menu {
         }
     }
 
+    /**
+     * Den här metoden används för att kontrollera input i våra menyer.
+     * Scannern läser användarens input och kontrollerar om det är ett heltal och sedan vilken meny som det gäller.
+     * Vi har en while loop för att fortsätta ifall användaren skriver fel saker.
+     *
+     * @return
+     */
     public int getInt() {
         int input = 0;
         boolean loop = true;
         while (loop) {
             if (scanner.hasNextInt()) {
                 input = scanner.nextInt();
-                if(input > 0 && input < 5 && currentMenu == startMenu){
+                if (input > 0 && input < 5 && currentMenu == startMenu) {
                     loop = false;
                     scanner.nextLine();
-                }
-                else if (input == 1 || input == 5 && currentMenu == endOfGameMenu){
+                } else if (input == 1 || input == 5 && currentMenu == endOfGameMenu) {
                     loop = false;
                     scanner.nextLine();
-                }
-                else {
+                } else {
                     System.out.println("Incorrect input. Try again");
                     scanner.nextLine();
                 }
-            }
-            else {
+            } else {
                 System.out.println("Incorrect input. Try again");
                 scanner.nextLine();
             }
@@ -129,6 +148,11 @@ public class Menu {
         return input;
     }
 
+    /**
+     * Vi använder den här metoden för att läsa in spelarens namn. Vi trimmar bort blanksteg. Vi kollar även att
+     * strängen inte är helt tom.
+     * @return
+     */
     public String getString() {
         String input = "";
         String inputTrim = "";
@@ -137,7 +161,7 @@ public class Menu {
             if (scanner.hasNext()) {
                 input = scanner.next();
                 inputTrim = input.trim();
-                if(inputTrim.length() == 0) {
+                if (inputTrim.length() == 0) {
                     System.out.println("Incorrect input. Try again");
                     scanner.nextLine();
                 }
@@ -150,7 +174,10 @@ public class Menu {
         }
         return inputTrim;
     }
-
+    /** Vi använder den här metoden för att kontrollera i spelet, användarens input. Vi kollar att det verkligen bara
+     * är ett tecken och att det är en bokstav.
+     * @return
+     */
     public char getAlpha() {
         String input = "";
         char ch = ' ';
@@ -164,25 +191,23 @@ public class Menu {
                     if (isLetter) {
                         loop = false;
                         scanner.nextLine();
-                    }
-                    else {
+                    } else {
                         scanner.nextLine();
                         System.out.println("Incorrect input. Try again");
                     }
-                }
-                else {
+                } else {
                     scanner.nextLine();
                     System.out.println("Incorrect input. Try again");
                 }
-            }
-            else {
+            } else {
                 scanner.nextLine();
                 System.out.println("Incorrect input. Try again");
             }
         }
         return ch;
     }
-    public Scanner getScanner(){
+
+    public Scanner getScanner() {
         return scanner;
     }
 }

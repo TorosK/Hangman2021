@@ -9,12 +9,9 @@ public class Game {
     private String hiddenWord = "";
     private String usedChars = "";
     private String hangMeterAsterisk = "";
-
-    //public to pri
     private String theWord = "";
     private char[] charArray = new char[20];
     private String[] updatedArray = new String[30];
-
     private String[] wordArray194k = new String[194433];
     private int numberOfChars = 0;
     private int incorrectGuessCounter = 0;
@@ -22,13 +19,21 @@ public class Game {
     private final int GAMEOVER = 10;
     private File wordFile = new File("english3.txt");
     private Scanner scannerWordFile;
+    private boolean flag = true;
 
+    /**
+     * Konstruktorn tar emot en spelare och meny. Anropar getWord() för att få ett ord att spela med. Anropar showGame()
+     * för att skriva ut spelet. While loopar spelarens förslag, anropar getAlpha() för att kontrollera inmatning och
+     * sedan update() för att uppdatera spelet med den gissade bokstaven.
+     * @param player
+     * @param menu
+     */
     public Game(Player player, Menu menu) {
         this.player = player;
         this.menu = menu;
         String word = getWord();
         showGame();
-        boolean flag = true;
+        flag = true;
         while (flag) {
             if (menu.getScanner().hasNext()) {
                 String guessedChar = String.valueOf(menu.getAlpha());
@@ -36,7 +41,14 @@ public class Game {
             }
         }
     }
-
+    /**
+     * update() tar in den gissade bokstaven, lägger den till variabeln usedChars. Vi lägger till den gissade bokstaven
+     * till en char[] charAlpha. Vi for-loopar sedan igenom och kollar om den bokstaven finns i vår andra char[]
+     * charArray som innehåller hela det korrekta ordet. Om den finns så lägger vi till den till en String[]
+     * updatedArray och räknar upp vår räknare. Om bokstaven inte var korrekt lägger vi till en asterisk till vår
+     * hangMeterAsterisk.
+     * @param alpha
+     */
     public void update(String alpha) {
         correctGuessCounter = 0;
         usedChars += alpha;
@@ -69,12 +81,14 @@ public class Game {
         System.out.println("Hang-O-meter: " + hangMeterAsterisk);
         if (hiddenWord.equals(theWord)) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            flag = false;
             System.out.println();
             System.out.println("Victory! Congratulations!");
+            System.out.println();
             player.setGamesPlayed(1);
             player.setGamesWon(1);
             new Menu(player);
@@ -83,12 +97,14 @@ public class Game {
             System.out.println("Which character do you guess? ");
         } else {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            flag = false;
             System.out.println();
             System.out.println("Game Over!");
+            System.out.println();
             player.setGamesPlayed(1);
             new Menu(player);
         }

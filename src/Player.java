@@ -1,22 +1,27 @@
-import java.io.File;
 
 public class Player {
     private String name = "";
     private int gamesPlayed = 0;
     private int gamesWon = 0;
-    private File playerInfo = null;
 
-
+    /**
+     * Skapar en spelare med ett namn, gamesplayed och gameswon är satta till 0 by default;
+     * @param name
+     */
     public Player(String name) {
         this.name = name;
-        playerInfo = new File("hangman"+ name +".txt");
     }
+
+    /**
+     * Den här kontruktorn skapar en spelare när man har hämtat informationen från textfil.
+     * @param name
+     * @param gamesPlayed
+     * @param gamesWon
+     */
     public Player(String name, int gamesPlayed, int gamesWon){
         this.name = name;
         this.gamesPlayed = gamesPlayed;
         this.gamesWon = gamesWon;
-        playerInfo = new File("hangman"+ name +".txt");
-
     }
 
     public String getName() {
@@ -41,13 +46,5 @@ public class Player {
 
     public void setGamesWon(int gamesWon) {
         this.gamesWon += gamesWon;
-    }
-
-    public File getPlayerInfo() {
-        return playerInfo;
-    }
-
-    public void setPlayerInfo(File playerInfo) {
-        this.playerInfo = playerInfo;
     }
 }

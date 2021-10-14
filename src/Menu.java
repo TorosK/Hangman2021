@@ -1,9 +1,9 @@
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
-
+/** Vi har skapat två stringarrayer där vi lagt in strängar för de menyval vi vill ha med. Vi har använt oss av två stycken
+ * konstruktorer för att skapa menyerna.*/
 
 public class Menu {
     private Scanner scanner = new Scanner(System.in);
@@ -18,7 +18,7 @@ public class Menu {
         currentMenu = startMenu;
         show(startMenu);
     }
-
+//Den här konstruktorn tar emot spelaren här för att kunna spela igen direkt.
     public Menu(Player player) {
         currentPlayer = player;
         currentMenu = endOfGameMenu;

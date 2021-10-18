@@ -108,6 +108,7 @@ public class Game {
             flag = false;
             System.out.println();
             System.out.println("Game Over!");
+            System.out.println("The word was: " + theWord);
             System.out.println();
             player.setGamesPlayed(1);
             new Menu(player);

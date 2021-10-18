@@ -78,7 +78,11 @@ public class Menu {
                         }
                     }
                     scannerFile.close();
-                } catch (FileNotFoundException e) {
+                } catch (FileNotFoundException e) {//fixat att ladda spelare som inte finns
+                    System.out.println();
+                    System.out.println("Player not found, please try again!");
+                    System.out.println();
+                    show(currentMenu);
                 }
                 break;
             }

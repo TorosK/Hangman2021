@@ -8,12 +8,43 @@ import java.util.Scanner;
  * konstruktorer för att skapa menyerna.
  */
 public class Menu {
+    final private int SINGLE_PLAYER = 1;
+    final private int MULTI_PLAYER = 2;
+    final private int LOAD_GAME = 3;
+    final private int DELETE_PLAYER = 4;
+    final private int HIGH_SCORE = 5;
+    final private int PLAYER_STATS = 6;
+    final private int QUIT = 7;
+    final private int NEW_PLAYER = 8;
+    final private int LOAD_PLAYER = 9;
+    final private int SINGLE_PLAYER_START_NEW_GAME = 10;
+    final private int MULTI_PLAYER_START_NEW_GAME = 11;
+    final private int RETURN_TO_MAIN_MENU = 12;
+
     private Scanner scanner = new Scanner(System.in);
     private int choice = 0;
     private Player currentPlayer = null;
     private String[] currentMenu = null;
-    private String[] startMenu = {"Welcome! Please choose menu option: ", "1: Play", "2: Load Player", "3: Save Player", "4: Quit"};
-    private String[] endOfGameMenu = {"1: Play again", "5: Return to Main Menu"};
+    private String[] startMenu = {"Welcome! Please choose menu option: ",
+            SINGLE_PLAYER + ": Single Player",
+                //a: New Player
+                //b: Load Player
+            MULTI_PLAYER + ": Multiplayer",
+                //c: New Player
+                //d: Load Player
+                //e: Play
+            // under spelets gång: "8: Save Game",
+            LOAD_GAME + ": Load Game",
+            DELETE_PLAYER + ": Delete Player",
+            HIGH_SCORE + ": High Score",
+            PLAYER_STATS + ": Player Stats",
+            QUIT + ": Quit"};
+
+    private String[] singlePlayerEndOfGameMenu = {SINGLE_PLAYER_START_NEW_GAME + ": Start New Game",
+            RETURN_TO_MAIN_MENU + ": Return to Main Menu"};
+    private String[] multiPlayerEndOfGameMenu = {MULTI_PLAYER_START_NEW_GAME + ": Start New Game",
+            RETURN_TO_MAIN_MENU+ ": Return to Main Menu"};
+    private String[] singlePlayerMenu = {NEW_PLAYER + ": New Player", LOAD_PLAYER + ": Load Player"};
 
     public Menu() {
         currentMenu = startMenu;
@@ -24,8 +55,8 @@ public class Menu {
      */
     public Menu(Player player) {
         currentPlayer = player;
-        currentMenu = endOfGameMenu;
-        show(endOfGameMenu);
+        currentMenu = singlePlayerEndOfGameMenu;
+        show(singlePlayerEndOfGameMenu);
     }
 
     /**
@@ -47,7 +78,7 @@ public class Menu {
         }
         int menuChoice = getInt();
         switch (menuChoice) {
-            case 1: { //new Game();
+            case SINGLE_PLAYER: {
                 if (currentPlayer == null) {
                     System.out.println("Please give your player a name: ");
                     String playerName = getString();
@@ -73,6 +104,12 @@ public class Menu {
                             System.out.println("Name of player: " + currentPlayer.getName());
                             System.out.println("Games played: " + currentPlayer.getGamesPlayed());
                             System.out.println("Games won: " + currentPlayer.getGamesWon());
+                            // "Single Player Max Points: " + ...
+                            // "Tot.p
+                            // "Medelp.
+                            // Multiplayer Max
+                            // Multiplayer Tot
+                            // Multiplayer Average
                             System.out.println();
                             show(currentMenu);
                         }
@@ -98,7 +135,6 @@ public class Menu {
                         System.out.println("Saved player: " + currentPlayer.getName());
                         System.out.println();
                         show(currentMenu);
-
                     } catch (FileNotFoundException exception) {
                     }
                 } else {
@@ -136,7 +172,7 @@ public class Menu {
                 if (input > 0 && input < 5 && currentMenu == startMenu) {
                     loop = false;
                     scanner.nextLine();
-                } else if (input == 1 || input == 5 && currentMenu == endOfGameMenu) {
+                } else if (input == 1 || input == 5 && currentMenu == singlePlayerEndOfGameMenu) {
                     loop = false;
                     scanner.nextLine();
                 } else {

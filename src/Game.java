@@ -4,7 +4,10 @@ import java.util.Scanner;
 
 public class Game {
 
-    private Player player = null;
+    private Player player1 = null;
+    private Player player2 = null;
+    private Player player3 = null;
+    private Player player4 = null;
     private Menu menu = null;
     private String hiddenWord = "";
     private String usedChars = "";
@@ -25,11 +28,11 @@ public class Game {
      * Konstruktorn tar emot en spelare och meny. Anropar getWord() för att få ett ord att spela med. Anropar showGame()
      * för att skriva ut spelet. While loopar spelarens förslag, anropar getAlpha() för att kontrollera inmatning och
      * sedan update() för att uppdatera spelet med den gissade bokstaven.
-     * @param player
+     * @param player1
      * @param menu
      */
-    public Game(Player player, Menu menu) {
-        this.player = player;
+    public Game(Player player1, Menu menu) {
+        this.player1 = player1;
         this.menu = menu;
         String word = getWord();
         showGame();
@@ -41,6 +44,35 @@ public class Game {
             }
         }
     }
+
+    public Game(Player player1, Player player2, Menu menu) {
+        this.player1 = player1;
+        this.player2 = player2;
+    }
+    public Game(Player player1, Player player2, Player player3, Menu menu) {
+        this.player1 = player1;
+        this.player2 = player2;
+        this.player3 = player3;
+    }
+    public Game(Player player1, Player player2, Player player3, Player player4, Menu menu) {
+        this.player1 = player1;
+        this.player2 = player2;
+        this.player3 = player3;
+        this.player4 = player4;
+        this.menu = menu;
+        String word = getWord();
+        System.out.println("Welcome " + player1.getName() + ", " + player2.getName() + ", "
+                + player3.getName() + ", " + player4.getName() + "!");
+        showGame();
+        flag = true;
+        while (flag) {
+            if (menu.getScanner().hasNext()) {
+                String guessedChar = String.valueOf(menu.getAlpha());
+                update(guessedChar);
+            }
+        }
+    }
+
     /**
      * update() tar in den gissade bokstaven, lägger den till variabeln usedChars. Vi lägger till den gissade bokstaven
      * till en char[] charAlpha. Vi for-loopar sedan igenom och kollar om den bokstaven finns i vår andra char[]
@@ -79,7 +111,7 @@ public class Game {
      * nytt. Vi kollar om seger eller förlust har uppnåtts och vi uppdaterar även spelarens data.
      */
     public void showGame() {
-        System.out.println("Hi " + player.getName() + "! I'm thinking about an English word with: " + numberOfChars + " characters");
+        System.out.println("Hi " + player1.getName() + "! I'm thinking about an English word with: " + numberOfChars + " characters");
         System.out.println("So far you have correctly guessed: " + hiddenWord);
         System.out.println("You have guessed the following letters: " + usedChars);
         System.out.println("Hang-O-meter: " + hangMeterAsterisk);
@@ -93,9 +125,9 @@ public class Game {
             System.out.println();
             System.out.println("Victory! Congratulations!");
             System.out.println();
-            player.setGamesPlayed(1);
-            player.setGamesWon(1);
-            new Menu(player);
+            player1.setGamesPlayed(1);
+            player1.setGamesWon(1);
+            new Menu(player1);
         }
         if (incorrectGuessCounter != GAMEOVER) {
             System.out.println("Which character do you guess? ");
@@ -110,8 +142,8 @@ public class Game {
             System.out.println("Game Over!");
             System.out.println("The word was: " + theWord);
             System.out.println();
-            player.setGamesPlayed(1);
-            new Menu(player);
+            player1.setGamesPlayed(1);
+            new Menu(player1);
         }
     }
     /**

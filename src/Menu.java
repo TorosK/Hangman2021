@@ -99,7 +99,7 @@ public class Menu {
                 show(multiPlayerMenu);
                 break;
             }
-            case 3: { //savePlayer();
+            case ?: { //savePlayer();
                 if (currentPlayer != null) {
                     try {
                         PrintWriter out = new PrintWriter("hangman" + currentPlayer.getName() + ".txt");
@@ -120,11 +120,11 @@ public class Menu {
                 }
                 break;
             }
-            case 4: { //quit();
+            case ?: { //quit();
                 System.exit(0);
                 break;
             }
-            case 5: {
+            case ?: {
                 currentMenu = startMenu;
                 show(startMenu);
                 break;

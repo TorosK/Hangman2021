@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 public class Player {
     private String name = "";
@@ -10,6 +12,7 @@ public class Player {
      */
     public Player(String name) {
         this.name = name;
+        savePlayer(this);
     }
 
     /**
@@ -22,6 +25,7 @@ public class Player {
         this.name = name;
         this.gamesPlayed = gamesPlayed;
         this.gamesWon = gamesWon;
+        savePlayer(this);
     }
 
     public String getName() {
@@ -46,5 +50,16 @@ public class Player {
 
     public void setGamesWon(int gamesWon) {
         this.gamesWon += gamesWon;
+    }
+
+    public void savePlayer (Player player){
+        try {
+            PrintWriter out = new PrintWriter("hangman" + player.getName() + ".txt");
+            out.println(player.getName());
+            out.println(player.gamesPlayed);
+            out.println(player.gamesWon);
+            out.close();
+        } catch (FileNotFoundException exception) {
+        }
     }
 }

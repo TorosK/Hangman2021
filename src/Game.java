@@ -48,11 +48,33 @@ public class Game {
     public Game(Player player1, Player player2, Menu menu) {
         this.player1 = player1;
         this.player2 = player2;
+        this.menu = menu;
+        String word = getWord();
+        System.out.println("Welcome " + player1.getName() + ", " + player2.getName() + "!");
+        showGame();
+        flag = true;
+        while (flag) {
+            if (menu.getScanner().hasNext()) {
+                String guessedChar = String.valueOf(menu.getAlpha());
+                update(guessedChar);
+            }
+        }
     }
     public Game(Player player1, Player player2, Player player3, Menu menu) {
         this.player1 = player1;
         this.player2 = player2;
         this.player3 = player3;
+        this.menu = menu;
+        String word = getWord();
+        System.out.println("Welcome " + player1.getName() + ", " + player2.getName() + ", " + player3.getName() + "!");
+        showGame();
+        flag = true;
+        while (flag) {
+            if (menu.getScanner().hasNext()) {
+                String guessedChar = String.valueOf(menu.getAlpha());
+                update(guessedChar);
+            }
+        }
     }
     public Game(Player player1, Player player2, Player player3, Player player4, Menu menu) {
         this.player1 = player1;

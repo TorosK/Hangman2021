@@ -1,4 +1,6 @@
 // numberOfPlayersCounter = 0; glöm ej vid startGame()
+// vi måste fixa spara statistik efter spel avklarad, auto.
+// Som load player i switch case.
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -83,9 +85,12 @@ public class Menu {
      * @param argument är den array vi skickar till metoden.
      */
     public void show(String[] argument) {
-        String[] meny = argument;
+        String[] menu = argument;
         for (int i = 0; i < argument.length; i++) {
-            System.out.println(meny[i]);
+            System.out.println(menu[i]);
+        }
+        if (numberOfPlayersCounter > 1) {
+            System.out.println(MULTI_PLAYER_START_NEW_GAME + ": Start Game");
         }
         int menuChoice = getInt();
         switch (menuChoice) {
@@ -99,45 +104,20 @@ public class Menu {
                 show(multiPlayerMenu);
                 break;
             }
-            case 3: { //savePlayer();
-                if (currentPlayer != null) {
-                    try {
-                        PrintWriter out = new PrintWriter("hangman" + currentPlayer.getName() + ".txt");
-                        out.println(currentPlayer.getName());
-                        out.println(currentPlayer.getGamesPlayed());
-                        out.println(currentPlayer.getGamesWon());
-                        out.close();
-                        System.out.println();
-                        System.out.println("Saved player: " + currentPlayer.getName());
-                        System.out.println();
-                        show(currentMenu);
-                    } catch (FileNotFoundException exception) {
-                    }
-                } else {
-                    System.out.println("Before You save a player, You must first create a player");
-                    System.out.println();
-                    show(currentMenu);
-                }
+            case DELETE_PLAYER: { //4
                 break;
             }
-            case 4: { //quit();
-                System.exit(0);
-                break;
-            }
-            case 5: {
-                currentMenu = startMenu;
-                show(startMenu);
+            case HIGH_SCORE: { //5
                 break;
             }
             case PLAYER_STATS: { //6
-
                 break;
             }
             case QUIT: { //7
-
+                System.exit(0);
                 break;
             }
-            case SINGLE_PLAYER_NEW_PLAYER: {
+            case SINGLE_PLAYER_NEW_PLAYER: { //8
                 System.out.println("Please give your player a name: ");
                 String playerName = getString();
                 Player player = new Player(playerName);
@@ -146,7 +126,71 @@ public class Menu {
                 new Game(currentPlayer, this);
                 break;
             }
-            case SINGLE_PLAYER_LOAD_PLAYER: {
+            case SINGLE_PLAYER_LOAD_PLAYER: { //9
+                try {
+                    System.out.println("Input name of player: ");
+                    String name = getString();
+                    File file = new File("hangman" + name + ".txt");
+                    Scanner scannerFile = new Scanner(file);
+                    while (scannerFile.hasNext()) {
+                        if (name.equals(scannerFile.next())) {
+                            currentPlayer = new Player(name, scannerFile.nextInt(), scannerFile.nextInt());
+                            show(currentMenu);
+                            }
+                            //System.out.println("Name of player: " + currentPlayer.getName());
+                            //System.out.println("Games played: " + currentPlayer.getGamesPlayed());
+                            //System.out.println("Games won: " + currentPlayer.getGamesWon());
+                            // "Single Player Max Points: " + ...
+                            // "Tot.p
+                            // "Medelp.
+                            // Multiplayer Max
+                            // Multiplayer Tot
+                            // Multiplayer Average
+                        }
+                    scannerFile.close();
+                } catch (FileNotFoundException e) {//fixat att ladda spelare som inte finns
+                    System.out.println();
+                    System.out.println("Player not found, please try again!");
+                    System.out.println();
+                    show(currentMenu);
+                }
+                break;
+            }
+            case MULTI_PLAYER_NEW_PLAYER: { //10
+                System.out.println("Please give your player a name: ");
+                String playerName = getString();
+                Player player = new Player(playerName);
+
+                numberOfPlayersCounter++;
+                if (numberOfPlayersCounter == 1) {
+                    player1 = player;
+                    System.out.println("Player 1: " + player1.getName() + " is created.");
+                    System.out.println("List of Players: \n" + player1.getName() + "\n");
+                    show(currentMenu);
+                }
+                else if (numberOfPlayersCounter == 2) {
+                    player2 = player;
+                    System.out.println("Player 2: " + player2.getName() + " is created.");
+                    System.out.println("List of Players: \n" + player1.getName() + "\n" + player2.getName() + "\n");
+                    show(currentMenu);
+
+                }
+                else if (numberOfPlayersCounter == 3) {
+                    player3 = player;
+                    System.out.println("Player 3: " + player3.getName() + " is created.");
+                    System.out.println("List of Players: \n" + player1.getName() + "\n" + player2.getName()
+                            + "\n" + player3.getName() + "\n");
+                    show(currentMenu);
+                    //System.out.println(MULTI_PLAYER_START_NEW_GAME + ": Start Game");
+                }
+                else if (numberOfPlayersCounter == 4) {
+                    player4 = player;
+                    numberOfPlayersCounter = 0;
+                    new Game(player1, player2, player3, player4, this);
+                }
+                break;
+            }
+            case MULTI_PLAYER_LOAD_PLAYER: { //11
                 try {
                     System.out.println("Input name of player: ");
                     String name = getString();
@@ -205,97 +249,16 @@ public class Menu {
             case SINGLE_PLAYER_START_NEW_GAME: {
                 break;
             }
-            case MULTI_PLAYER_LOAD_PLAYER: {
-                try {
-                    System.out.println("Input name of player: ");
-                    String name = getString();
-                    File file = new File("hangman" + name + ".txt");
-                    Scanner scannerFile = new Scanner(file);
-                    while (scannerFile.hasNext()) {
-                        if (name.equals(scannerFile.next())) {
-                            currentPlayer = new Player(name, scannerFile.nextInt(), scannerFile.nextInt());
-                            numberOfPlayersCounter++;
-                            if (numberOfPlayersCounter == 1) {
-                                player1 = currentPlayer;
-                                System.out.println("Player 1: " + player1.getName() + " is created.");
-                                System.out.println("List of Players: \n" + player1.getName() + "\n");
-                                show(currentMenu);
-                            }
-                            else if (numberOfPlayersCounter == 2) {
-                                player2 = currentPlayer;
-                                System.out.println("Player 2: " + player2.getName() + " is created.");
-                                System.out.println("List of Players: \n" + player1.getName() + "\n" + player2.getName() + "\n");
-                                show(currentMenu);
-                                System.out.println(MULTI_PLAYER_START_NEW_GAME + ": Start Game");
-                            }
-                            else if (numberOfPlayersCounter == 3) {
-                                player3 = currentPlayer;
-                                System.out.println("Player 3: " + player3.getName() + " is created.");
-                                System.out.println("List of Players: \n" + player1.getName() + "\n" + player2.getName()
-                                        + "\n" + player3.getName() + "\n");
-                                show(currentMenu);
-                                System.out.println(MULTI_PLAYER_START_NEW_GAME + ": Start Game");
-                            }
-                            else if (numberOfPlayersCounter == 4) {
-                                player4 = currentPlayer;
-                                numberOfPlayersCounter = 0;
-                                new Game(player1, player2, player3, player4, this);
-                            }
-                            //System.out.println("Name of player: " + currentPlayer.getName());
-                            //System.out.println("Games played: " + currentPlayer.getGamesPlayed());
-                            //System.out.println("Games won: " + currentPlayer.getGamesWon());
-                            // "Single Player Max Points: " + ...
-                            // "Tot.p
-                            // "Medelp.
-                            // Multiplayer Max
-                            // Multiplayer Tot
-                            // Multiplayer Average
-                        }
-                    }
-                    scannerFile.close();
-                } catch (FileNotFoundException e) {//fixat att ladda spelare som inte finns
-                    System.out.println();
-                    System.out.println("Player not found, please try again!");
-                    System.out.println();
-                    show(currentMenu);
+            case MULTI_PLAYER_START_NEW_GAME: {
+                if (numberOfPlayersCounter == 2) {
+                    new Game(player1, player2, this);
                 }
+                else new Game(player1,player2,player3,this);
                 break;
             }
-            case MULTI_PLAYER_NEW_PLAYER: {
-                    System.out.println("Please give your player a name: ");
-                    String playerName = getString();
-                    Player player = new Player(playerName);
-                    numberOfPlayersCounter++;
-                    if (numberOfPlayersCounter == 1) {
-                        player1 = player;
-                        System.out.println("Player 1: " + player1.getName() + " is created.");
-                        System.out.println("List of Players: \n" + player1.getName() + "\n");
-                        show(currentMenu);
-                    }
-                    else if (numberOfPlayersCounter == 2) {
-                        player2 = player;
-                        System.out.println("Player 2: " + player2.getName() + " is created.");
-                        System.out.println("List of Players: \n" + player1.getName() + "\n" + player2.getName() + "\n");
-                        show(currentMenu);
-                        System.out.println(MULTI_PLAYER_START_NEW_GAME + ": Start Game");
-                    }
-                    else if (numberOfPlayersCounter == 3) {
-                        player3 = player;
-                        System.out.println("Player 3: " + player3.getName() + " is created.");
-                        System.out.println("List of Players: \n" + player1.getName() + "\n" + player2.getName()
-                                + "\n" + player3.getName() + "\n");
-                        show(currentMenu);
-                        System.out.println(MULTI_PLAYER_START_NEW_GAME + ": Start Game");
-                    }
-                    else if (numberOfPlayersCounter == 4) {
-                        player4 = player;
-                        numberOfPlayersCounter = 0;
-                        new Game(player1, player2, player3, player4, this);
-                    }
-                    break;
-                }
             case RETURN_TO_MAIN_MENU: {
-
+                currentMenu = startMenu;
+                show(startMenu);
                 break;
             }
 
@@ -321,7 +284,7 @@ public class Menu {
                 } else if (input == SINGLE_PLAYER_START_NEW_GAME || input == RETURN_TO_MAIN_MENU && currentMenu == singlePlayerEndOfGameMenu) {
                     loop = false;
                     scanner.nextLine();
-                } else if (input == MULTI_PLAYER_NEW_PLAYER || input == MULTI_PLAYER_LOAD_PLAYER && currentMenu == multiPlayerMenu) {
+                } else if (input == MULTI_PLAYER_NEW_PLAYER || input == MULTI_PLAYER_LOAD_PLAYER || input == MULTI_PLAYER_START_NEW_GAME && currentMenu == multiPlayerMenu) {
                     loop = false;
                     scanner.nextLine();
                 }
@@ -398,4 +361,12 @@ public class Menu {
     public Scanner getScanner() {
         return scanner;
     }
+    /*public void savePlayer (Player player){
+        try {
+            PrintWriter out = new PrintWriter("hangman" + player.getName() + ".txt");
+            out.println(player.getName());
+            out.close();
+        } catch (FileNotFoundException exception) {
+        }
+    }*/
 }

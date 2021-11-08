@@ -1,3 +1,4 @@
+//Korrigera från rad 253, vi måste ändra vad som händer vid gameover och nästa ord
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collections;
@@ -12,24 +13,34 @@ public class Game {
     private Player player4 = null;
     private Player currentPlayer = null;
     private Player nextPlayer = null;
+    private Player holderPlayer = null;
     private Menu menu = null;
     private String hiddenWord = "";
     private String usedChars = "";
     private String hangMeterAsterisk = "";
     private String theWord = "";
+    private String word = "";
+    private boolean ONE_PLAYER_GAME = false;
+    private boolean TWO_PLAYER_GAME = false;
+    private boolean THREE_PLAYER_GAME = false;
+    private boolean FOUR_PLAYER_GAME = false;
+    private boolean correctGuessedChar = false;
+    private boolean incorrectGuessedChar = false;
+    private boolean gameRunning = true;
+    private boolean GAMEOVER = false;
 
     private char[] charArray = new char[20];
     private String[] updatedArray = new String[30];
     private String[] wordArray194k = new String[194433];
     private ArrayList<Player> playerArrayList = new ArrayList<>();
 
+    private int numberOfHangedPlayers = 0;
     private int numberOfChars = 0;
     private int incorrectGuessCounter = 0;
     private int correctGuessCounter = 0;
-    private final int GAMEOVER = 10;
     private File wordFile = new File("english3.txt");
     private Scanner scannerWordFile;
-    private boolean flag = true;
+
 
     /**
      * Konstruktorn tar emot en spelare och meny. Anropar getWord() för att få ett ord att spela med. Anropar showGame()
@@ -40,12 +51,14 @@ public class Game {
      * @param menu
      */
     public Game(Player player1, Menu menu) {
+        ONE_PLAYER_GAME = true;
         this.player1 = player1;
+        currentPlayer = player1;
         this.menu = menu;
-        String word = getWord();
+        word = getWord();
         showGame();
-        flag = true;
-        while (flag) {
+        gameRunning = true;
+        while (gameRunning) {
             if (menu.getScanner().hasNext()) {
                 String guessedChar = String.valueOf(menu.getAlpha());
                 update(guessedChar);
@@ -54,6 +67,7 @@ public class Game {
     }
 
     public Game(Player player1, Player player2, Menu menu) {
+        TWO_PLAYER_GAME = true;
         this.player1 = player1;
         this.player2 = player2;
         playerArrayList.add(player1);
@@ -62,11 +76,11 @@ public class Game {
         currentPlayer = playerArrayList.get(0);
         nextPlayer = playerArrayList.get(1);
         this.menu = menu;
-        String word = getWord();
+        word = getWord();
         System.out.println("Welcome " + playerArrayList.get(0).getName() + ", " + playerArrayList.get(1).getName() + "!");
         showGame();
-        flag = true;
-        while (flag) {
+        gameRunning = true;
+        while (gameRunning) {
             if (menu.getScanner().hasNext()) {
                 String guessedChar = String.valueOf(menu.getAlpha());
                 update(guessedChar);
@@ -75,6 +89,7 @@ public class Game {
     }
 
     public Game(Player player1, Player player2, Player player3, Menu menu) {
+        THREE_PLAYER_GAME = true;
         this.player1 = player1;
         this.player2 = player2;
         this.player3 = player3;
@@ -85,12 +100,12 @@ public class Game {
         Collections.shuffle(playerArrayList);
 
         this.menu = menu;
-        String word = getWord();
+        word = getWord();
         System.out.println("Welcome " + playerArrayList.get(0).getName() + ", " +
                 playerArrayList.get(1).getName() + ", " + playerArrayList.get(2).getName() + "!");
         showGame();
-        flag = true;
-        while (flag) {
+        gameRunning = true;
+        while (gameRunning) {
             if (menu.getScanner().hasNext()) {
                 String guessedChar = String.valueOf(menu.getAlpha());
                 update(guessedChar);
@@ -99,6 +114,7 @@ public class Game {
     }
 
     public Game(Player player1, Player player2, Player player3, Player player4, Menu menu) {
+        FOUR_PLAYER_GAME = true;
         this.player1 = player1;
         this.player2 = player2;
         this.player3 = player3;
@@ -112,13 +128,13 @@ public class Game {
         Collections.shuffle(playerArrayList);
 
         this.menu = menu;
-        String word = getWord();
+        word = getWord();
         System.out.println("Welcome " + playerArrayList.get(0).getName() + ", " +
                 playerArrayList.get(1).getName() + ", " + playerArrayList.get(2).getName() + ", "
                 + playerArrayList.get(3).getName() + "!");
         showGame();
-        flag = true;
-        while (flag) {
+        gameRunning = true;
+        while (gameRunning) {
             if (menu.getScanner().hasNext()) {
                 String guessedChar = String.valueOf(menu.getAlpha());
                 update(guessedChar);
@@ -145,19 +161,48 @@ public class Game {
             if (charAlpha[0] == charArray[i]) {
                 updatedArray[i] = alpha;
                 correctGuessCounter++;
+                correctGuessedChar = true;
             }
         }
         if (correctGuessCounter == 0) {
+            incorrectGuessedChar = true;
             incorrectGuessCounter++;
             currentPlayer.setLives();
+            if(TWO_PLAYER_GAME){
+                holderPlayer = currentPlayer;
+                currentPlayer = nextPlayer;
+                nextPlayer = holderPlayer;
+            }else if(THREE_PLAYER_GAME){
+
+            }else if(FOUR_PLAYER_GAME){
+
+            }
             if (currentPlayer.getLives() == 0) {
                 currentPlayer.setPlayerGameOver(true);
-                currentPlayer = nextPlayer;
-                // nextPlayer =  // Hur göra med multiplayer?
-            }
-            hangMeterAsterisk += "*"; // not any more with healthbar--
-            if (incorrectGuessCounter == GAMEOVER) {
-                showGame();
+                numberOfHangedPlayers++;
+                if(ONE_PLAYER_GAME){
+                    numberOfHangedPlayers = 0;
+                    GAMEOVER = true;
+                    menu.show(menu.getSinglePlayerEndOfGameMenu());
+                }else if(TWO_PLAYER_GAME && numberOfHangedPlayers == 1){
+                    numberOfHangedPlayers = 0;
+                    GAMEOVER = true;
+                    //nextPlayer.setGamesWon()
+                    //skriva gratttis till segern
+                    //ny meny(multiplayerGameOverMenu)
+                }else if(THREE_PLAYER_GAME && numberOfHangedPlayers == 2){
+                    numberOfHangedPlayers = 0;
+                    GAMEOVER = true;
+                    //nextPlayer.setGamesWon()
+                    //skriva gratttis till segern
+                    //ny meny(multiplayerGameOverMenu)
+                }else if(FOUR_PLAYER_GAME && numberOfHangedPlayers == 3){
+                    numberOfHangedPlayers = 0;
+                    GAMEOVER = true;
+                    //nextPlayer.setGamesWon()
+                    //skriva gratttis till segern
+                    //ny meny(multiplayerGameOverMenu)
+                }
             }
         }
         for (int j = 0; j < numberOfChars; j++) {
@@ -172,29 +217,41 @@ public class Game {
      * nytt. Vi kollar om seger eller förlust har uppnåtts och vi uppdaterar även spelarens data.
      */
     public void showGame() {
-
-        System.out.println("Hi " + currentPlayer.getName() + "! I'm thinking about an English word with: " + numberOfChars + " characters");
+        if(correctGuessedChar){
+            System.out.println("Correct character!");
+            correctGuessedChar = false;
+        }else if(incorrectGuessedChar){
+            System.out.println("Incorrect! "+ nextPlayer.getName()+ " lost one healthpoint! ");
+            System.out.print("HealthBar: ");
+            healthBarDisplay(nextPlayer.getLives());
+            System.out.println();
+            incorrectGuessedChar = false;
+        }
+        System.out.println("\nHi "+currentPlayer.getName() + "\nI'm thinking about an English word with: " + numberOfChars + " characters");
         System.out.println("So far you have correctly guessed: " + hiddenWord);
         System.out.println("You have guessed the following letters: " + usedChars);
         System.out.print("HealthBar: ");
         healthBarDisplay(currentPlayer.getLives());
         System.out.println();
         // System.out.println("Hang-O-meter Health-bar: " + hangMeterAsterisk);
-        if (hiddenWord.equals(theWord)) {
+        if (hiddenWord.equals(word)) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            flag = false;
+            gameRunning = false;
             System.out.println();
-            System.out.println("Victory! Congratulations!");
+            System.out.println("Congratulations - Word complete! +1 point for "+ currentPlayer.getName());
             System.out.println();
-            player1.setGamesPlayed(1);
-            player1.setGamesWon(1);
-            new Menu(player1);
+            //currentPlayer.setPoints()
+            word = getWord();
+            showGame();
+            //player1.setGamesPlayed(1);
+            //player1.setGamesWon(1);
+            //new Menu(player1);
         }
-        if (incorrectGuessCounter != GAMEOVER) {
+        if (!GAMEOVER) {//Behöver göras om
             System.out.println("Which character do you guess? ");
         } else {
             try {
@@ -202,16 +259,15 @@ public class Game {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            flag = false;
+            gameRunning = false;
             System.out.println();
             System.out.println("Game Over!");
-            System.out.println("The word was: " + theWord);
+            System.out.println("The word was: " + word);
             System.out.println();
-            player1.setGamesPlayed(1);
-            new Menu(player1);
+            //player1.setGamesPlayed(1);
+            //new Menu(player1);
         }
     }
-
     /**
      * Den här metoden slumpar fram ett ord ur en ordlista som är 194433 ord lång. Vi kopplar scannern till filen och
      * fyller vår array wordArray194k med hjälp av en for-loop. Vi slumpar fram ett tal mellan 0 och 194433 som vi
@@ -235,10 +291,12 @@ public class Game {
         theWord = wordArray194k[(int) wordRandomizeNr];
         charArray = theWord.toCharArray();
         numberOfChars = charArray.length;
+        hiddenWord = "";
         for (int i = 0; i < numberOfChars; i++) {
             hiddenWord += "_";
             updatedArray[i] = "_";
         }
+        usedChars = "";
         return theWord;
     }
 

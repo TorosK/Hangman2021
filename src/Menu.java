@@ -364,6 +364,10 @@ public class Menu {
     public Scanner getScanner() {
         return scanner;
     }
+
+    public String[] getSinglePlayerEndOfGameMenu() {
+        return singlePlayerEndOfGameMenu;
+    }
     /*public void savePlayer (Player player){
         try {
             PrintWriter out = new PrintWriter("hangman" + player.getName() + ".txt");

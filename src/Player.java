@@ -5,6 +5,8 @@ public class Player {
     private String name = "";
     private int gamesPlayed = 0;
     private int gamesWon = 0;
+    private int lives = 10;
+    private boolean playerGameOver = false;
 
     /**
      * Skapar en spelare med ett namn, gamesplayed och gameswon är satta till 0 by default;
@@ -50,6 +52,22 @@ public class Player {
 
     public void setGamesWon(int gamesWon) {
         this.gamesWon += gamesWon;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives() {
+        this.lives--;
+    }
+
+    public boolean isPlayerGameOver() {
+        return playerGameOver;
+    }
+
+    public void setPlayerGameOver(boolean playerGameOver) {
+        this.playerGameOver = playerGameOver;
     }
 
     public void savePlayer (Player player){

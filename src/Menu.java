@@ -1,4 +1,3 @@
-// numberOfPlayersCounter = 0; glöm ej vid startGame()
 // vi måste fixa spara statistik efter spel avklarad, auto.
 // Som load player i switch case.
 
@@ -251,9 +250,13 @@ public class Menu {
             }
             case MULTI_PLAYER_START_NEW_GAME: {
                 if (numberOfPlayersCounter == 2) {
+                    numberOfPlayersCounter = 0;
                     new Game(player1, player2, this);
                 }
-                else new Game(player1,player2,player3,this);
+                else {
+                    numberOfPlayersCounter = 0;
+                    new Game(player1, player2, player3, this);
+                }
                 break;
             }
             case RETURN_TO_MAIN_MENU: {

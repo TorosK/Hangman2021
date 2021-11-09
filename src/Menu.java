@@ -1,5 +1,7 @@
 // vi måste fixa spara statistik efter spel avklarad, auto.
 // Som load player i switch case.
+// Vid multi ska inte någon vinna när en förlorar.
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -58,6 +60,9 @@ public class Menu {
     private String[] singlePlayerMenu = {SINGLE_PLAYER_NEW_PLAYER + ": New Player", SINGLE_PLAYER_LOAD_PLAYER + ": Load Player"};
     private String[] multiPlayerMenu = {"2 to 4 Players Only\n",
             MULTI_PLAYER_NEW_PLAYER + ": New Player", MULTI_PLAYER_LOAD_PLAYER + ": Load Player"};
+    private String[] multiPlayerMenuPlusStart = {"2 to 4 Players Only\n",
+            MULTI_PLAYER_NEW_PLAYER + ": New Player", MULTI_PLAYER_LOAD_PLAYER + ": Load Player",
+            MULTI_PLAYER_START_NEW_GAME + ": Start New Game"};
     public Menu() {
         currentMenu = startMenu;
         show(startMenu);
@@ -87,9 +92,6 @@ public class Menu {
         String[] menu = argument;
         for (int i = 0; i < argument.length; i++) {
             System.out.println(menu[i]);
-        }
-        if (numberOfPlayersCounter > 1) {
-            System.out.println(MULTI_PLAYER_START_NEW_GAME + ": Start Game");
         }
         int menuChoice = getInt();
         switch (menuChoice) {
@@ -168,6 +170,7 @@ public class Menu {
                     show(currentMenu);
                 }
                 else if (numberOfPlayersCounter == 2) {
+                    currentMenu = multiPlayerMenuPlusStart;
                     player2 = player;
                     System.out.println("Player 2: " + player2.getName() + " is created.");
                     System.out.println("List of Players: \n" + player1.getName() + "\n" + player2.getName() + "\n");
@@ -175,16 +178,16 @@ public class Menu {
 
                 }
                 else if (numberOfPlayersCounter == 3) {
+                    currentMenu = multiPlayerMenuPlusStart;
                     player3 = player;
                     System.out.println("Player 3: " + player3.getName() + " is created.");
                     System.out.println("List of Players: \n" + player1.getName() + "\n" + player2.getName()
                             + "\n" + player3.getName() + "\n");
                     show(currentMenu);
-                    //System.out.println(MULTI_PLAYER_START_NEW_GAME + ": Start Game");
                 }
                 else if (numberOfPlayersCounter == 4) {
                     player4 = player;
-                    numberOfPlayersCounter = 0;
+                    // numberOfPlayersCounter = 0;
                     new Game(player1, player2, player3, player4, this);
                 }
                 break;
@@ -207,10 +210,10 @@ public class Menu {
                             }
                             else if (numberOfPlayersCounter == 2) {
                                 player2 = currentPlayer;
+                                currentMenu = multiPlayerMenuPlusStart;
                                 System.out.println("Player 2: " + player2.getName() + " is created.");
                                 System.out.println("List of Players: \n" + player1.getName() + "\n" + player2.getName() + "\n");
                                 show(currentMenu);
-                                System.out.println(MULTI_PLAYER_START_NEW_GAME + ": Start Game");
                             }
                             else if (numberOfPlayersCounter == 3) {
                                 player3 = currentPlayer;
@@ -218,11 +221,11 @@ public class Menu {
                                 System.out.println("List of Players: \n" + player1.getName() + "\n" + player2.getName()
                                         + "\n" + player3.getName() + "\n");
                                 show(currentMenu);
-                                System.out.println(MULTI_PLAYER_START_NEW_GAME + ": Start Game");
+
                             }
                             else if (numberOfPlayersCounter == 4) {
                                 player4 = currentPlayer;
-                                numberOfPlayersCounter = 0;
+                               // numberOfPlayersCounter = 0;
                                 new Game(player1, player2, player3, player4, this);
                             }
                             //System.out.println("Name of player: " + currentPlayer.getName());
@@ -245,26 +248,27 @@ public class Menu {
                 }
                 break;
             }
-            case SINGLE_PLAYER_START_NEW_GAME: {
+            case SINGLE_PLAYER_START_NEW_GAME: { //12
                 break;
             }
-            case MULTI_PLAYER_START_NEW_GAME: {
+            case MULTI_PLAYER_START_NEW_GAME: { //13
                 if (numberOfPlayersCounter == 2) {
-                    numberOfPlayersCounter = 0;
                     new Game(player1, player2, this);
                 }
-                else {
-                    numberOfPlayersCounter = 0;
+                else if (numberOfPlayersCounter == 3){
                     new Game(player1, player2, player3, this);
+                }
+                else if (numberOfPlayersCounter == 4) {
+                    new Game(player1, player2, player3, player4, this);
                 }
                 break;
             }
-            case RETURN_TO_MAIN_MENU: {
+            case RETURN_TO_MAIN_MENU: { //14
                 currentMenu = startMenu;
+                numberOfPlayersCounter = 0;
                 show(startMenu);
                 break;
             }
-
         }
     }
 
@@ -287,7 +291,9 @@ public class Menu {
                 } else if (input == SINGLE_PLAYER_START_NEW_GAME || input == RETURN_TO_MAIN_MENU && currentMenu == singlePlayerEndOfGameMenu) {
                     loop = false;
                     scanner.nextLine();
-                } else if (input == MULTI_PLAYER_NEW_PLAYER || input == MULTI_PLAYER_LOAD_PLAYER || input == MULTI_PLAYER_START_NEW_GAME && currentMenu == multiPlayerMenu) {
+                } else if (input == MULTI_PLAYER_NEW_PLAYER || input == MULTI_PLAYER_LOAD_PLAYER ||
+                        input == MULTI_PLAYER_START_NEW_GAME && currentMenu == multiPlayerMenu ||
+                        currentMenu == multiPlayerMenuPlusStart) {
                     loop = false;
                     scanner.nextLine();
                 }
@@ -302,7 +308,6 @@ public class Menu {
         }
         return input;
     }
-
     /**
      * Vi använder den här metoden för att läsa in spelarens namn. Vi trimmar bort blanksteg. Vi kollar även att
      * strängen inte är helt tom.
@@ -364,19 +369,10 @@ public class Menu {
     public Scanner getScanner() {
         return scanner;
     }
-
     public String[] getSinglePlayerEndOfGameMenu() {
         return singlePlayerEndOfGameMenu;
     }
     public String[] getMultiPlayerEndOfGameMenu() {
         return multiPlayerEndOfGameMenu;
     }
-    /*public void savePlayer (Player player){
-        try {
-            PrintWriter out = new PrintWriter("hangman" + player.getName() + ".txt");
-            out.println(player.getName());
-            out.close();
-        } catch (FileNotFoundException exception) {
-        }
-    }*/
 }

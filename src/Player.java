@@ -5,8 +5,10 @@ public class Player {
     private String name = "";
     private int gamesPlayed = 0;
     private int gamesWon = 0;
-    private int lives = 10;
+    final private int FULL_HEALTH = 3;
+    private int lives = FULL_HEALTH;
     private boolean playerGameOver = false;
+
 
     /**
      * Skapar en spelare med ett namn, gamesplayed och gameswon är satta till 0 by default;
@@ -60,6 +62,10 @@ public class Player {
 
     public void setLives() {
         this.lives--;
+    }
+
+    public void setResetLives() {
+        this.lives = FULL_HEALTH;
     }
 
     public boolean isPlayerGameOver() {

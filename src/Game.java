@@ -183,24 +183,29 @@ public class Game {
                 if(ONE_PLAYER_GAME){
                     numberOfHangedPlayers = 0;
                     GAMEOVER = true;
+                    gameOverDisplay();
                     menu.show(menu.getSinglePlayerEndOfGameMenu());
                 }else if(TWO_PLAYER_GAME && numberOfHangedPlayers == 1){
                     numberOfHangedPlayers = 0;
                     GAMEOVER = true;
+                    gameOverDisplay();
+                    menu.show(menu.getMultiPlayerEndOfGameMenu());
                     //nextPlayer.setGamesWon()
-                    //skriva gratttis till segern
+                    //skriva grattis till segern
                     //ny meny(multiplayerGameOverMenu)
                 }else if(THREE_PLAYER_GAME && numberOfHangedPlayers == 2){
                     numberOfHangedPlayers = 0;
                     GAMEOVER = true;
+                    gameOverDisplay();
                     //nextPlayer.setGamesWon()
-                    //skriva gratttis till segern
+                    //skriva grattis till segern
                     //ny meny(multiplayerGameOverMenu)
                 }else if(FOUR_PLAYER_GAME && numberOfHangedPlayers == 3){
                     numberOfHangedPlayers = 0;
                     GAMEOVER = true;
+                    gameOverDisplay();
                     //nextPlayer.setGamesWon()
-                    //skriva gratttis till segern
+                    //skriva grattis till segern
                     //ny meny(multiplayerGameOverMenu)
                 }
             }
@@ -209,14 +214,6 @@ public class Game {
             string += updatedArray[j];
             hiddenWord = string;
         }
-        showGame();
-    }
-
-    /**
-     * Den här metoden skriver ut "spelet" rad för rad. Variabler uppdateras i update och sedan skrivs spelet ut på
-     * nytt. Vi kollar om seger eller förlust har uppnåtts och vi uppdaterar även spelarens data.
-     */
-    public void showGame() {
         if(correctGuessedChar){
             System.out.println("Correct character!");
             correctGuessedChar = false;
@@ -227,13 +224,6 @@ public class Game {
             System.out.println();
             incorrectGuessedChar = false;
         }
-        System.out.println("\nHi "+currentPlayer.getName() + "\nI'm thinking about an English word with: " + numberOfChars + " characters");
-        System.out.println("So far you have correctly guessed: " + hiddenWord);
-        System.out.println("You have guessed the following letters: " + usedChars);
-        System.out.print("HealthBar: ");
-        healthBarDisplay(currentPlayer.getLives());
-        System.out.println();
-        // System.out.println("Hang-O-meter Health-bar: " + hangMeterAsterisk);
         if (hiddenWord.equals(word)) {
             try {
                 Thread.sleep(1000);
@@ -241,33 +231,31 @@ public class Game {
                 e.printStackTrace();
             }
             gameRunning = false;
-            System.out.println();
-            System.out.println("Congratulations - Word complete! +1 point for "+ currentPlayer.getName());
-            System.out.println();
-            //currentPlayer.setPoints()
+            System.out.println("The correct word was: " + word);
+            System.out.println("-----------------------------------------------------------------------");
+            System.out.println("CONGRATULATIONS! - Word complete! +1 point for "+ currentPlayer.getName());
+            System.out.println("-----------------------------------------------------------------------");
             word = getWord();
-            showGame();
-            //player1.setGamesPlayed(1);
-            //player1.setGamesWon(1);
-            //new Menu(player1);
         }
-        if (!GAMEOVER) {//Behöver göras om
-            System.out.println("Which character do you guess? ");
-        } else {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            gameRunning = false;
-            System.out.println();
-            System.out.println("Game Over!");
-            System.out.println("The word was: " + word);
-            System.out.println();
-            //player1.setGamesPlayed(1);
-            //new Menu(player1);
-        }
+        showGame();
     }
+
+    /**
+     * Den här metoden skriver ut "spelet" rad för rad. Variabler uppdateras i update och sedan skrivs spelet ut på
+     * nytt. Vi kollar om seger eller förlust har uppnåtts och vi uppdaterar även spelarens data.
+     */
+    public void showGame() {
+        gameRunning = true;
+
+        System.out.println("\nHi "+currentPlayer.getName() + "\nI'm thinking about an English word with: " + numberOfChars + " characters");
+        System.out.println("So far you have correctly guessed: " + hiddenWord);
+        System.out.println("You have guessed the following letters: " + usedChars);
+        System.out.print("HealthBar: ");
+        healthBarDisplay(currentPlayer.getLives());
+        System.out.println();
+        System.out.println("Which character do you guess? ");
+        }
+
     /**
      * Den här metoden slumpar fram ett ord ur en ordlista som är 194433 ord lång. Vi kopplar scannern till filen och
      * fyller vår array wordArray194k med hjälp av en for-loop. Vi slumpar fram ett tal mellan 0 och 194433 som vi
@@ -304,5 +292,19 @@ public class Game {
         for (int i = 0; i < lives; i++) {
             System.out.print("*");
         }
+    }
+    public void gameOverDisplay(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        gameRunning = false;
+        System.out.println();
+        System.out.println("Game Over!");
+        System.out.println("The word was: " + word);
+        System.out.println();
+        //player1.setGamesPlayed(1);
+        //new Menu(player1);
     }
 }

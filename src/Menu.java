@@ -368,6 +368,9 @@ public class Menu {
     public String[] getSinglePlayerEndOfGameMenu() {
         return singlePlayerEndOfGameMenu;
     }
+    public String[] getMultiPlayerEndOfGameMenu() {
+        return multiPlayerEndOfGameMenu;
+    }
     /*public void savePlayer (Player player){
         try {
             PrintWriter out = new PrintWriter("hangman" + player.getName() + ".txt");

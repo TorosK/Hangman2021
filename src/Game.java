@@ -1,4 +1,3 @@
-//Korrigera från rad 253, vi måste ändra vad som händer vid gameover och nästa ord
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collections;
@@ -27,7 +26,6 @@ public class Game {
     private boolean THREE_PLAYER_GAME = false;
     private boolean FOUR_PLAYER_GAME = false;
     private boolean correctGuessedChar = false;
-    private boolean incorrectGuessedChar = false;
     private boolean gameRunning = true;
     private boolean GAMEOVER = false;
 
@@ -38,7 +36,7 @@ public class Game {
 
     private int numberOfHangedPlayers = 0;
     private int numberOfChars = 0;
-    private int incorrectGuessCounter = 0;
+    //private int incorrectGuessCounter = 0;
     private int correctGuessCounter = 0;
     private File wordFile = new File("english3.txt");
     private Scanner scannerWordFile;
@@ -142,7 +140,6 @@ public class Game {
             }
         }
     }
-
     /**
      * update() tar in den gissade bokstaven, lägger den till variabeln usedChars. Vi lägger till den gissade bokstaven
      * till en char[] charAlpha. Vi for-loopar sedan igenom och kollar om den bokstaven finns i vår andra char[]
@@ -165,41 +162,24 @@ public class Game {
                 correctGuessedChar = true;
             }
         }
+        if(correctGuessedChar) {
+            System.out.println("Correct character!");
+            correctGuessedChar = false;
+        }
         if (correctGuessCounter == 0) {
-            incorrectGuessedChar = true;
-            incorrectGuessCounter++;
             firstPlayer.setLives();
-            if(TWO_PLAYER_GAME){
-                holderPlayer = firstPlayer;
-                firstPlayer = secondPlayer;
-                secondPlayer = holderPlayer;
-            }else if(THREE_PLAYER_GAME){
-                holderPlayer = firstPlayer;
-                firstPlayer = secondPlayer;
-                secondPlayer = thirdPlayer;
-                thirdPlayer = holderPlayer;
-
-            }else if(FOUR_PLAYER_GAME){
-                holderPlayer = firstPlayer;
-                firstPlayer = secondPlayer;
-                secondPlayer = thirdPlayer;
-                thirdPlayer = fourthPlayer;
-                fourthPlayer = holderPlayer;
-            }
-            if(correctGuessedChar){
-                System.out.println("Correct character!");
-                correctGuessedChar = false;
-            }else if(incorrectGuessedChar){
-                System.out.println("Incorrect! "+ secondPlayer.getName()+ " lost one healthpoint! ");
-                System.out.print("HealthBar: ");
-                healthBarDisplay(secondPlayer.getLives());
+            System.out.println("Incorrect! "+ firstPlayer.getName()+ " lost one healthpoint! ");
+            System.out.print("HealthBar: ");
+            healthBarDisplay(firstPlayer.getLives());
+            System.out.println();
+            if (firstPlayer.getLives() == 0) {
                 System.out.println();
-                incorrectGuessedChar = false;
-            }
-            if (secondPlayer.getLives() == 0) {
-                secondPlayer.setPlayerGameOver(true);
+                System.out.println("-----------------------------------------------------------");
+                System.out.println(firstPlayer.getName()+" has been hanged");
+                System.out.println("-----------------------------------------------------------");
+                firstPlayer.setPlayerGameOver(true);
                 numberOfHangedPlayers++;
-                if(ONE_PLAYER_GAME){
+                if (ONE_PLAYER_GAME) {
                     numberOfHangedPlayers = 0;
                     GAMEOVER = true;
                     gameOverDisplay();
@@ -207,7 +187,7 @@ public class Game {
                     player1.setResetLives();
                     ONE_PLAYER_GAME = false;
                     menu.show(menu.getSinglePlayerEndOfGameMenu());
-                }else if(TWO_PLAYER_GAME && numberOfHangedPlayers == 1){
+                } else if (TWO_PLAYER_GAME && numberOfHangedPlayers == 2) {
                     numberOfHangedPlayers = 0;
                     GAMEOVER = true;
                     gameOverDisplay();
@@ -216,10 +196,7 @@ public class Game {
                     player2.setResetLives();
                     TWO_PLAYER_GAME = false;
                     menu.show(menu.getMultiPlayerEndOfGameMenu());
-                    //nextPlayer.setGamesWon()
-                    //skriva grattis till segern
-                    //ny meny(multiplayerGameOverMenu)
-                }else if(THREE_PLAYER_GAME && numberOfHangedPlayers == 2){
+                } else if (THREE_PLAYER_GAME && numberOfHangedPlayers == 3) {
                     numberOfHangedPlayers = 0;
                     GAMEOVER = true;
                     player1.setResetLives();
@@ -228,10 +205,8 @@ public class Game {
                     THREE_PLAYER_GAME = false;
                     gameOverDisplay();
                     GAMEOVER = false;
-                    //nextPlayer.setGamesWon()
-                    //skriva grattis till segern
-                    //ny meny(multiplayerGameOverMenu)
-                }else if(FOUR_PLAYER_GAME && numberOfHangedPlayers == 3){
+                    menu.show(menu.getMultiPlayerEndOfGameMenu());
+                } else if (FOUR_PLAYER_GAME && numberOfHangedPlayers == 4) {
                     numberOfHangedPlayers = 0;
                     GAMEOVER = true;
                     player1.setResetLives();
@@ -241,11 +216,32 @@ public class Game {
                     FOUR_PLAYER_GAME = false;
                     gameOverDisplay();
                     GAMEOVER = false;
-                    //nextPlayer.setGamesWon()
-                    //skriva grattis till segern
-                    //ny meny(multiplayerGameOverMenu)
+                    menu.newScanner();//test
+                    menu.show(menu.getMultiPlayerEndOfGameMenu());
                 }
             }
+            if(TWO_PLAYER_GAME){
+                holderPlayer = firstPlayer;
+                firstPlayer = secondPlayer;
+                secondPlayer = holderPlayer;
+            }else if(THREE_PLAYER_GAME){
+                do{
+                    holderPlayer = firstPlayer;
+                    firstPlayer = secondPlayer;
+                    secondPlayer = thirdPlayer;
+                    thirdPlayer = holderPlayer;
+                }
+             while (firstPlayer.isPlayerGameOver());
+            }else if(FOUR_PLAYER_GAME){
+                do{
+                    holderPlayer = firstPlayer;
+                    firstPlayer = secondPlayer;
+                    secondPlayer = thirdPlayer;
+                    thirdPlayer = fourthPlayer;
+                    fourthPlayer = holderPlayer;
+                }
+                while (firstPlayer.isPlayerGameOver());
+                }
         }
         for (int j = 0; j < numberOfChars; j++) {
             string += updatedArray[j];
@@ -259,9 +255,9 @@ public class Game {
             }
             gameRunning = false;
             System.out.println("The correct word was: " + word);
-            System.out.println("-----------------------------------------------------------------------");
+            System.out.println("-----------------------------------------------------------");
             System.out.println("CONGRATULATIONS! - Word complete! +1 point for "+ firstPlayer.getName());
-            System.out.println("-----------------------------------------------------------------------");
+            System.out.println("-----------------------------------------------------------");
             word = getWord();
         }
         showGame();
@@ -273,10 +269,9 @@ public class Game {
      */
     public void showGame() {
         gameRunning = true;
-
         System.out.println("\nHi "+ firstPlayer.getName() + "\nI'm thinking about an English word with: " + numberOfChars + " characters");
         System.out.println("So far you have correctly guessed: " + hiddenWord);
-        System.out.println("You have guessed the following letters: " + usedChars);
+        System.out.println("The following letters have been guessed: " + usedChars);
         System.out.print("HealthBar: ");
         healthBarDisplay(firstPlayer.getLives());
         System.out.println();
@@ -314,7 +309,6 @@ public class Game {
         usedChars = "";
         return theWord;
     }
-
     public void healthBarDisplay(int lives){
         for (int i = 0; i < lives; i++) {
             System.out.print("*");
@@ -328,15 +322,13 @@ public class Game {
         }
         gameRunning = false;
         System.out.println();
-        System.out.println("Game Over " + secondPlayer.getName() + "!");
         if (GAMEOVER) {
-            System.out.println("-----------------------------------------------------------------------");
-            System.out.println("CONGRATULATIONS! "+ firstPlayer.getName() + " YOU ARE THE WINNER!");
-            System.out.println("-----------------------------------------------------------------------");
+            System.out.println("-----------------------------------------------------------");
+            System.out.println("GAME OVER!");
+            System.out.println("+Statistics");
+            System.out.println("-----------------------------------------------------------");
         }
         System.out.println("The word was: " + word);
         System.out.println();
-        //player1.setGamesPlayed(1);
-        //new Menu(player1);
     }
 }

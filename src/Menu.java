@@ -32,12 +32,13 @@ public class Menu {
     private Player player2 = null;
     private Player player3 = null;
     private Player player4 = null;
+    private Player currentPlayer = null;
 
     private Scanner scanner = new Scanner(System.in);
     private int choice = 0;
-    private Player currentPlayer = null;
     private String[] currentMenu = null;
-    private String[] startMenu = {"Welcome! Please choose menu option: ",
+    private String[] startMenu = {"\nWelcome to the Hangman game! \nThe noose awaits you!" +
+            "\nPlease choose menu option: \n",
             SINGLE_PLAYER + ": Single Player",
             MULTI_PLAYER + ": Multiplayer",
             LOAD_GAME + ": Load Game",
@@ -63,11 +64,11 @@ public class Menu {
 
     /**Den här konstruktorn tar emot spelaren för att kunna starta nytt spel igen.
      */
-    public Menu(Player player) {
+    /*public Menu(Player player) {
         currentPlayer = player;
         currentMenu = singlePlayerEndOfGameMenu;
         show(singlePlayerEndOfGameMenu);
-    }
+    }*/
 
     /**
      * show visar våra menyer.
@@ -89,13 +90,16 @@ public class Menu {
         int menuChoice = getInt();
         switch (menuChoice) {
             case SINGLE_PLAYER: {
-                show(singlePlayerMenu);
                 currentMenu = singlePlayerMenu;
+                show(singlePlayerMenu);
                 break;
             }
             case MULTI_PLAYER: {
                 currentMenu = multiPlayerMenu;
                 show(multiPlayerMenu);
+                break;
+            }
+            case LOAD_GAME:{
                 break;
             }
             case DELETE_PLAYER: { //4
@@ -114,10 +118,9 @@ public class Menu {
             case SINGLE_PLAYER_NEW_PLAYER: { //8
                 System.out.println("Please give your player a name: ");
                 String playerName = getString();
-                Player player = new Player(playerName);
-                currentPlayer = player;
-                System.out.println(currentPlayer.getName());
-                new Game(currentPlayer, this);
+                player1 = new Player(playerName);
+                System.out.println(player1.getName());
+                new Game(player1, this);
                 break;
             }
             case SINGLE_PLAYER_LOAD_PLAYER: { //9
@@ -128,8 +131,7 @@ public class Menu {
                     Scanner scannerFile = new Scanner(file);
                     while (scannerFile.hasNext()) {
                         if (name.equals(scannerFile.next())) {
-                            currentPlayer = new Player(name, scannerFile.nextInt(), scannerFile.nextInt());
-                            show(currentMenu);
+                            player1 = new Player(name, scannerFile.nextInt(), scannerFile.nextInt());
                             }
                             //System.out.println("Name of player: " + currentPlayer.getName());
                             //System.out.println("Games played: " + currentPlayer.getGamesPlayed());
@@ -148,13 +150,13 @@ public class Menu {
                     System.out.println();
                     show(currentMenu);
                 }
+                new Game(player1, this);
                 break;
             }
             case MULTI_PLAYER_NEW_PLAYER: { //10
                 System.out.println("Please give your player a name: ");
                 String playerName = getString();
                 Player player = new Player(playerName);
-
                 numberOfPlayersCounter++;
                 if (numberOfPlayersCounter == 1) {
                     player1 = player;
@@ -180,7 +182,6 @@ public class Menu {
                 }
                 else if (numberOfPlayersCounter == 4) {
                     player4 = player;
-                    // numberOfPlayersCounter = 0;
                     new Game(player1, player2, player3, player4, this);
                 }
                 break;
@@ -231,6 +232,7 @@ public class Menu {
                 break;
             }
             case SINGLE_PLAYER_START_NEW_GAME: { //12
+                new Game(player1, this);
                 break;
             }
             case MULTI_PLAYER_START_NEW_GAME: { //13
@@ -270,12 +272,18 @@ public class Menu {
                 if (input > 0 && input < 8 && currentMenu == startMenu) {
                     loop = false;
                     scanner.nextLine();
-                } else if (input == SINGLE_PLAYER_START_NEW_GAME || input == RETURN_TO_MAIN_MENU && currentMenu == singlePlayerEndOfGameMenu) {
+                } else if ((input == SINGLE_PLAYER_NEW_PLAYER || input == SINGLE_PLAYER_LOAD_PLAYER) && currentMenu == singlePlayerMenu) {
                     loop = false;
                     scanner.nextLine();
-                } else if (input == MULTI_PLAYER_NEW_PLAYER || input == MULTI_PLAYER_LOAD_PLAYER ||
-                        input == MULTI_PLAYER_START_NEW_GAME && currentMenu == multiPlayerMenu ||
-                        currentMenu == multiPlayerMenuPlusStart) {
+                }else if ((input == SINGLE_PLAYER_START_NEW_GAME || input == RETURN_TO_MAIN_MENU) && currentMenu == singlePlayerEndOfGameMenu) {
+                    loop = false;
+                    scanner.nextLine();
+                } else if ((input == MULTI_PLAYER_START_NEW_GAME || input == RETURN_TO_MAIN_MENU) && currentMenu == multiPlayerEndOfGameMenu) {
+                    loop = false;
+                    scanner.nextLine();
+                }else if ((input == MULTI_PLAYER_NEW_PLAYER || input == MULTI_PLAYER_LOAD_PLAYER ||
+                        input == MULTI_PLAYER_START_NEW_GAME) && (currentMenu == multiPlayerMenu ||
+                        currentMenu == multiPlayerMenuPlusStart)) {
                     loop = false;
                     scanner.nextLine();
                 }
@@ -355,9 +363,11 @@ public class Menu {
         scanner = new Scanner(System.in);
     }
     public String[] getSinglePlayerEndOfGameMenu() {
+        currentMenu = singlePlayerEndOfGameMenu;
         return singlePlayerEndOfGameMenu;
     }
     public String[] getMultiPlayerEndOfGameMenu() {
+        currentMenu = multiPlayerEndOfGameMenu;
         return multiPlayerEndOfGameMenu;
     }
 }

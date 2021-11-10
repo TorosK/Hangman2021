@@ -165,6 +165,23 @@ public class Game {
         if(correctGuessedChar) {
             System.out.println("Correct character!");
             correctGuessedChar = false;
+            for (int j = 0; j < numberOfChars; j++) {
+                string += updatedArray[j];
+                hiddenWord = string;
+            }
+            if (hiddenWord.equals(word)) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                gameRunning = false;
+                System.out.println("The correct word was: " + word);
+                System.out.println("-----------------------------------------------------------");
+                System.out.println("CONGRATULATIONS! - Word complete! +1 point for "+ firstPlayer.getName());
+                System.out.println("-----------------------------------------------------------");
+                word = getWord();
+            }
         }
         if (correctGuessCounter == 0) {
             firstPlayer.setLives();
@@ -179,12 +196,13 @@ public class Game {
                 System.out.println("-----------------------------------------------------------");
                 firstPlayer.setPlayerGameOver(true);
                 numberOfHangedPlayers++;
-                if (ONE_PLAYER_GAME) {
+                if (ONE_PLAYER_GAME && numberOfHangedPlayers == 1) {
                     numberOfHangedPlayers = 0;
                     GAMEOVER = true;
                     gameOverDisplay();
                     GAMEOVER = false;
                     player1.setResetLives();
+                    player1.setPlayerGameOver(false);
                     ONE_PLAYER_GAME = false;
                     menu.show(menu.getSinglePlayerEndOfGameMenu());
                 } else if (TWO_PLAYER_GAME && numberOfHangedPlayers == 2) {
@@ -194,6 +212,8 @@ public class Game {
                     GAMEOVER = false;
                     player1.setResetLives();
                     player2.setResetLives();
+                    player1.setPlayerGameOver(false);
+                    player2.setPlayerGameOver(false);
                     TWO_PLAYER_GAME = false;
                     menu.show(menu.getMultiPlayerEndOfGameMenu());
                 } else if (THREE_PLAYER_GAME && numberOfHangedPlayers == 3) {
@@ -202,6 +222,9 @@ public class Game {
                     player1.setResetLives();
                     player2.setResetLives();
                     player3.setResetLives();
+                    player1.setPlayerGameOver(false);
+                    player2.setPlayerGameOver(false);
+                    player3.setPlayerGameOver(false);
                     THREE_PLAYER_GAME = false;
                     gameOverDisplay();
                     GAMEOVER = false;
@@ -213,6 +236,10 @@ public class Game {
                     player2.setResetLives();
                     player3.setResetLives();
                     player4.setResetLives();
+                    player1.setPlayerGameOver(false);
+                    player2.setPlayerGameOver(false);
+                    player3.setPlayerGameOver(false);
+                    player4.setPlayerGameOver(false);
                     FOUR_PLAYER_GAME = false;
                     gameOverDisplay();
                     GAMEOVER = false;
@@ -241,24 +268,7 @@ public class Game {
                     fourthPlayer = holderPlayer;
                 }
                 while (firstPlayer.isPlayerGameOver());
-                }
-        }
-        for (int j = 0; j < numberOfChars; j++) {
-            string += updatedArray[j];
-            hiddenWord = string;
-        }
-        if (hiddenWord.equals(word)) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
-            gameRunning = false;
-            System.out.println("The correct word was: " + word);
-            System.out.println("-----------------------------------------------------------");
-            System.out.println("CONGRATULATIONS! - Word complete! +1 point for "+ firstPlayer.getName());
-            System.out.println("-----------------------------------------------------------");
-            word = getWord();
         }
         showGame();
     }
@@ -268,7 +278,6 @@ public class Game {
      * nytt. Vi kollar om seger eller förlust har uppnåtts och vi uppdaterar även spelarens data.
      */
     public void showGame() {
-        gameRunning = true;
         System.out.println("\nHi "+ firstPlayer.getName() + "\nI'm thinking about an English word with: " + numberOfChars + " characters");
         System.out.println("So far you have correctly guessed: " + hiddenWord);
         System.out.println("The following letters have been guessed: " + usedChars);
@@ -276,6 +285,7 @@ public class Game {
         healthBarDisplay(firstPlayer.getLives());
         System.out.println();
         System.out.println("Which character do you guess? ");
+        gameRunning = true;
         }
 
     /**

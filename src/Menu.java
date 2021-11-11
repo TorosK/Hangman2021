@@ -1,12 +1,9 @@
 // vi måste fixa spara statistik efter spel avklarad, auto.
-// Som load player i switch case.
-// Vid multi ska inte någon vinna när en förlorar.
-
-
+//fortsätta med loadgame på rad 377
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Scanner;
-
 /**
  * Vi har skapat två stringarrayer där vi lagt in strängar för de menyval vi vill ha med. Vi har använt oss av två stycken
  * konstruktorer för att skapa menyerna.
@@ -61,15 +58,6 @@ public class Menu {
         currentMenu = startMenu;
         show(startMenu);
     }
-
-    /**Den här konstruktorn tar emot spelaren för att kunna starta nytt spel igen.
-     */
-    /*public Menu(Player player) {
-        currentPlayer = player;
-        currentMenu = singlePlayerEndOfGameMenu;
-        show(singlePlayerEndOfGameMenu);
-    }*/
-
     /**
      * show visar våra menyer.
      * Vi har en switch för att välja menyval. Vi använder metoden getInt för att fånga upp
@@ -100,6 +88,7 @@ public class Menu {
                 break;
             }
             case LOAD_GAME:{
+                loadGame();
                 break;
             }
             case DELETE_PLAYER: { //4
@@ -133,15 +122,6 @@ public class Menu {
                         if (name.equals(scannerFile.next())) {
                             player1 = new Player(name, scannerFile.nextInt(), scannerFile.nextInt());
                             }
-                            //System.out.println("Name of player: " + currentPlayer.getName());
-                            //System.out.println("Games played: " + currentPlayer.getGamesPlayed());
-                            //System.out.println("Games won: " + currentPlayer.getGamesWon());
-                            // "Single Player Max Points: " + ...
-                            // "Tot.p
-                            // "Medelp.
-                            // Multiplayer Max
-                            // Multiplayer Tot
-                            // Multiplayer Average
                         }
                     scannerFile.close();
                 } catch (FileNotFoundException e) {//fixat att ladda spelare som inte finns
@@ -190,7 +170,7 @@ public class Menu {
                 try {
                     System.out.println("Input name of player: ");
                     String name = getString();
-                    File file = new File("hangman" + name + ".txt");
+                    File file = new File("HangmanPlayerFile:" + name + ".txt");
                     Scanner scannerFile = new Scanner(file);
                     while (scannerFile.hasNext()) {
                         if (name.equals(scannerFile.next())) {
@@ -272,18 +252,22 @@ public class Menu {
                 if (input > 0 && input < 8 && currentMenu == startMenu) {
                     loop = false;
                     scanner.nextLine();
-                } else if ((input == SINGLE_PLAYER_NEW_PLAYER || input == SINGLE_PLAYER_LOAD_PLAYER) && currentMenu == singlePlayerMenu) {
+                } else if (currentMenu == singlePlayerMenu && (input == SINGLE_PLAYER_NEW_PLAYER ||
+                        input == SINGLE_PLAYER_LOAD_PLAYER)) {
                     loop = false;
                     scanner.nextLine();
-                }else if ((input == SINGLE_PLAYER_START_NEW_GAME || input == RETURN_TO_MAIN_MENU) && currentMenu == singlePlayerEndOfGameMenu) {
+                }else if (currentMenu == singlePlayerEndOfGameMenu && (input == SINGLE_PLAYER_START_NEW_GAME ||
+                        input == RETURN_TO_MAIN_MENU)) {
                     loop = false;
                     scanner.nextLine();
-                } else if ((input == MULTI_PLAYER_START_NEW_GAME || input == RETURN_TO_MAIN_MENU) && currentMenu == multiPlayerEndOfGameMenu) {
+                } else if (currentMenu == multiPlayerEndOfGameMenu && (input == MULTI_PLAYER_START_NEW_GAME ||
+                        input == RETURN_TO_MAIN_MENU) ) {
                     loop = false;
                     scanner.nextLine();
-                }else if ((input == MULTI_PLAYER_NEW_PLAYER || input == MULTI_PLAYER_LOAD_PLAYER ||
-                        input == MULTI_PLAYER_START_NEW_GAME) && (currentMenu == multiPlayerMenu ||
-                        currentMenu == multiPlayerMenuPlusStart)) {
+                }else if ((currentMenu == multiPlayerMenu ||
+                        currentMenu == multiPlayerMenuPlusStart) && (input == MULTI_PLAYER_NEW_PLAYER ||
+                        input == MULTI_PLAYER_LOAD_PLAYER ||
+                        input == MULTI_PLAYER_START_NEW_GAME)) {
                     loop = false;
                     scanner.nextLine();
                 }
@@ -328,7 +312,7 @@ public class Menu {
      * är ett tecken och att det är en bokstav.
      * @return
      */
-    public char getAlpha() {
+    public char getAlpha(Game game) {
         String input = "";
         char ch = ' ';
         boolean loop = true;
@@ -337,6 +321,12 @@ public class Menu {
                 input = scanner.next();
                 if (input.length() == 1) {
                     ch = input.charAt(0);
+                    if(ch == '+'){
+                        saveGame(game);
+                        currentMenu = startMenu;
+                        show(startMenu);
+                        break;
+                    }
                     boolean isLetter = Character.isLetter(ch);
                     if (isLetter) {
                         loop = false;
@@ -369,5 +359,30 @@ public class Menu {
     public String[] getMultiPlayerEndOfGameMenu() {
         currentMenu = multiPlayerEndOfGameMenu;
         return multiPlayerEndOfGameMenu;
+    }
+    public void saveGame(Game game){
+        System.out.println("Type name of game: ");
+        String fileName = getString();
+        int numberOfPlayers = game.getGameType();
+        try {
+            PrintWriter outSaveGame = new PrintWriter("HangmanSaveFile"+fileName + ".txt");
+            for(int i = 0; i < numberOfPlayers; i++){
+                outSaveGame.println(game.getPlayerInfo(i));
+            }
+            outSaveGame.println(game.getGameInfo());
+            outSaveGame.close();
+        } catch (FileNotFoundException exception) {
+        }
+    }
+    public void loadGame(){
+        try {
+            System.out.println("Type name of game: ");
+            String gameName = getString();
+            File file = new File("HangmanSaveFile" + gameName + ".txt");
+            Scanner scannerFile = new Scanner(file);
+        }catch (FileNotFoundException e){
+
+        }
+
     }
 }

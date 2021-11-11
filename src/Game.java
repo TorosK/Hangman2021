@@ -36,11 +36,9 @@ public class Game {
 
     private int numberOfHangedPlayers = 0;
     private int numberOfChars = 0;
-    //private int incorrectGuessCounter = 0;
     private int correctGuessCounter = 0;
     private File wordFile = new File("english3.txt");
     private Scanner scannerWordFile;
-
 
     /**
      * Konstruktorn tar emot en spelare och meny. Anropar getWord() för att få ett ord att spela med. Anropar showGame()
@@ -60,7 +58,7 @@ public class Game {
         gameRunning = true;
         while (gameRunning) {
             if (menu.getScanner().hasNext()) {
-                String guessedChar = String.valueOf(menu.getAlpha());
+                String guessedChar = String.valueOf(menu.getAlpha(this));
                 update(guessedChar);
             }
         }
@@ -81,7 +79,7 @@ public class Game {
         gameRunning = true;
         while (gameRunning) {
             if (menu.getScanner().hasNext()) {
-                String guessedChar = String.valueOf(menu.getAlpha());
+                String guessedChar = String.valueOf(menu.getAlpha(this));
                 update(guessedChar);
             }
         }
@@ -106,7 +104,7 @@ public class Game {
         gameRunning = true;
         while (gameRunning) {
             if (menu.getScanner().hasNext()) {
-                String guessedChar = String.valueOf(menu.getAlpha());
+                String guessedChar = String.valueOf(menu.getAlpha(this));
                 update(guessedChar);
             }
         }
@@ -135,7 +133,7 @@ public class Game {
         gameRunning = true;
         while (gameRunning) {
             if (menu.getScanner().hasNext()) {
-                String guessedChar = String.valueOf(menu.getAlpha());
+                String guessedChar = String.valueOf(menu.getAlpha(this));
                 update(guessedChar);
             }
         }
@@ -243,7 +241,7 @@ public class Game {
                     FOUR_PLAYER_GAME = false;
                     gameOverDisplay();
                     GAMEOVER = false;
-                    menu.newScanner();//test
+                    menu.newScanner();
                     menu.show(menu.getMultiPlayerEndOfGameMenu());
                 }
             }
@@ -284,7 +282,7 @@ public class Game {
         System.out.print("HealthBar: ");
         healthBarDisplay(firstPlayer.getLives());
         System.out.println();
-        System.out.println("Which character do you guess? ");
+        System.out.println("Which character do you guess? (Press + and ENTER to save)");
         gameRunning = true;
         }
 
@@ -340,5 +338,55 @@ public class Game {
         }
         System.out.println("The word was: " + word);
         System.out.println();
+    }
+    public int getGameType(){
+        int returnValue = 0;
+        if(ONE_PLAYER_GAME){
+            returnValue = 1;
+        }else if(TWO_PLAYER_GAME){
+            returnValue = 2;
+        }else if(THREE_PLAYER_GAME){
+            returnValue = 3;
+        }else if(FOUR_PLAYER_GAME){
+            returnValue = 4;
+        }
+        return returnValue;
+    }
+    public String getPlayerInfo(int number){
+        String returnValue = "";
+        if(number == 0){
+            returnValue += firstPlayer.getName()+" ";
+            returnValue += firstPlayer.getGamesPlayed()+" ";
+            returnValue += firstPlayer.getGamesWon()+" ";
+            returnValue += firstPlayer.getLives()+" ";
+            returnValue += firstPlayer.isPlayerGameOver();
+        }else if(number == 1){
+            returnValue += secondPlayer.getName()+" ";
+            returnValue += secondPlayer.getGamesPlayed()+" ";
+            returnValue += secondPlayer.getGamesWon()+" ";
+            returnValue += secondPlayer.getLives()+" ";
+            returnValue += secondPlayer.isPlayerGameOver();
+        }else if(number == 2){
+            returnValue += thirdPlayer.getName()+" ";
+            returnValue += thirdPlayer.getGamesPlayed()+" ";
+            returnValue += thirdPlayer.getGamesWon()+" ";
+            returnValue += thirdPlayer.getLives()+" ";
+            returnValue += thirdPlayer.isPlayerGameOver();
+        }else if(number == 3){
+            returnValue += fourthPlayer.getName()+" ";
+            returnValue += fourthPlayer.getGamesPlayed()+" ";
+            returnValue += fourthPlayer.getGamesWon()+" ";
+            returnValue += fourthPlayer.getLives()+" ";
+            returnValue += fourthPlayer.isPlayerGameOver();
+        }
+        return returnValue;
+    }
+    public String getGameInfo(){
+        String returnValue = "";
+        //Ordning av sparad data i rad för speldata. theword, hiddenWord, usedChars
+        returnValue += theWord+" ";
+        returnValue += hiddenWord+" ";
+        returnValue += usedChars;
+        return returnValue;
     }
 }

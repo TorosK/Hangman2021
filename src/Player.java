@@ -78,7 +78,7 @@ public class Player {
 
     public void savePlayer (Player player){
         try {
-            PrintWriter out = new PrintWriter("hangman" + player.getName() + ".txt");
+            PrintWriter out = new PrintWriter("HangmanPlayerFile" + player.getName() + ".txt");
             out.println(player.getName());
             out.println(player.gamesPlayed);
             out.println(player.gamesWon);

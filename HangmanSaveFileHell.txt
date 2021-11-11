@@ -1,0 +1,5 @@
+Ok 0 0 3 false
+Jo 0 0 3 false
+Op 0 0 2 false
+Og 0 0 2 false
+sheng __e__ aoe

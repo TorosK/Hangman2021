@@ -1,0 +1,5 @@
+Do 0 0 1 false
+Ko 0 0 1 false
+Lo 0 0 1 false
+Jo 0 0 0 true
+razzias _a__ias aä+efipfdsjg

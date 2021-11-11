@@ -3,6 +3,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 /**
  * Vi har skapat två stringarrayer där vi lagt in strängar för de menyval vi vill ha med. Vi har använt oss av två stycken
@@ -35,7 +36,7 @@ public class Menu {
     private int choice = 0;
     private String[] currentMenu = null;
     private String[] startMenu = {"\nWelcome to the Hangman game! \nThe noose awaits you!" +
-            "\nPlease choose menu option: \n",
+            "\n\nPlease choose menu option: ",
             SINGLE_PLAYER + ": Single Player",
             MULTI_PLAYER + ": Multiplayer",
             LOAD_GAME + ": Load Game",
@@ -49,9 +50,9 @@ public class Menu {
             RETURN_TO_MAIN_MENU+ ": Return to Main Menu"};
     private String[] singlePlayerMenu = {SINGLE_PLAYER_NEW_PLAYER + ": New Player",
             SINGLE_PLAYER_LOAD_PLAYER + ": Load Player"};
-    private String[] multiPlayerMenu = {"2 to 4 Players Only\n",
+    private String[] multiPlayerMenu = {"2 to 4 Players only\n",
             MULTI_PLAYER_NEW_PLAYER + ": New Player", MULTI_PLAYER_LOAD_PLAYER + ": Load Player"};
-    private String[] multiPlayerMenuPlusStart = {"2 to 4 Players Only\n",
+    private String[] multiPlayerMenuPlusStart = {"2 to 4 Players only\n",
             MULTI_PLAYER_NEW_PLAYER + ": New Player", MULTI_PLAYER_LOAD_PLAYER + ": Load Player",
             MULTI_PLAYER_START_NEW_GAME + ": Start New Game"};
     public Menu() {
@@ -116,7 +117,7 @@ public class Menu {
                 try {
                     System.out.println("Input name of player: ");
                     String name = getString();
-                    File file = new File("hangman" + name + ".txt");
+                    File file = new File("HangmanPlayerFile" + name + ".txt");
                     Scanner scannerFile = new Scanner(file);
                     while (scannerFile.hasNext()) {
                         if (name.equals(scannerFile.next())) {
@@ -170,7 +171,7 @@ public class Menu {
                 try {
                     System.out.println("Input name of player: ");
                     String name = getString();
-                    File file = new File("HangmanPlayerFile:" + name + ".txt");
+                    File file = new File("HangmanPlayerFile" + name + ".txt");
                     Scanner scannerFile = new Scanner(file);
                     while (scannerFile.hasNext()) {
                         if (name.equals(scannerFile.next())) {
@@ -380,9 +381,62 @@ public class Menu {
             String gameName = getString();
             File file = new File("HangmanSaveFile" + gameName + ".txt");
             Scanner scannerFile = new Scanner(file);
-        }catch (FileNotFoundException e){
-
+            int counter = 0;
+            ArrayList <String> loadList = new ArrayList<>();
+            while (scannerFile.hasNextLine()){
+                loadList.add(scannerFile.nextLine());
+                counter++;
+            }
+            int helpCounter = 0;
+            for (int i = 0; i < counter; i++){
+                if (i == 0){
+                    String string = loadList.get(i);
+                    Scanner scanner = new Scanner(string);
+                    player1 = new Player(scanner.next(), scanner.next(), scanner.next(),
+                            scanner.next(), scanner.next());
+                    helpCounter++;
+                } else if (i == 1 ){
+                    String string = loadList.get(i);
+                    Scanner scanner = new Scanner(string);
+                    player2 = new Player(scanner.next(), scanner.next(), scanner.next(),
+                            scanner.next(), scanner.next());
+                    helpCounter++;
+                } else if (i == 2){
+                    String string = loadList.get(i);
+                    Scanner scanner = new Scanner(string);
+                    player3 = new Player(scanner.next(), scanner.next(), scanner.next(),
+                            scanner.next(), scanner.next());
+                    helpCounter++;
+                } else if (i == 3) {
+                    String string = loadList.get(i);
+                    Scanner scanner = new Scanner(string);
+                    player4 = new Player(scanner.next(), scanner.next(), scanner.next(),
+                            scanner.next(), scanner.next());
+                    helpCounter++;
+                } else if (counter-helpCounter == 1 && helpCounter == 1) {
+                    String string = loadList.get(i);
+                    Scanner scanner = new Scanner(string);
+                    new Game(player1, this, scanner.next(), scanner.next(),
+                            scanner.next());
+                } else if (counter-helpCounter == 1 && helpCounter == 2) {
+                    String string = loadList.get(i);
+                    Scanner scanner = new Scanner(string);
+                    new Game(player1, player2, this, scanner.next(), scanner.next(),
+                            scanner.next());
+                } else if (counter-helpCounter == 1 && helpCounter == 3) {
+                    String string = loadList.get(i);
+                    Scanner scanner = new Scanner(string);
+                    new Game(player1, player2, player3, this, scanner.next(), scanner.next(),
+                            scanner.next());
+                }else if (counter-helpCounter == 1 && helpCounter == 4) {
+                    String string = loadList.get(i);
+                    Scanner scanner = new Scanner(string);
+                    new Game(player1, player2, player3, player4, this, scanner.next(), scanner.next(),
+                            scanner.next());
+                }
+            } scannerFile.close();
+        } catch (FileNotFoundException e){
+            System.out.println("File not found");
         }
-
     }
 }

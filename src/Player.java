@@ -32,6 +32,18 @@ public class Player {
         savePlayer(this);
     }
 
+    public Player(String name, String gamesPlayed, String gamesWon, String lives, String isGameOver){
+        this.name = name;
+        this.gamesPlayed = Integer.parseInt(gamesPlayed);
+        this.gamesWon = Integer.parseInt(gamesWon);
+        this.lives = Integer.parseInt(lives);
+        if (isGameOver.equals("false")){
+            this.playerGameOver = false;
+        } else {
+            this.playerGameOver = true;
+        }
+    }
+
     public String getName() {
         return name;
     }

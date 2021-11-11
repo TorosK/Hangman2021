@@ -138,6 +138,35 @@ public class Game {
             }
         }
     }
+    public Game (Player player1, Player player2, Player player3, Player player4, Menu menu,
+                 String theWord, String hiddenWord, String usedChars) {
+        FOUR_PLAYER_GAME = true;
+        this.firstPlayer = player1;
+        this.secondPlayer = player2;
+        this.thirdPlayer = player3;
+        this.fourthPlayer = player4;
+        playerArrayList.add(firstPlayer);
+        playerArrayList.add(secondPlayer);
+        playerArrayList.add(thirdPlayer);
+        playerArrayList.add(fourthPlayer);
+        this.menu = menu;
+        this.theWord = theWord;
+        this.hiddenWord = hiddenWord;
+        this.usedChars = usedChars;
+        charArray = theWord.toCharArray();
+        numberOfChars = charArray.length;
+        System.out.println("Welcome Back " + playerArrayList.get(0).getName() + ", " +
+                playerArrayList.get(1).getName() + ", " + playerArrayList.get(2).getName() + ", "
+                + playerArrayList.get(3).getName() + "!");
+        showGame();
+        gameRunning = true;
+        while (gameRunning) {
+            if (menu.getScanner().hasNext()) {
+                String guessedChar = String.valueOf(menu.getAlpha(this));
+                update(guessedChar);
+            }
+        }
+    }
     /**
      * update() tar in den gissade bokstaven, lägger den till variabeln usedChars. Vi lägger till den gissade bokstaven
      * till en char[] charAlpha. Vi for-loopar sedan igenom och kollar om den bokstaven finns i vår andra char[]
@@ -150,122 +179,125 @@ public class Game {
      */
     public void update(String alpha) {
         correctGuessCounter = 0;
-        usedChars += alpha;
-        String string = "";
-        char[] charAlpha = alpha.toCharArray();
-        for (int i = 0; i < numberOfChars; i++) {
-            if (charAlpha[0] == charArray[i]) {
-                updatedArray[i] = alpha;
-                correctGuessCounter++;
-                correctGuessedChar = true;
-            }
-        }
-        if(correctGuessedChar) {
-            System.out.println("Correct character!");
-            correctGuessedChar = false;
-            for (int j = 0; j < numberOfChars; j++) {
-                string += updatedArray[j];
-                hiddenWord = string;
-            }
-            if (hiddenWord.equals(word)) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        if (!alpha.equals("+")) {
+            usedChars += alpha;
+            String string = "";
+            char[] charAlpha = alpha.toCharArray();
+            for (int i = 0; i < numberOfChars; i++) {
+                if (charAlpha[0] == charArray[i]) {
+                    updatedArray[i] = alpha;
+                    correctGuessCounter++;
+                    correctGuessedChar = true;
                 }
-                gameRunning = false;
-                System.out.println("The correct word was: " + word);
-                System.out.println("-----------------------------------------------------------");
-                System.out.println("CONGRATULATIONS! - Word complete! +1 point for "+ firstPlayer.getName());
-                System.out.println("-----------------------------------------------------------");
-                word = getWord();
             }
-        }
-        if (correctGuessCounter == 0) {
-            firstPlayer.setLives();
-            System.out.println("Incorrect! "+ firstPlayer.getName()+ " lost one healthpoint! ");
-            System.out.print("HealthBar: ");
-            healthBarDisplay(firstPlayer.getLives());
-            System.out.println();
-            if (firstPlayer.getLives() == 0) {
+            if (correctGuessedChar) {
+                System.out.println("Correct character!");
+                correctGuessedChar = false;
+                for (int j = 0; j < numberOfChars; j++) {
+                    string += updatedArray[j];
+                    hiddenWord = string;
+                }
+                if (hiddenWord.equals(word)) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    gameRunning = false;
+                    System.out.println("The correct word was: " + word);
+                    System.out.println("-----------------------------------------------------------");
+                    System.out.println("CONGRATULATIONS! - Word complete! +1 point for " + firstPlayer.getName());
+                    System.out.println("-----------------------------------------------------------");
+                    word = getWord();
+                }
+            }
+            if (correctGuessCounter == 0) {
+                firstPlayer.setLives();
+                System.out.println("Incorrect! " + firstPlayer.getName() + " lost one healthpoint! ");
+                System.out.print("HealthBar: ");
+                healthBarDisplay(firstPlayer.getLives());
                 System.out.println();
-                System.out.println("-----------------------------------------------------------");
-                System.out.println(firstPlayer.getName()+" has been hanged");
-                System.out.println("-----------------------------------------------------------");
-                firstPlayer.setPlayerGameOver(true);
-                numberOfHangedPlayers++;
-                if (ONE_PLAYER_GAME && numberOfHangedPlayers == 1) {
-                    numberOfHangedPlayers = 0;
-                    GAMEOVER = true;
-                    gameOverDisplay();
-                    GAMEOVER = false;
-                    player1.setResetLives();
-                    player1.setPlayerGameOver(false);
-                    ONE_PLAYER_GAME = false;
-                    menu.show(menu.getSinglePlayerEndOfGameMenu());
-                } else if (TWO_PLAYER_GAME && numberOfHangedPlayers == 2) {
-                    numberOfHangedPlayers = 0;
-                    GAMEOVER = true;
-                    gameOverDisplay();
-                    GAMEOVER = false;
-                    player1.setResetLives();
-                    player2.setResetLives();
-                    player1.setPlayerGameOver(false);
-                    player2.setPlayerGameOver(false);
-                    TWO_PLAYER_GAME = false;
-                    menu.show(menu.getMultiPlayerEndOfGameMenu());
-                } else if (THREE_PLAYER_GAME && numberOfHangedPlayers == 3) {
-                    numberOfHangedPlayers = 0;
-                    GAMEOVER = true;
-                    player1.setResetLives();
-                    player2.setResetLives();
-                    player3.setResetLives();
-                    player1.setPlayerGameOver(false);
-                    player2.setPlayerGameOver(false);
-                    player3.setPlayerGameOver(false);
-                    THREE_PLAYER_GAME = false;
-                    gameOverDisplay();
-                    GAMEOVER = false;
-                    menu.show(menu.getMultiPlayerEndOfGameMenu());
-                } else if (FOUR_PLAYER_GAME && numberOfHangedPlayers == 4) {
-                    numberOfHangedPlayers = 0;
-                    GAMEOVER = true;
-                    player1.setResetLives();
-                    player2.setResetLives();
-                    player3.setResetLives();
-                    player4.setResetLives();
-                    player1.setPlayerGameOver(false);
-                    player2.setPlayerGameOver(false);
-                    player3.setPlayerGameOver(false);
-                    player4.setPlayerGameOver(false);
-                    FOUR_PLAYER_GAME = false;
-                    gameOverDisplay();
-                    GAMEOVER = false;
-                    menu.newScanner();
-                    menu.show(menu.getMultiPlayerEndOfGameMenu());
+                if (firstPlayer.getLives() == 0) {
+                    System.out.println();
+                    System.out.println("-----------------------------------------------------------");
+                    System.out.println(firstPlayer.getName() + " has been hanged");
+                    System.out.println("-----------------------------------------------------------");
+                    firstPlayer.setPlayerGameOver(true);
+                    numberOfHangedPlayers++;
+                    if (ONE_PLAYER_GAME && numberOfHangedPlayers == 1) {
+                        numberOfHangedPlayers = 0;
+                        GAMEOVER = true;
+                        gameOverDisplay();
+                        GAMEOVER = false;
+                        player1.setResetLives();
+                        player1.setPlayerGameOver(false);
+                        ONE_PLAYER_GAME = false;
+                        menu.show(menu.getSinglePlayerEndOfGameMenu());
+                    } else if (TWO_PLAYER_GAME && numberOfHangedPlayers == 2) {
+                        numberOfHangedPlayers = 0;
+                        GAMEOVER = true;
+                        gameOverDisplay();
+                        GAMEOVER = false;
+                        player1.setResetLives();
+                        player2.setResetLives();
+                        player1.setPlayerGameOver(false);
+                        player2.setPlayerGameOver(false);
+                        TWO_PLAYER_GAME = false;
+                        menu.show(menu.getMultiPlayerEndOfGameMenu());
+                    } else if (THREE_PLAYER_GAME && numberOfHangedPlayers == 3) {
+                        numberOfHangedPlayers = 0;
+                        GAMEOVER = true;
+                        player1.setResetLives();
+                        player2.setResetLives();
+                        player3.setResetLives();
+                        player1.setPlayerGameOver(false);
+                        player2.setPlayerGameOver(false);
+                        player3.setPlayerGameOver(false);
+                        THREE_PLAYER_GAME = false;
+                        gameOverDisplay();
+                        GAMEOVER = false;
+                        menu.show(menu.getMultiPlayerEndOfGameMenu());
+                    } else if (FOUR_PLAYER_GAME && numberOfHangedPlayers == 4) {
+                        numberOfHangedPlayers = 0;
+                        GAMEOVER = true;
+                        player1.setResetLives();
+                        player2.setResetLives();
+                        player3.setResetLives();
+                        player4.setResetLives();
+                        player1.setPlayerGameOver(false);
+                        player2.setPlayerGameOver(false);
+                        player3.setPlayerGameOver(false);
+                        player4.setPlayerGameOver(false);
+                        FOUR_PLAYER_GAME = false;
+                        gameOverDisplay();
+                        GAMEOVER = false;
+                        menu.newScanner();
+                        menu.show(menu.getMultiPlayerEndOfGameMenu());
+                    }
                 }
-            }
-            if(TWO_PLAYER_GAME){
-                holderPlayer = firstPlayer;
-                firstPlayer = secondPlayer;
-                secondPlayer = holderPlayer;
-            }else if(THREE_PLAYER_GAME){
-                do{
+
+                if (TWO_PLAYER_GAME) {
                     holderPlayer = firstPlayer;
                     firstPlayer = secondPlayer;
-                    secondPlayer = thirdPlayer;
-                    thirdPlayer = holderPlayer;
+                    secondPlayer = holderPlayer;
+                } else if (THREE_PLAYER_GAME) {
+                    do {
+                        holderPlayer = firstPlayer;
+                        firstPlayer = secondPlayer;
+                        secondPlayer = thirdPlayer;
+                        thirdPlayer = holderPlayer;
+                    }
+                    while (firstPlayer.isPlayerGameOver());
+                } else if (FOUR_PLAYER_GAME) {
+                    do {
+                        holderPlayer = firstPlayer;
+                        firstPlayer = secondPlayer;
+                        secondPlayer = thirdPlayer;
+                        thirdPlayer = fourthPlayer;
+                        fourthPlayer = holderPlayer;
+                    }
+                    while (firstPlayer.isPlayerGameOver());
                 }
-             while (firstPlayer.isPlayerGameOver());
-            }else if(FOUR_PLAYER_GAME){
-                do{
-                    holderPlayer = firstPlayer;
-                    firstPlayer = secondPlayer;
-                    secondPlayer = thirdPlayer;
-                    thirdPlayer = fourthPlayer;
-                    fourthPlayer = holderPlayer;
-                }
-                while (firstPlayer.isPlayerGameOver());
             }
         }
         showGame();

@@ -344,12 +344,11 @@ public class Game {
                     } else if (FOUR_PLAYER_GAME && numberOfHangedPlayers == 4) {
                         numberOfHangedPlayers = 0;
                         GAMEOVER = true;
-                        player1.updatePlayerData(player1Winner);
-                        player2.updatePlayerData(player2Winner);
-                        player3.updatePlayerData(player3Winner);
-                        player4.updatePlayerData(player4Winner);
-                        // hitta högst poäng
-                        // ArrayList.sort
+                        identifyingWinners();
+                        player1.updatePlayerData();
+                        player2.updatePlayerData();
+                        player3.updatePlayerData();
+                        player4.updatePlayerData();
                         player1.setResetLives();
                         player2.setResetLives();
                         player3.setResetLives();
@@ -454,14 +453,57 @@ public class Game {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        gameRunning = false;
+        //gameRunning = false;
         System.out.println();
-        if (GAMEOVER) {
-            System.out.println("-----------------------------------------------------------");
-            System.out.println("GAME OVER!");
-            System.out.println("+Statistics");
-            System.out.println("-----------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("GAME OVER!");
+        System.out.println();
+        if (ONE_PLAYER_GAME){
+            System.out.println(firstPlayer.getName() + ": ");
+            System.out.print("Score: " + firstPlayer.getCurrentGamePoints());
+            System.out.print(" Max points: " + firstPlayer.getMaxPoints());
+            System.out.println(" Total points: " + firstPlayer.getTotalPoints());
+            System.out.print("Average points: " + firstPlayer.getAveragePoints());
+            System.out.print(" Games played: " + firstPlayer.getGamesPlayed());
+            System.out.println(" Games won: " + firstPlayer.getGamesWon());
         }
+        else if (TWO_PLAYER_GAME) {
+            if (firstPlayer.getCurrentGameWinner()) {
+                System.out.println("WINNER: " + firstPlayer.getName() + ": ");
+                System.out.print("Score: " + firstPlayer.getCurrentGamePoints());
+                System.out.print(" Max points: " + firstPlayer.getMaxPoints());
+                System.out.println(" Total points: " + firstPlayer.getTotalPoints());
+                System.out.print("Average points: " + firstPlayer.getAveragePoints());
+                System.out.print(" Games played: " + firstPlayer.getGamesPlayed());
+                System.out.println(" Games won: " + firstPlayer.getGamesWon());
+                System.out.println();
+                System.out.println(secondPlayer.getName() + ": ");
+                System.out.print("Score: " + secondPlayer.getCurrentGamePoints());
+                System.out.print(" Max points: " + secondPlayer.getMaxPoints());
+                System.out.println(" Total points: " + secondPlayer.getTotalPoints());
+                System.out.print("Average points: " + secondPlayer.getAveragePoints());
+                System.out.print(" Games played: " + secondPlayer.getGamesPlayed());
+                System.out.println(" Games won: " + secondPlayer.getGamesWon());
+            } else {
+                System.out.println("WINNER: " + secondPlayer.getName() + ": ");
+                System.out.print(" Score: " + secondPlayer.getCurrentGamePoints());
+                System.out.print(" Max points: " + secondPlayer.getMaxPoints());
+                System.out.println(" Total points: " + secondPlayer.getTotalPoints());
+                System.out.print("Average points: " + secondPlayer.getAveragePoints());
+                System.out.print(" Games played: " + secondPlayer.getGamesPlayed());
+                System.out.println(" Games won: " + secondPlayer.getGamesWon());
+                System.out.println();
+                System.out.println(firstPlayer.getName() + ": ");
+                System.out.println("Score: " + firstPlayer.getCurrentGamePoints());
+                System.out.println("Max points: " + firstPlayer.getMaxPoints());
+                System.out.println("Total points: " + firstPlayer.getTotalPoints());
+                System.out.println("Average points: " + firstPlayer.getAveragePoints());
+                System.out.println("Games played: " + firstPlayer.getGamesPlayed());
+                System.out.println("Games won: " + firstPlayer.getGamesWon());
+            }
+        }
+        System.out.println("-----------------------------------------------------------");
+        System.out.println();
         System.out.println("The word was: " + word);
         System.out.println();
     }
@@ -533,7 +575,7 @@ public class Game {
 
     //INCOMPLETE
     public void identifyingWinners() {
-        ArrayList<Double> pointsList = new ArrayList<>();
+        ArrayList<Integer> pointsList = new ArrayList<>();
         pointsList.add(player1.getCurrentGamePoints());
         pointsList.add(player2.getCurrentGamePoints());
         pointsList.add(player3.getCurrentGamePoints());
@@ -541,28 +583,21 @@ public class Game {
 
         double largest = player1.getCurrentGamePoints();
         for (int i = 1; i < pointsList.size(); i++) {
-            if (pointsList.get(1) < largest) {
-                if (pointsList.get(2) < largest){
-                    if (pointsList.get(3) < largest){
-                        player1Winner = true;
-                        for(int j = 1; j < pointsList.size(); j++ ){
-                            if(pointsList.get(1) == largest) {
-
-                            }
-                        }
-                    }
+            if (pointsList.get(i) > largest) {
+                largest = pointsList.get(i);
+            }
+                if(pointsList.get(0) == largest) {
+                    player1.setCurrentGameWinner();
                 }
-
-                //largest = pointsList.get(i);
-            }
+                else if(pointsList.get(1) == largest){
+                    player2.setCurrentGameWinner();
+                }
+                else if(pointsList.get(2) == largest){
+                    player3.setCurrentGameWinner();
+                }
+                else if(pointsList.get(3) == largest){
+                    player4.setCurrentGameWinner();
+                }
         }
-
-        /*
-        for (double element : pointsList) {
-            if(element == largest) {
-                //player1Winner = true;
-            }
-        }
-         */
     }
 }

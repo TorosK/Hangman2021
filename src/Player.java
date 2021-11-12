@@ -6,11 +6,11 @@ public class Player {
 
     private int gamesPlayed = 0;
     private int gamesWon = 0;
-    private double totalPoints = 0;
-    private double maxPoints = 0;
+    private int totalPoints = 0;
+    private int maxPoints = 0;
     private double averagePoints = 0;
 
-    private double currentGamePoints = 0;
+    private int currentGamePoints = 0;
 
     final private int FULL_HEALTH = 3;
     private int lives = FULL_HEALTH;
@@ -93,7 +93,7 @@ public class Player {
         return totalPoints;
     }
 
-    public void setTotalPoints(double totalPoints) {
+    public void setTotalPoints(int totalPoints) {
         this.totalPoints = totalPoints;
     }
 
@@ -101,7 +101,7 @@ public class Player {
         return maxPoints;
     }
 
-    public void setMaxPoints(double maxPoints) {
+    public void setMaxPoints(int maxPoints) {
         this.maxPoints = maxPoints;
     }
 
@@ -113,7 +113,7 @@ public class Player {
         this.averagePoints = averagePoints;
     }
 
-    public double getCurrentGamePoints() {
+    public int getCurrentGamePoints() {
         return currentGamePoints;
     }
 
@@ -125,13 +125,16 @@ public class Player {
         this.currentGamePoints = 0;
     }
 
-    public void updatePlayerData(boolean winner){
-        if(winner) {
+    public void updatePlayerData(){
+        gamesPlayed++;
+        if(this.currentGameWinner) {
             gamesWon++;
         }
         if(currentGamePoints > maxPoints) {
             maxPoints = currentGamePoints;
         }
+        totalPoints += currentGamePoints;
+        averagePoints = (double) totalPoints / (double) gamesPlayed;
     }
 
     public boolean isPlayerGameOver() {
@@ -148,6 +151,9 @@ public class Player {
 
     public void setCurrentGameWinner() {
         this.currentGameWinner = true;
+    }
+    public boolean getCurrentGameWinner() {
+        return this.currentGameWinner;
     }
 
     public void savePlayer (Player player){

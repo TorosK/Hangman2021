@@ -3,11 +3,20 @@ import java.io.PrintWriter;
 
 public class Player {
     private String name = "";
+
     private int gamesPlayed = 0;
     private int gamesWon = 0;
+    private double totalPoints = 0;
+    private double maxPoints = 0;
+    private double averagePoints = 0;
+
+    private double currentGamePoints = 0;
+
     final private int FULL_HEALTH = 3;
     private int lives = FULL_HEALTH;
     private boolean playerGameOver = false;
+
+    private boolean currentGameWinner = false;
 
 
     /**
@@ -80,12 +89,65 @@ public class Player {
         this.lives = FULL_HEALTH;
     }
 
+    public double getTotalPoints() {
+        return totalPoints;
+    }
+
+    public void setTotalPoints(double totalPoints) {
+        this.totalPoints = totalPoints;
+    }
+
+    public double getMaxPoints() {
+        return maxPoints;
+    }
+
+    public void setMaxPoints(double maxPoints) {
+        this.maxPoints = maxPoints;
+    }
+
+    public double getAveragePoints() {
+        return averagePoints;
+    }
+
+    public void setAveragePoints(double averagePoints) {
+        this.averagePoints = averagePoints;
+    }
+
+    public double getCurrentGamePoints() {
+        return currentGamePoints;
+    }
+
+    public void setCurrentGamePoints() {
+        this.currentGamePoints = currentGamePoints++;
+    }
+
+    public void resetCurrentGamePoints() {
+        this.currentGamePoints = 0;
+    }
+
+    public void updatePlayerData(boolean winner){
+        if(winner) {
+            gamesWon++;
+        }
+        if(currentGamePoints > maxPoints) {
+            maxPoints = currentGamePoints;
+        }
+    }
+
     public boolean isPlayerGameOver() {
         return playerGameOver;
     }
 
     public void setPlayerGameOver(boolean playerGameOver) {
         this.playerGameOver = playerGameOver;
+    }
+
+    public void resetCurrentGameWinner() {
+        currentGameWinner = false;
+    }
+
+    public void setCurrentGameWinner() {
+        this.currentGameWinner = true;
     }
 
     public void savePlayer (Player player){

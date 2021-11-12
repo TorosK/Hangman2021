@@ -1,0 +1,4 @@
+c 0 0 3 false
+a 0 0 3 false
+b 0 0 2 false
+stolas ____a_ ax

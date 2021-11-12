@@ -459,54 +459,59 @@ public class Game {
         System.out.println("GAME OVER!");
         System.out.println();
         if (ONE_PLAYER_GAME){
-            System.out.println(firstPlayer.getName() + ": ");
-            System.out.print("Score: " + firstPlayer.getCurrentGamePoints());
-            System.out.print(" Max points: " + firstPlayer.getMaxPoints());
-            System.out.println(" Total points: " + firstPlayer.getTotalPoints());
-            System.out.print("Average points: " + firstPlayer.getAveragePoints());
-            System.out.print(" Games played: " + firstPlayer.getGamesPlayed());
-            System.out.println(" Games won: " + firstPlayer.getGamesWon());
+            firstPlayerGameOverDisplay();
         }
         else if (TWO_PLAYER_GAME) {
-            if (firstPlayer.getCurrentGameWinner()) {
-                System.out.println("WINNER: " + firstPlayer.getName() + ": ");
-                System.out.print("Score: " + firstPlayer.getCurrentGamePoints());
-                System.out.print(" Max points: " + firstPlayer.getMaxPoints());
-                System.out.println(" Total points: " + firstPlayer.getTotalPoints());
-                System.out.print("Average points: " + firstPlayer.getAveragePoints());
-                System.out.print(" Games played: " + firstPlayer.getGamesPlayed());
-                System.out.println(" Games won: " + firstPlayer.getGamesWon());
-                System.out.println();
-                System.out.println(secondPlayer.getName() + ": ");
-                System.out.print("Score: " + secondPlayer.getCurrentGamePoints());
-                System.out.print(" Max points: " + secondPlayer.getMaxPoints());
-                System.out.println(" Total points: " + secondPlayer.getTotalPoints());
-                System.out.print("Average points: " + secondPlayer.getAveragePoints());
-                System.out.print(" Games played: " + secondPlayer.getGamesPlayed());
-                System.out.println(" Games won: " + secondPlayer.getGamesWon());
-            } else {
-                System.out.println("WINNER: " + secondPlayer.getName() + ": ");
-                System.out.print(" Score: " + secondPlayer.getCurrentGamePoints());
-                System.out.print(" Max points: " + secondPlayer.getMaxPoints());
-                System.out.println(" Total points: " + secondPlayer.getTotalPoints());
-                System.out.print("Average points: " + secondPlayer.getAveragePoints());
-                System.out.print(" Games played: " + secondPlayer.getGamesPlayed());
-                System.out.println(" Games won: " + secondPlayer.getGamesWon());
-                System.out.println();
-                System.out.println(firstPlayer.getName() + ": ");
-                System.out.println("Score: " + firstPlayer.getCurrentGamePoints());
-                System.out.println("Max points: " + firstPlayer.getMaxPoints());
-                System.out.println("Total points: " + firstPlayer.getTotalPoints());
-                System.out.println("Average points: " + firstPlayer.getAveragePoints());
-                System.out.println("Games played: " + firstPlayer.getGamesPlayed());
-                System.out.println("Games won: " + firstPlayer.getGamesWon());
+            if (firstPlayer.getCurrentGameWinner() && secondPlayer.getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                firstPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                secondPlayerGameOverDisplay();
+            } else if (secondPlayer.getCurrentGameWinner()){
+                System.out.print("WINNER: ");
+                secondPlayerGameOverDisplay();
+                firstPlayerGameOverDisplay();
+            } else if (firstPlayer.getCurrentGameWinner()){
+                System.out.print("WINNER: ");
+                firstPlayerGameOverDisplay();
+                secondPlayerGameOverDisplay();
             }
+        }
+        else if (THREE_PLAYER_GAME) {
+            if (firstPlayer.getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                firstPlayerGameOverDisplay();
+                secondPlayerGameOverDisplay();
+            } // MÅSTE UTÖKAS MED CONDITIONS
         }
         System.out.println("-----------------------------------------------------------");
         System.out.println();
         System.out.println("The word was: " + word);
         System.out.println();
     }
+
+    public void firstPlayerGameOverDisplay(){
+        System.out.println(firstPlayer.getName() + ": ");
+        System.out.print("Score: " + firstPlayer.getCurrentGamePoints());
+        System.out.print(" Max points: " + firstPlayer.getMaxPoints());
+        System.out.println(" Total points: " + firstPlayer.getTotalPoints());
+        System.out.print(" Average points: " + firstPlayer.getAveragePoints());
+        System.out.print(" Games played: " + firstPlayer.getGamesPlayed());
+        System.out.println(" Games won: " + firstPlayer.getGamesWon());
+        System.out.println();
+    }
+
+    public void secondPlayerGameOverDisplay() {
+        System.out.println(secondPlayer.getName() + ": ");
+        System.out.print(" Score: " + secondPlayer.getCurrentGamePoints());
+        System.out.print(" Max points: " + secondPlayer.getMaxPoints());
+        System.out.println(" Total points: " + secondPlayer.getTotalPoints());
+        System.out.print("Average points: " + secondPlayer.getAveragePoints());
+        System.out.print(" Games played: " + secondPlayer.getGamesPlayed());
+        System.out.println(" Games won: " + secondPlayer.getGamesWon());
+        System.out.println();
+    }
+
     public int getGameType(){
         int returnValue = 0;
         if(ONE_PLAYER_GAME){

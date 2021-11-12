@@ -8,6 +8,10 @@ Stefan Johansson, Toros Kutlu, Jonathan Tesfazion och Emily Arnelid
 // använd: resetCurrentGameWinner() vid spelets slut
 // fortsätt med boolean playerXwinner = true
 // forts: identifyingWinners() i Game class
+// rad 485 i Game Class - Game Over Display - Winner:
+// HIGHSCORE LIST
+// GUI
+
 public class Main {
     public static void main(String[] args) {
         Menu menu = new Menu();

@@ -1,5 +1,0 @@
-Four 0 0 3 false
-Second 0 0 3 false
-First 0 0 3 false
-Three 0 0 2 false
-quadrumane __a____a__ aä

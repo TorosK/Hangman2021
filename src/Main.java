@@ -14,6 +14,7 @@ Stefan Johansson, Toros Kutlu, Jonathan Tesfazion och Emily Arnelid
 
 // HIGHSCORE LIST
 // GUI
+//Vi hade glömt spara numberofhangedplayers, så när man laddade ett spel blev räknaren numberofhangedplayers fel.
 
 public class Main {
     public static void main(String[] args) {

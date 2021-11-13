@@ -377,32 +377,32 @@ public class Menu {
 
     }
     public void loadGame(){
+        ArrayList<String> loadList = new ArrayList<>();
+        int fileRowCounter = 0;
+        int filePlayerRowCounter = 0;
         try {
             System.out.println("Type name of game: ");
             String gameName = getString();
             File file = new File("HangmanSaveFile" + gameName + ".txt");
             Scanner scannerFile = new Scanner(file);
-            int fileRowCounter = 0;
-            ArrayList<String> loadList = new ArrayList<>();
-            while (scannerFile.hasNextLine()){
+            while (scannerFile.hasNextLine()) {
                 loadList.add(scannerFile.nextLine());
                 fileRowCounter++;
             }
-            int filePlayerRowCounter = 0;
-            for (int i = 0; i < fileRowCounter-1; i++){
-                if (i == 0){
+            for (int i = 0; i < fileRowCounter - 1; i++) {
+                if (i == 0) {
                     String string = loadList.get(i);
                     Scanner scanner = new Scanner(string);
                     player1 = new Player(scanner.next(), scanner.next(), scanner.next(),
                             scanner.next(), scanner.next());
                     filePlayerRowCounter++;
-                } else if (i == 1){
+                } else if (i == 1) {
                     String string = loadList.get(i);
                     Scanner scanner = new Scanner(string);
                     player2 = new Player(scanner.next(), scanner.next(), scanner.next(),
                             scanner.next(), scanner.next());
                     filePlayerRowCounter++;
-                } else if (i == 2){
+                } else if (i == 2) {
                     String string = loadList.get(i);
                     Scanner scanner = new Scanner(string);
                     player3 = new Player(scanner.next(), scanner.next(), scanner.next(),
@@ -414,30 +414,37 @@ public class Menu {
                     player4 = new Player(scanner.next(), scanner.next(), scanner.next(),
                             scanner.next(), scanner.next());
                     filePlayerRowCounter++;
-                } else if (fileRowCounter-filePlayerRowCounter == 1 && filePlayerRowCounter == 1) {
-                    String string = loadList.get(i);
-                    Scanner scanner = new Scanner(string);
-                    new Game(player1, this, scanner.next(), scanner.next(),
-                            scanner.next());
-                } else if (fileRowCounter-filePlayerRowCounter == 1 && filePlayerRowCounter == 2) {
-                    String string = loadList.get(i);
-                    Scanner scanner = new Scanner(string);
-                    new Game(player1, player2, this, scanner.next(), scanner.next(),
-                            scanner.next());
-                } else if (fileRowCounter-filePlayerRowCounter == 1 && filePlayerRowCounter == 3) {
-                    String string = loadList.get(i);
-                    Scanner scanner = new Scanner(string);
-                    new Game(player1, player2, player3, this, scanner.next(), scanner.next(),
-                            scanner.next());
-                }else if (fileRowCounter-filePlayerRowCounter == 1 && filePlayerRowCounter == 4) {
-                    String string = loadList.get(i);
-                    Scanner scanner = new Scanner(string);
-                    new Game(player1, player2, player3, player4, this, scanner.next(), scanner.next(),
-                            scanner.next());
                 }
-            } scannerFile.close();
-        } catch (FileNotFoundException e){
+                scannerFile.close();
+            }
+        }catch (FileNotFoundException e){
             System.out.println("File not found");
         }
-    }
-}
+
+            if (fileRowCounter-filePlayerRowCounter == 1 && filePlayerRowCounter == 1) {
+                    String string = loadList.get(1);
+                    Scanner scanner = new Scanner(string);
+                    new Game(player1, this, scanner.next(), scanner.next(),
+                            scanner.next(), scanner.next());
+                }
+            if (fileRowCounter-filePlayerRowCounter == 1 && filePlayerRowCounter == 2) {
+                    String string = loadList.get(2);
+                    Scanner scanner = new Scanner(string);
+                    new Game(player1, player2, this, scanner.next(), scanner.next(),
+                            scanner.next(), scanner.next());
+                }
+            if (fileRowCounter-filePlayerRowCounter == 1 && filePlayerRowCounter == 3) {
+                    String string = loadList.get(3);
+                    Scanner scanner = new Scanner(string);
+                    new Game(player1, player2, player3, this, scanner.next(), scanner.next(),
+                            scanner.next(), scanner.next());
+                }
+            if (fileRowCounter-filePlayerRowCounter == 1 && filePlayerRowCounter == 4) {
+                    String string = loadList.get(4);
+                    Scanner scanner = new Scanner(string);
+                    new Game(player1, player2, player3, player4, this, scanner.next(), scanner.next(),
+                            scanner.next(), scanner.next());
+                }
+            }
+        }
+

@@ -17,7 +17,7 @@ public class Game {
     private Player holderPlayer = null;
     private Menu menu = null;
     private String hiddenWord = "";
-    private String usedChars = "";
+    private String usedChars = "X";
     private String hangMeterAsterisk = "";
     private String theWord = "";
     private String word = "";
@@ -41,11 +41,6 @@ public class Game {
     private int numberOfChars = 0;
     private int correctGuessCounter = 0;
 
-    //private double player1Points = 0;
-    //private double player2Points = 0;
-    //private double player3Points = 0;
-    //private double player4Points = 0;
-
     private File wordFile = new File("english3.txt");
     private Scanner scannerWordFile;
 
@@ -60,6 +55,7 @@ public class Game {
     public Game(Player player1, Menu menu) {
         ONE_PLAYER_GAME = true;
         this.player1 = player1;
+        playerArrayList.add(this.player1);
         firstPlayer = player1;
         this.menu = menu;
         word = getWord();
@@ -77,8 +73,8 @@ public class Game {
         TWO_PLAYER_GAME = true;
         this.player1 = player1;
         this.player2 = player2;
-        playerArrayList.add(player1);
-        playerArrayList.add(player2);
+        playerArrayList.add(this.player1);
+        playerArrayList.add(this.player2);
         Collections.shuffle(playerArrayList);
         firstPlayer = playerArrayList.get(0);
         secondPlayer = playerArrayList.get(1);
@@ -100,9 +96,9 @@ public class Game {
         this.player1 = player1;
         this.player2 = player2;
         this.player3 = player3;
-        playerArrayList.add(player1);
-        playerArrayList.add(player2);
-        playerArrayList.add(player3);
+        playerArrayList.add(this.player1);
+        playerArrayList.add(this.player2);
+        playerArrayList.add(this.player3);
         Collections.shuffle(playerArrayList);
         firstPlayer = playerArrayList.get(0);
         secondPlayer = playerArrayList.get(1);
@@ -127,10 +123,10 @@ public class Game {
         this.player2 = player2;
         this.player3 = player3;
         this.player4 = player4;
-        playerArrayList.add(player1);
-        playerArrayList.add(player2);
-        playerArrayList.add(player3);
-        playerArrayList.add(player4);
+        playerArrayList.add(this.player1);
+        playerArrayList.add(this.player2);
+        playerArrayList.add(this.player3);
+        playerArrayList.add(this.player4);
         Collections.shuffle(playerArrayList);
         firstPlayer = playerArrayList.get(0);
         secondPlayer = playerArrayList.get(1);
@@ -152,14 +148,16 @@ public class Game {
     }
 
     public Game(Player player1, Menu menu,
-                String theWord, String hiddenWord, String usedChars) {
+                String theWord, String hiddenWord, String usedChars, String numberOfHangedPlayers) {
         ONE_PLAYER_GAME = true;
+        this.player1 = player1;
         this.firstPlayer = player1;
-        playerArrayList.add(firstPlayer);
+        playerArrayList.add(this.player1);
         this.menu = menu;
         this.theWord = theWord;
         this.hiddenWord = hiddenWord;
         this.usedChars = usedChars;
+        this.numberOfHangedPlayers = Integer.parseInt(numberOfHangedPlayers);
         charArray = theWord.toCharArray();
         numberOfChars = charArray.length;
         System.out.println("Welcome Back " + playerArrayList.get(0).getName() + "!");
@@ -174,16 +172,19 @@ public class Game {
     }
 
     public Game(Player player1, Player player2, Menu menu,
-                String theWord, String hiddenWord, String usedChars) {
+                String theWord, String hiddenWord, String usedChars, String numberOfHangedPlayers) {
         TWO_PLAYER_GAME = true;
+        this.player1 = player1;
+        this.player2 = player2;
         this.firstPlayer = player1;
         this.secondPlayer = player2;
-        playerArrayList.add(firstPlayer);
-        playerArrayList.add(secondPlayer);
+        playerArrayList.add(this.player1);
+        playerArrayList.add(this.player2);
         this.menu = menu;
         this.theWord = theWord;
         this.hiddenWord = hiddenWord;
         this.usedChars = usedChars;
+        this.numberOfHangedPlayers = Integer.parseInt(numberOfHangedPlayers);
         charArray = theWord.toCharArray();
         numberOfChars = charArray.length;
         System.out.println("Welcome Back " + playerArrayList.get(0).getName() + ", " +
@@ -199,18 +200,22 @@ public class Game {
     }
 
     public Game(Player player1, Player player2, Player player3, Menu menu,
-                String theWord, String hiddenWord, String usedChars) {
+                String theWord, String hiddenWord, String usedChars, String numberOfHangedPlayers) {
         THREE_PLAYER_GAME = true;
+        this.player1 = player1;
+        this.player2 = player2;
+        this.player3 = player3;
         this.firstPlayer = player1;
         this.secondPlayer = player2;
         this.thirdPlayer = player3;
-        playerArrayList.add(firstPlayer);
-        playerArrayList.add(secondPlayer);
-        playerArrayList.add(thirdPlayer);
+        playerArrayList.add(this.player1);
+        playerArrayList.add(this.player2);
+        playerArrayList.add(this.player3);
         this.menu = menu;
         this.theWord = theWord;
         this.hiddenWord = hiddenWord;
         this.usedChars = usedChars;
+        this.numberOfHangedPlayers = Integer.parseInt(numberOfHangedPlayers);
         charArray = theWord.toCharArray();
         numberOfChars = charArray.length;
         System.out.println("Welcome Back " + playerArrayList.get(0).getName() + ", " +
@@ -226,20 +231,25 @@ public class Game {
     }
 
     public Game(Player player1, Player player2, Player player3, Player player4, Menu menu,
-                String theWord, String hiddenWord, String usedChars) {
+                String theWord, String hiddenWord, String usedChars, String numberOfHangedPlayers) {
         FOUR_PLAYER_GAME = true;
+        this.player1 = player1;
+        this.player2 = player2;
+        this.player3 = player3;
+        this.player4 = player4;
         this.firstPlayer = player1;
         this.secondPlayer = player2;
         this.thirdPlayer = player3;
         this.fourthPlayer = player4;
-        playerArrayList.add(firstPlayer);
-        playerArrayList.add(secondPlayer);
-        playerArrayList.add(thirdPlayer);
-        playerArrayList.add(fourthPlayer);
+        playerArrayList.add(this.player1);
+        playerArrayList.add(this.player2);
+        playerArrayList.add(this.player3);
+        playerArrayList.add(this.player4);
         this.menu = menu;
         this.theWord = theWord;
         this.hiddenWord = hiddenWord;
         this.usedChars = usedChars;
+        this.numberOfHangedPlayers = Integer.parseInt(numberOfHangedPlayers);
         charArray = theWord.toCharArray();
         numberOfChars = charArray.length;
         System.out.println("Welcome Back " + playerArrayList.get(0).getName() + ", " +
@@ -315,30 +325,47 @@ public class Game {
                     numberOfHangedPlayers++;
                     if (ONE_PLAYER_GAME && numberOfHangedPlayers == 1) {
                         numberOfHangedPlayers = 0;
+                        player1.updatePlayerData();
                         gameOverDisplay();
                         player1.setResetLives();
+                        player1.resetCurrentGamePoints();
                         player1.setPlayerGameOver(false);
                         ONE_PLAYER_GAME = false;
+                        menu.newScanner();
                         menu.show(menu.getSinglePlayerEndOfGameMenu());
                     } else if (TWO_PLAYER_GAME && numberOfHangedPlayers == 2) {
                         numberOfHangedPlayers = 0;
+                        identifyingWinners();
+                        player1.updatePlayerData();
+                        player2.updatePlayerData();
                         gameOverDisplay();
                         player1.setResetLives();
                         player2.setResetLives();
+                        player1.resetCurrentGamePoints();
+                        player2.resetCurrentGamePoints();
                         player1.setPlayerGameOver(false);
                         player2.setPlayerGameOver(false);
                         TWO_PLAYER_GAME = false;
+                        menu.newScanner();
                         menu.show(menu.getMultiPlayerEndOfGameMenu());
                     } else if (THREE_PLAYER_GAME && numberOfHangedPlayers == 3) {
                         numberOfHangedPlayers = 0;
+                        identifyingWinners();
+                        player1.updatePlayerData();
+                        player2.updatePlayerData();
+                        player3.updatePlayerData();
+                        gameOverDisplay();
                         player1.setResetLives();
                         player2.setResetLives();
                         player3.setResetLives();
+                        player1.resetCurrentGamePoints();
+                        player2.resetCurrentGamePoints();
+                        player3.resetCurrentGamePoints();
                         player1.setPlayerGameOver(false);
                         player2.setPlayerGameOver(false);
                         player3.setPlayerGameOver(false);
-                        gameOverDisplay();
                         THREE_PLAYER_GAME = false;
+                        menu.newScanner();
                         menu.show(menu.getMultiPlayerEndOfGameMenu());
                     } else if (FOUR_PLAYER_GAME && numberOfHangedPlayers == 4) {
                         numberOfHangedPlayers = 0;
@@ -365,11 +392,13 @@ public class Game {
                         menu.show(menu.getMultiPlayerEndOfGameMenu());
                     }
                 }
-
                 if (TWO_PLAYER_GAME) {
-                    holderPlayer = firstPlayer;
-                    firstPlayer = secondPlayer;
-                    secondPlayer = holderPlayer;
+                    do {
+                        holderPlayer = firstPlayer;
+                        firstPlayer = secondPlayer;
+                        secondPlayer = holderPlayer;
+                    }
+                    while (firstPlayer.isPlayerGameOver());
                 } else if (THREE_PLAYER_GAME) {
                     do {
                         holderPlayer = firstPlayer;
@@ -452,7 +481,6 @@ public class Game {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //gameRunning = false;
         System.out.println();
         System.out.println("-----------------------------------------------------------");
         System.out.println("GAME OVER!");
@@ -528,7 +556,8 @@ public class Game {
                 thirdPlayerGameOverDisplay();
                 System.out.print("WINNER: ");
                 fourthPlayerGameOverDisplay();
-            } else if (playerArrayList.get(0).getCurrentGameWinner() && playerArrayList.get(1).getCurrentGameWinner() && playerArrayList.get(2).getCurrentGameWinner()) {
+            } else if (playerArrayList.get(0).getCurrentGameWinner() && playerArrayList.get(1).getCurrentGameWinner()
+                    && playerArrayList.get(2).getCurrentGameWinner()) {
                 System.out.print("WINNER: ");
                 firstPlayerGameOverDisplay();
                 System.out.print("WINNER: ");
@@ -633,7 +662,7 @@ public class Game {
         }
         System.out.println("-----------------------------------------------------------");
         System.out.println();
-        System.out.println("The word was: " + word);
+        System.out.println("The word was: " + theWord);
         System.out.println();
     }
 
@@ -695,7 +724,7 @@ public class Game {
         return returnValue;
     }
 
-    public String getPlayerInfo(int number) {
+    public String getPlayerInfo(int number) {//hämtar info om spelare i den spelordning dom är just nu i spelet.
         String returnValue = "";
         if (number == 0) {
             returnValue += firstPlayer.getName() + " ";
@@ -727,10 +756,11 @@ public class Game {
 
     public String getGameInfo() {
         String returnValue = "";
-        //Ordning av sparad data i rad för speldata. theword, hiddenWord, usedChars
+        //Ordning av sparad data i rad för speldata. theword, hiddenWord, usedChars, numberOfHangedPlayers
         returnValue += theWord + " ";
         returnValue += hiddenWord + " ";
-        returnValue += usedChars;
+        returnValue += usedChars + " ";
+        returnValue += numberOfHangedPlayers;
         return returnValue;
     }
 
@@ -749,6 +779,15 @@ public class Game {
     //INCOMPLETE - måste fixa ONE + TWO + THREE_PLAYER_GAME
     public void identifyingWinners() {
         ArrayList<Integer> pointsList = new ArrayList<>();
+        if (TWO_PLAYER_GAME) {
+            pointsList.add(playerArrayList.get(0).getCurrentGamePoints());
+            pointsList.add(playerArrayList.get(1).getCurrentGamePoints());
+        }
+        if (THREE_PLAYER_GAME) {
+            pointsList.add(playerArrayList.get(0).getCurrentGamePoints());
+            pointsList.add(playerArrayList.get(1).getCurrentGamePoints());
+            pointsList.add(playerArrayList.get(2).getCurrentGamePoints());
+        }
         if (FOUR_PLAYER_GAME) {
             pointsList.add(playerArrayList.get(0).getCurrentGamePoints());
             pointsList.add(playerArrayList.get(1).getCurrentGamePoints());
@@ -763,13 +802,13 @@ public class Game {
             if (pointsList.get(0) == largest) {
                 playerArrayList.get(0).setCurrentGameWinner();
             }
-            if (pointsList.get(1) == largest) {
+            if ((TWO_PLAYER_GAME || THREE_PLAYER_GAME || FOUR_PLAYER_GAME) && pointsList.get(1) == largest) {
                 playerArrayList.get(1).setCurrentGameWinner();
             }
-            if (pointsList.get(2) == largest) {
+            if ((THREE_PLAYER_GAME || FOUR_PLAYER_GAME) && pointsList.get(2) == largest) {
                 playerArrayList.get(2).setCurrentGameWinner();
             }
-            if (pointsList.get(3) == largest) {
+            if (FOUR_PLAYER_GAME && pointsList.get(3) == largest) {
                 playerArrayList.get(3).setCurrentGameWinner();
             }
         }

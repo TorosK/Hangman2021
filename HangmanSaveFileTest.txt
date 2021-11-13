@@ -1,5 +1,0 @@
-b 0 0 3 false
-d 0 0 3 false
-a 0 0 3 false
-c 0 0 3 false
-giftedness __________ 

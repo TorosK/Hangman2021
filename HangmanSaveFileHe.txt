@@ -1,5 +1,0 @@
-Ok 0 0 3 false
-Jo 0 0 3 false
-Op 0 0 3 false
-Og 0 0 3 false
-pinheads _____a__ a

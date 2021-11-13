@@ -374,6 +374,7 @@ public class Menu {
             outSaveGame.close();
         } catch (FileNotFoundException exception) {
         }
+
     }
     public void loadGame(){
         try {

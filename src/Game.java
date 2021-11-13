@@ -27,7 +27,6 @@ public class Game {
     private boolean FOUR_PLAYER_GAME = false;
     private boolean correctGuessedChar = false;
     private boolean gameRunning = true;
-    private boolean GAMEOVER = false;
     private boolean player1Winner = false;
     private boolean player2Winner = false;
     private boolean player3Winner = false;
@@ -73,6 +72,7 @@ public class Game {
             }
         }
     }
+
     public Game(Player player1, Player player2, Menu menu) {
         TWO_PLAYER_GAME = true;
         this.player1 = player1;
@@ -94,6 +94,7 @@ public class Game {
             }
         }
     }
+
     public Game(Player player1, Player player2, Player player3, Menu menu) {
         THREE_PLAYER_GAME = true;
         this.player1 = player1;
@@ -119,6 +120,7 @@ public class Game {
             }
         }
     }
+
     public Game(Player player1, Player player2, Player player3, Player player4, Menu menu) {
         FOUR_PLAYER_GAME = true;
         this.player1 = player1;
@@ -149,8 +151,8 @@ public class Game {
         }
     }
 
-    public Game (Player player1, Menu menu,
-                 String theWord, String hiddenWord, String usedChars) {
+    public Game(Player player1, Menu menu,
+                String theWord, String hiddenWord, String usedChars) {
         ONE_PLAYER_GAME = true;
         this.firstPlayer = player1;
         playerArrayList.add(firstPlayer);
@@ -170,8 +172,9 @@ public class Game {
             }
         }
     }
-    public Game (Player player1, Player player2, Menu menu,
-                 String theWord, String hiddenWord, String usedChars) {
+
+    public Game(Player player1, Player player2, Menu menu,
+                String theWord, String hiddenWord, String usedChars) {
         TWO_PLAYER_GAME = true;
         this.firstPlayer = player1;
         this.secondPlayer = player2;
@@ -194,8 +197,9 @@ public class Game {
             }
         }
     }
-    public Game (Player player1, Player player2, Player player3, Menu menu,
-                 String theWord, String hiddenWord, String usedChars) {
+
+    public Game(Player player1, Player player2, Player player3, Menu menu,
+                String theWord, String hiddenWord, String usedChars) {
         THREE_PLAYER_GAME = true;
         this.firstPlayer = player1;
         this.secondPlayer = player2;
@@ -221,8 +225,8 @@ public class Game {
         }
     }
 
-    public Game (Player player1, Player player2, Player player3, Player player4, Menu menu,
-                 String theWord, String hiddenWord, String usedChars) {
+    public Game(Player player1, Player player2, Player player3, Player player4, Menu menu,
+                String theWord, String hiddenWord, String usedChars) {
         FOUR_PLAYER_GAME = true;
         this.firstPlayer = player1;
         this.secondPlayer = player2;
@@ -250,6 +254,7 @@ public class Game {
             }
         }
     }
+
     /**
      * update() tar in den gissade bokstaven, lägger den till variabeln usedChars. Vi lägger till den gissade bokstaven
      * till en char[] charAlpha. Vi for-loopar sedan igenom och kollar om den bokstaven finns i vår andra char[]
@@ -310,18 +315,14 @@ public class Game {
                     numberOfHangedPlayers++;
                     if (ONE_PLAYER_GAME && numberOfHangedPlayers == 1) {
                         numberOfHangedPlayers = 0;
-                        GAMEOVER = true;
                         gameOverDisplay();
-                        GAMEOVER = false;
                         player1.setResetLives();
                         player1.setPlayerGameOver(false);
                         ONE_PLAYER_GAME = false;
                         menu.show(menu.getSinglePlayerEndOfGameMenu());
                     } else if (TWO_PLAYER_GAME && numberOfHangedPlayers == 2) {
                         numberOfHangedPlayers = 0;
-                        GAMEOVER = true;
                         gameOverDisplay();
-                        GAMEOVER = false;
                         player1.setResetLives();
                         player2.setResetLives();
                         player1.setPlayerGameOver(false);
@@ -330,25 +331,23 @@ public class Game {
                         menu.show(menu.getMultiPlayerEndOfGameMenu());
                     } else if (THREE_PLAYER_GAME && numberOfHangedPlayers == 3) {
                         numberOfHangedPlayers = 0;
-                        GAMEOVER = true;
                         player1.setResetLives();
                         player2.setResetLives();
                         player3.setResetLives();
                         player1.setPlayerGameOver(false);
                         player2.setPlayerGameOver(false);
                         player3.setPlayerGameOver(false);
-                        THREE_PLAYER_GAME = false;
                         gameOverDisplay();
-                        GAMEOVER = false;
+                        THREE_PLAYER_GAME = false;
                         menu.show(menu.getMultiPlayerEndOfGameMenu());
                     } else if (FOUR_PLAYER_GAME && numberOfHangedPlayers == 4) {
                         numberOfHangedPlayers = 0;
-                        GAMEOVER = true;
                         identifyingWinners();
                         player1.updatePlayerData();
                         player2.updatePlayerData();
                         player3.updatePlayerData();
                         player4.updatePlayerData();
+                        gameOverDisplay();
                         player1.setResetLives();
                         player2.setResetLives();
                         player3.setResetLives();
@@ -362,8 +361,6 @@ public class Game {
                         player3.setPlayerGameOver(false);
                         player4.setPlayerGameOver(false);
                         FOUR_PLAYER_GAME = false;
-                        gameOverDisplay();
-                        GAMEOVER = false;
                         menu.newScanner();
                         menu.show(menu.getMultiPlayerEndOfGameMenu());
                     }
@@ -401,7 +398,7 @@ public class Game {
      * nytt. Vi kollar om seger eller förlust har uppnåtts och vi uppdaterar även spelarens data.
      */
     public void showGame() {
-        System.out.println("\nHi "+ firstPlayer.getName() + "\nI'm thinking about an English word with: " + numberOfChars + " characters");
+        System.out.println("\nHi " + firstPlayer.getName() + "\nI'm thinking about an English word with: " + numberOfChars + " characters");
         System.out.println("So far you have correctly guessed: " + hiddenWord);
         System.out.println("The following letters have been guessed: " + usedChars);
         System.out.print("HealthBar: ");
@@ -409,7 +406,7 @@ public class Game {
         System.out.println();
         System.out.println("Which character do you guess? (Press + and ENTER to save)");
         gameRunning = true;
-        }
+    }
 
     /**
      * Den här metoden slumpar fram ett ord ur en ordlista som är 194433 ord lång. Vi kopplar scannern till filen och
@@ -442,12 +439,14 @@ public class Game {
         usedChars = "";
         return theWord;
     }
-    public void healthBarDisplay(int lives){
+
+    public void healthBarDisplay(int lives) {
         for (int i = 0; i < lives; i++) {
             System.out.print("*");
         }
     }
-    public void gameOverDisplay(){
+
+    public void gameOverDisplay() {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -458,31 +457,179 @@ public class Game {
         System.out.println("-----------------------------------------------------------");
         System.out.println("GAME OVER!");
         System.out.println();
-        if (ONE_PLAYER_GAME){
+        if (ONE_PLAYER_GAME) {
             firstPlayerGameOverDisplay();
-        }
-        else if (TWO_PLAYER_GAME) {
-            if (firstPlayer.getCurrentGameWinner() && secondPlayer.getCurrentGameWinner()) {
+        } else if (TWO_PLAYER_GAME) {
+            if (playerArrayList.get(0).getCurrentGameWinner() && playerArrayList.get(1).getCurrentGameWinner()) {
                 System.out.print("WINNER: ");
                 firstPlayerGameOverDisplay();
                 System.out.print("WINNER: ");
                 secondPlayerGameOverDisplay();
-            } else if (secondPlayer.getCurrentGameWinner()){
+            } else if (playerArrayList.get(1).getCurrentGameWinner()) {
                 System.out.print("WINNER: ");
                 secondPlayerGameOverDisplay();
                 firstPlayerGameOverDisplay();
-            } else if (firstPlayer.getCurrentGameWinner()){
+            } else if (playerArrayList.get(0).getCurrentGameWinner()) {
                 System.out.print("WINNER: ");
                 firstPlayerGameOverDisplay();
                 secondPlayerGameOverDisplay();
             }
-        }
-        else if (THREE_PLAYER_GAME) {
-            if (firstPlayer.getCurrentGameWinner()) {
+        } else if (THREE_PLAYER_GAME) {
+            if (playerArrayList.get(0).getCurrentGameWinner() && playerArrayList.get(1).getCurrentGameWinner()
+                    && playerArrayList.get(2).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                firstPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                secondPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                thirdPlayerGameOverDisplay();
+            } else if (playerArrayList.get(0).getCurrentGameWinner() && playerArrayList.get(1).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                firstPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                secondPlayerGameOverDisplay();
+                thirdPlayerGameOverDisplay();
+            } else if (playerArrayList.get(0).getCurrentGameWinner() && playerArrayList.get(2).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                firstPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                thirdPlayerGameOverDisplay();
+                secondPlayerGameOverDisplay();
+            } else if (playerArrayList.get(1).getCurrentGameWinner() && playerArrayList.get(2).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                secondPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                thirdPlayerGameOverDisplay();
+                firstPlayerGameOverDisplay();
+            } else if (playerArrayList.get(0).getCurrentGameWinner()) {
                 System.out.print("WINNER: ");
                 firstPlayerGameOverDisplay();
                 secondPlayerGameOverDisplay();
-            } // MÅSTE UTÖKAS MED CONDITIONS
+                thirdPlayerGameOverDisplay();
+            } else if (playerArrayList.get(1).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                secondPlayerGameOverDisplay();
+                firstPlayerGameOverDisplay();
+                thirdPlayerGameOverDisplay();
+            } else if (playerArrayList.get(2).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                thirdPlayerGameOverDisplay();
+                firstPlayerGameOverDisplay();
+                secondPlayerGameOverDisplay();
+            }
+        } else if (FOUR_PLAYER_GAME) {
+            if (playerArrayList.get(0).getCurrentGameWinner() && playerArrayList.get(1).getCurrentGameWinner()
+                    && playerArrayList.get(2).getCurrentGameWinner() && playerArrayList.get(3).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                firstPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                secondPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                thirdPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                fourthPlayerGameOverDisplay();
+            } else if (playerArrayList.get(0).getCurrentGameWinner() && playerArrayList.get(1).getCurrentGameWinner() && playerArrayList.get(2).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                firstPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                secondPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                thirdPlayerGameOverDisplay();
+                fourthPlayerGameOverDisplay();
+            } else if (playerArrayList.get(0).getCurrentGameWinner() && playerArrayList.get(1).getCurrentGameWinner()
+                    && playerArrayList.get(3).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                firstPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                secondPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                fourthPlayerGameOverDisplay();
+                thirdPlayerGameOverDisplay();
+            } else if (playerArrayList.get(0).getCurrentGameWinner() && playerArrayList.get(2).getCurrentGameWinner()
+                    && playerArrayList.get(3).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                firstPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                thirdPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                fourthPlayerGameOverDisplay();
+                secondPlayerGameOverDisplay();
+            } else if (playerArrayList.get(1).getCurrentGameWinner() && playerArrayList.get(2).getCurrentGameWinner()
+                    && playerArrayList.get(3).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                secondPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                thirdPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                fourthPlayerGameOverDisplay();
+                firstPlayerGameOverDisplay();
+            } else if (playerArrayList.get(0).getCurrentGameWinner() && playerArrayList.get(1).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                firstPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                secondPlayerGameOverDisplay();
+                thirdPlayerGameOverDisplay();
+                fourthPlayerGameOverDisplay();
+            } else if (playerArrayList.get(0).getCurrentGameWinner() && playerArrayList.get(2).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                firstPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                thirdPlayerGameOverDisplay();
+                secondPlayerGameOverDisplay();
+                fourthPlayerGameOverDisplay();
+            } else if (playerArrayList.get(0).getCurrentGameWinner() && playerArrayList.get(3).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                firstPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                fourthPlayerGameOverDisplay();
+                secondPlayerGameOverDisplay();
+                thirdPlayerGameOverDisplay();
+            } else if (playerArrayList.get(1).getCurrentGameWinner() && playerArrayList.get(2).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                secondPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                thirdPlayerGameOverDisplay();
+                firstPlayerGameOverDisplay();
+                fourthPlayerGameOverDisplay();
+            } else if (playerArrayList.get(1).getCurrentGameWinner() && playerArrayList.get(3).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                secondPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                fourthPlayerGameOverDisplay();
+                firstPlayerGameOverDisplay();
+                thirdPlayerGameOverDisplay();
+            } else if (playerArrayList.get(2).getCurrentGameWinner() && playerArrayList.get(3).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                thirdPlayerGameOverDisplay();
+                System.out.print("WINNER: ");
+                fourthPlayerGameOverDisplay();
+                firstPlayerGameOverDisplay();
+                secondPlayerGameOverDisplay();
+            } else if (playerArrayList.get(0).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                firstPlayerGameOverDisplay();
+                secondPlayerGameOverDisplay();
+                thirdPlayerGameOverDisplay();
+                fourthPlayerGameOverDisplay();
+            } else if (playerArrayList.get(1).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                secondPlayerGameOverDisplay();
+                firstPlayerGameOverDisplay();
+                thirdPlayerGameOverDisplay();
+                fourthPlayerGameOverDisplay();
+            } else if (playerArrayList.get(2).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                thirdPlayerGameOverDisplay();
+                firstPlayerGameOverDisplay();
+                secondPlayerGameOverDisplay();
+                fourthPlayerGameOverDisplay();
+            } else if (playerArrayList.get(3).getCurrentGameWinner()) {
+                System.out.print("WINNER: ");
+                fourthPlayerGameOverDisplay();
+                firstPlayerGameOverDisplay();
+                secondPlayerGameOverDisplay();
+                thirdPlayerGameOverDisplay();
+            }
         }
         System.out.println("-----------------------------------------------------------");
         System.out.println();
@@ -490,75 +637,99 @@ public class Game {
         System.out.println();
     }
 
-    public void firstPlayerGameOverDisplay(){
-        System.out.println(firstPlayer.getName() + ": ");
-        System.out.print("Score: " + firstPlayer.getCurrentGamePoints());
-        System.out.print(" Max points: " + firstPlayer.getMaxPoints());
-        System.out.println(" Total points: " + firstPlayer.getTotalPoints());
-        System.out.print(" Average points: " + firstPlayer.getAveragePoints());
-        System.out.print(" Games played: " + firstPlayer.getGamesPlayed());
-        System.out.println(" Games won: " + firstPlayer.getGamesWon());
+    public void firstPlayerGameOverDisplay() {
+        System.out.println(playerArrayList.get(0).getName() + ": ");
+        System.out.print("Score: " + playerArrayList.get(0).getCurrentGamePoints());
+        System.out.print(" Max points: " + playerArrayList.get(0).getMaxPoints());
+        System.out.println(" Total points: " + playerArrayList.get(0).getTotalPoints());
+        System.out.print(" Average points: " + playerArrayList.get(0).getAveragePoints());
+        System.out.print(" Games played: " + playerArrayList.get(0).getGamesPlayed());
+        System.out.println(" Games won: " + playerArrayList.get(0).getGamesWon());
         System.out.println();
     }
 
     public void secondPlayerGameOverDisplay() {
-        System.out.println(secondPlayer.getName() + ": ");
-        System.out.print(" Score: " + secondPlayer.getCurrentGamePoints());
-        System.out.print(" Max points: " + secondPlayer.getMaxPoints());
-        System.out.println(" Total points: " + secondPlayer.getTotalPoints());
-        System.out.print("Average points: " + secondPlayer.getAveragePoints());
-        System.out.print(" Games played: " + secondPlayer.getGamesPlayed());
-        System.out.println(" Games won: " + secondPlayer.getGamesWon());
+        System.out.println(playerArrayList.get(1).getName() + ": ");
+        System.out.print("Score: " + playerArrayList.get(1).getCurrentGamePoints());
+        System.out.print(" Max points: " + playerArrayList.get(1).getMaxPoints());
+        System.out.println(" Total points: " + playerArrayList.get(1).getTotalPoints());
+        System.out.print("Average points: " + playerArrayList.get(1).getAveragePoints());
+        System.out.print(" Games played: " + playerArrayList.get(1).getGamesPlayed());
+        System.out.println(" Games won: " + playerArrayList.get(1).getGamesWon());
         System.out.println();
     }
 
-    public int getGameType(){
+    public void thirdPlayerGameOverDisplay() {
+        System.out.println(playerArrayList.get(2).getName() + ": ");
+        System.out.print("Score: " + playerArrayList.get(2).getCurrentGamePoints());
+        System.out.print(" Max points: " + playerArrayList.get(2).getMaxPoints());
+        System.out.println(" Total points: " + playerArrayList.get(2).getTotalPoints());
+        System.out.print("Average points: " + playerArrayList.get(2).getAveragePoints());
+        System.out.print(" Games played: " + playerArrayList.get(2).getGamesPlayed());
+        System.out.println(" Games won: " + playerArrayList.get(2).getGamesWon());
+        System.out.println();
+    }
+
+    public void fourthPlayerGameOverDisplay() {
+        System.out.println(playerArrayList.get(3).getName() + ": ");
+        System.out.print("Score: " + playerArrayList.get(3).getCurrentGamePoints());
+        System.out.print(" Max points: " + playerArrayList.get(3).getMaxPoints());
+        System.out.println(" Total points: " + playerArrayList.get(3).getTotalPoints());
+        System.out.print("Average points: " + playerArrayList.get(3).getAveragePoints());
+        System.out.print(" Games played: " + playerArrayList.get(3).getGamesPlayed());
+        System.out.println(" Games won: " + playerArrayList.get(3).getGamesWon());
+        System.out.println();
+    }
+
+    public int getGameType() {
         int returnValue = 0;
-        if(ONE_PLAYER_GAME){
+        if (ONE_PLAYER_GAME) {
             returnValue = 1;
-        }else if(TWO_PLAYER_GAME){
+        } else if (TWO_PLAYER_GAME) {
             returnValue = 2;
-        }else if(THREE_PLAYER_GAME){
+        } else if (THREE_PLAYER_GAME) {
             returnValue = 3;
-        }else if(FOUR_PLAYER_GAME){
+        } else if (FOUR_PLAYER_GAME) {
             returnValue = 4;
         }
         return returnValue;
     }
-    public String getPlayerInfo(int number){
+
+    public String getPlayerInfo(int number) {
         String returnValue = "";
-        if(number == 0){
-            returnValue += firstPlayer.getName()+" ";
-            returnValue += firstPlayer.getGamesPlayed()+" ";
-            returnValue += firstPlayer.getGamesWon()+" ";
-            returnValue += firstPlayer.getLives()+" ";
+        if (number == 0) {
+            returnValue += firstPlayer.getName() + " ";
+            returnValue += firstPlayer.getGamesPlayed() + " ";
+            returnValue += firstPlayer.getGamesWon() + " ";
+            returnValue += firstPlayer.getLives() + " ";
             returnValue += firstPlayer.isPlayerGameOver();
-        }else if(number == 1){
-            returnValue += secondPlayer.getName()+" ";
-            returnValue += secondPlayer.getGamesPlayed()+" ";
-            returnValue += secondPlayer.getGamesWon()+" ";
-            returnValue += secondPlayer.getLives()+" ";
+        } else if (number == 1) {
+            returnValue += secondPlayer.getName() + " ";
+            returnValue += secondPlayer.getGamesPlayed() + " ";
+            returnValue += secondPlayer.getGamesWon() + " ";
+            returnValue += secondPlayer.getLives() + " ";
             returnValue += secondPlayer.isPlayerGameOver();
-        }else if(number == 2){
-            returnValue += thirdPlayer.getName()+" ";
-            returnValue += thirdPlayer.getGamesPlayed()+" ";
-            returnValue += thirdPlayer.getGamesWon()+" ";
-            returnValue += thirdPlayer.getLives()+" ";
+        } else if (number == 2) {
+            returnValue += thirdPlayer.getName() + " ";
+            returnValue += thirdPlayer.getGamesPlayed() + " ";
+            returnValue += thirdPlayer.getGamesWon() + " ";
+            returnValue += thirdPlayer.getLives() + " ";
             returnValue += thirdPlayer.isPlayerGameOver();
-        }else if(number == 3){
-            returnValue += fourthPlayer.getName()+" ";
-            returnValue += fourthPlayer.getGamesPlayed()+" ";
-            returnValue += fourthPlayer.getGamesWon()+" ";
-            returnValue += fourthPlayer.getLives()+" ";
+        } else if (number == 3) {
+            returnValue += fourthPlayer.getName() + " ";
+            returnValue += fourthPlayer.getGamesPlayed() + " ";
+            returnValue += fourthPlayer.getGamesWon() + " ";
+            returnValue += fourthPlayer.getLives() + " ";
             returnValue += fourthPlayer.isPlayerGameOver();
         }
         return returnValue;
     }
-    public String getGameInfo(){
+
+    public String getGameInfo() {
         String returnValue = "";
         //Ordning av sparad data i rad för speldata. theword, hiddenWord, usedChars
-        returnValue += theWord+" ";
-        returnValue += hiddenWord+" ";
+        returnValue += theWord + " ";
+        returnValue += hiddenWord + " ";
         returnValue += usedChars;
         return returnValue;
     }
@@ -566,43 +737,41 @@ public class Game {
     public void setPoints() {
         if (firstPlayer.getName().equals(player1.getName())) {
             player1.setCurrentGamePoints();
-        }
-        else if (firstPlayer.getName().equals(player2.getName())) {
+        } else if (firstPlayer.getName().equals(player2.getName())) {
             player2.setCurrentGamePoints();
-        }
-        else if (firstPlayer.getName().equals(player3.getName())) {
+        } else if (firstPlayer.getName().equals(player3.getName())) {
             player3.setCurrentGamePoints();
-        }
-        else if (firstPlayer.getName().equals(player4.getName())) {
+        } else if (firstPlayer.getName().equals(player4.getName())) {
             player4.setCurrentGamePoints();
         }
     }
 
-    //INCOMPLETE
+    //INCOMPLETE - måste fixa ONE + TWO + THREE_PLAYER_GAME
     public void identifyingWinners() {
         ArrayList<Integer> pointsList = new ArrayList<>();
-        pointsList.add(player1.getCurrentGamePoints());
-        pointsList.add(player2.getCurrentGamePoints());
-        pointsList.add(player3.getCurrentGamePoints());
-        pointsList.add(player4.getCurrentGamePoints());
-
-        double largest = player1.getCurrentGamePoints();
+        if (FOUR_PLAYER_GAME) {
+            pointsList.add(playerArrayList.get(0).getCurrentGamePoints());
+            pointsList.add(playerArrayList.get(1).getCurrentGamePoints());
+            pointsList.add(playerArrayList.get(2).getCurrentGamePoints());
+            pointsList.add(playerArrayList.get(3).getCurrentGamePoints());
+        }
+        double largest = playerArrayList.get(0).getCurrentGamePoints();
         for (int i = 1; i < pointsList.size(); i++) {
             if (pointsList.get(i) > largest) {
                 largest = pointsList.get(i);
             }
-                if(pointsList.get(0) == largest) {
-                    player1.setCurrentGameWinner();
-                }
-                else if(pointsList.get(1) == largest){
-                    player2.setCurrentGameWinner();
-                }
-                else if(pointsList.get(2) == largest){
-                    player3.setCurrentGameWinner();
-                }
-                else if(pointsList.get(3) == largest){
-                    player4.setCurrentGameWinner();
-                }
+            if (pointsList.get(0) == largest) {
+                playerArrayList.get(0).setCurrentGameWinner();
+            }
+            if (pointsList.get(1) == largest) {
+                playerArrayList.get(1).setCurrentGameWinner();
+            }
+            if (pointsList.get(2) == largest) {
+                playerArrayList.get(2).setCurrentGameWinner();
+            }
+            if (pointsList.get(3) == largest) {
+                playerArrayList.get(3).setCurrentGameWinner();
+            }
         }
     }
 }

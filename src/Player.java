@@ -118,7 +118,7 @@ public class Player {
     }
 
     public void setCurrentGamePoints() {
-        this.currentGamePoints = currentGamePoints++;
+        this.currentGamePoints = currentGamePoints + 1;
     }
 
     public void resetCurrentGamePoints() {

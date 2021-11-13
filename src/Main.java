@@ -9,6 +9,9 @@ Stefan Johansson, Toros Kutlu, Jonathan Tesfazion och Emily Arnelid
 // fortsätt med boolean playerXwinner = true
 // forts: identifyingWinners() i Game class
 // rad 485 i Game Class - Game Over Display - Winner:
+
+// fel i save / load - usedChars ändras /går vidare vid gameover även fast man inte sparar
+
 // HIGHSCORE LIST
 // GUI
 

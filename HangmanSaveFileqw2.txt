@@ -1,3 +1,0 @@
-w 0 0 1 false
-q 0 0 0 true
-spadeful __a_____ azzzzz

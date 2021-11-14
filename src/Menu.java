@@ -13,10 +13,10 @@ public class Menu {
     final private int SINGLE_PLAYER = 1;
     final private int MULTI_PLAYER = 2;
     final private int LOAD_GAME = 3;
-    final private int DELETE_PLAYER = 4;
+    final private int DELETE_PLAYER = 7;
     final private int HIGH_SCORE = 5;
     final private int PLAYER_STATS = 6;
-    final private int QUIT = 7;
+    final private int QUIT = 4;
     final private int SINGLE_PLAYER_NEW_PLAYER = 8;
     final private int SINGLE_PLAYER_LOAD_PLAYER = 9;
     final private int MULTI_PLAYER_NEW_PLAYER = 10;
@@ -32,6 +32,7 @@ public class Menu {
     private Player player4 = null;
     private Player currentPlayer = null;
 
+    private HighScore highScore = null;
     private Scanner scanner = new Scanner(System.in);
     private int choice = 0;
     private String[] currentMenu = null;
@@ -40,9 +41,9 @@ public class Menu {
             SINGLE_PLAYER + ": Single Player",
             MULTI_PLAYER + ": Multiplayer",
             LOAD_GAME + ": Load Game",
-            DELETE_PLAYER + ": Delete Player",
-            HIGH_SCORE + ": High Score",
-            PLAYER_STATS + ": Player Stats",
+            //DELETE_PLAYER + ": Delete Player",
+            //HIGH_SCORE + ": High Score",
+            //PLAYER_STATS + ": Player Stats",
             QUIT + ": Quit"};
     private String[] singlePlayerEndOfGameMenu = {SINGLE_PLAYER_START_NEW_GAME + ": Start New Game",
             RETURN_TO_MAIN_MENU + ": Return to Main Menu"};
@@ -56,6 +57,8 @@ public class Menu {
             MULTI_PLAYER_NEW_PLAYER + ": New Player", MULTI_PLAYER_LOAD_PLAYER + ": Load Player",
             MULTI_PLAYER_START_NEW_GAME + ": Start New Game"};
     public Menu() {
+        highScore = new HighScore();
+        highScore.loadHighScoreList();
         currentMenu = startMenu;
         show(startMenu);
     }
@@ -92,7 +95,7 @@ public class Menu {
                 loadGame();
                 break;
             }
-            case DELETE_PLAYER: { //4
+            case DELETE_PLAYER: { //7
                 break;
             }
             case HIGH_SCORE: { //5
@@ -101,7 +104,7 @@ public class Menu {
             case PLAYER_STATS: { //6
                 break;
             }
-            case QUIT: { //7
+            case QUIT: { //4 flyttad till 4 för att vi använder inte just nu delete, highscore och playerstats.
                 System.exit(0);
                 break;
             }
@@ -121,7 +124,8 @@ public class Menu {
                     Scanner scannerFile = new Scanner(file);
                     while (scannerFile.hasNext()) {
                         if (name.equals(scannerFile.next())) {
-                            player1 = new Player(name, scannerFile.nextInt(), scannerFile.nextInt());
+                            player1 = new Player(name, scannerFile.nextInt(), scannerFile.nextInt(),
+                                    scannerFile.nextInt(), scannerFile.nextInt(), scannerFile.next());
                             }
                         }
                     scannerFile.close();
@@ -175,7 +179,8 @@ public class Menu {
                     Scanner scannerFile = new Scanner(file);
                     while (scannerFile.hasNext()) {
                         if (name.equals(scannerFile.next())) {
-                            currentPlayer = new Player(name, scannerFile.nextInt(), scannerFile.nextInt());
+                            currentPlayer = new Player(name, scannerFile.nextInt(), scannerFile.nextInt(),
+                                    scannerFile.nextInt(), scannerFile.nextInt(), scannerFile.next());
                             numberOfPlayersCounter++;
                             if (numberOfPlayersCounter == 1) {
                                 player1 = currentPlayer;
@@ -250,7 +255,7 @@ public class Menu {
         while (loop) {
             if (scanner.hasNextInt()) {
                 input = scanner.nextInt();
-                if (input > 0 && input < 8 && currentMenu == startMenu) {
+                if (input > 0 && input < 5 && currentMenu == startMenu) {
                     loop = false;
                     scanner.nextLine();
                 } else if (currentMenu == singlePlayerMenu && (input == SINGLE_PLAYER_NEW_PLAYER ||
@@ -374,7 +379,6 @@ public class Menu {
             outSaveGame.close();
         } catch (FileNotFoundException exception) {
         }
-
     }
     public void loadGame(){
         ArrayList<String> loadList = new ArrayList<>();
@@ -394,25 +398,25 @@ public class Menu {
                     String string = loadList.get(i);
                     Scanner scanner = new Scanner(string);
                     player1 = new Player(scanner.next(), scanner.next(), scanner.next(),
-                            scanner.next(), scanner.next());
+                            scanner.next(), scanner.next(), scanner.next());
                     filePlayerRowCounter++;
                 } else if (i == 1) {
                     String string = loadList.get(i);
                     Scanner scanner = new Scanner(string);
                     player2 = new Player(scanner.next(), scanner.next(), scanner.next(),
-                            scanner.next(), scanner.next());
+                            scanner.next(), scanner.next(), scanner.next());
                     filePlayerRowCounter++;
                 } else if (i == 2) {
                     String string = loadList.get(i);
                     Scanner scanner = new Scanner(string);
                     player3 = new Player(scanner.next(), scanner.next(), scanner.next(),
-                            scanner.next(), scanner.next());
+                            scanner.next(), scanner.next(), scanner.next());
                     filePlayerRowCounter++;
                 } else if (i == 3) {
                     String string = loadList.get(i);
                     Scanner scanner = new Scanner(string);
                     player4 = new Player(scanner.next(), scanner.next(), scanner.next(),
-                            scanner.next(), scanner.next());
+                            scanner.next(), scanner.next(), scanner.next());
                     filePlayerRowCounter++;
                 }
                 scannerFile.close();
@@ -445,6 +449,9 @@ public class Menu {
                     new Game(player1, player2, player3, player4, this, scanner.next(), scanner.next(),
                             scanner.next(), scanner.next());
                 }
+            }
+            public HighScore getHighScoreObject(){
+                return highScore;
             }
         }
 

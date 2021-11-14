@@ -1,3 +1,0 @@
-q 0 0 3 false
-w 0 0 2 false
-bra __a az

@@ -53,6 +53,7 @@ public class Game {
      * @param menu
      */
     public Game(Player player1, Menu menu) {
+        createArrayOfWords();
         ONE_PLAYER_GAME = true;
         this.player1 = player1;
         playerArrayList.add(this.player1);
@@ -70,6 +71,7 @@ public class Game {
     }
 
     public Game(Player player1, Player player2, Menu menu) {
+        createArrayOfWords();
         TWO_PLAYER_GAME = true;
         this.player1 = player1;
         this.player2 = player2;
@@ -92,6 +94,7 @@ public class Game {
     }
 
     public Game(Player player1, Player player2, Player player3, Menu menu) {
+        createArrayOfWords();
         THREE_PLAYER_GAME = true;
         this.player1 = player1;
         this.player2 = player2;
@@ -118,6 +121,7 @@ public class Game {
     }
 
     public Game(Player player1, Player player2, Player player3, Player player4, Menu menu) {
+        createArrayOfWords();
         FOUR_PLAYER_GAME = true;
         this.player1 = player1;
         this.player2 = player2;
@@ -149,6 +153,7 @@ public class Game {
 
     public Game(Player player1, Menu menu,
                 String theWord, String hiddenWord, String usedChars, String numberOfHangedPlayers) {
+        createArrayOfWords();
         ONE_PLAYER_GAME = true;
         this.player1 = player1;
         this.firstPlayer = player1;
@@ -160,6 +165,10 @@ public class Game {
         this.numberOfHangedPlayers = Integer.parseInt(numberOfHangedPlayers);
         charArray = theWord.toCharArray();
         numberOfChars = charArray.length;
+        for (int i = 0; i < numberOfChars; i++) {
+            char temp = hiddenWord.charAt(i);
+            updatedArray[i] = String.valueOf(temp);
+        }
         System.out.println("Welcome Back " + playerArrayList.get(0).getName() + "!");
         showGame();
         gameRunning = true;
@@ -173,6 +182,7 @@ public class Game {
 
     public Game(Player player1, Player player2, Menu menu,
                 String theWord, String hiddenWord, String usedChars, String numberOfHangedPlayers) {
+        createArrayOfWords();
         TWO_PLAYER_GAME = true;
         this.player1 = player1;
         this.player2 = player2;
@@ -185,8 +195,12 @@ public class Game {
         this.hiddenWord = hiddenWord;
         this.usedChars = usedChars;
         this.numberOfHangedPlayers = Integer.parseInt(numberOfHangedPlayers);
-        charArray = theWord.toCharArray();
+        charArray = this.theWord.toCharArray();
         numberOfChars = charArray.length;
+        for (int i = 0; i < numberOfChars; i++) {
+            char temp = hiddenWord.charAt(i);
+            updatedArray[i] = String.valueOf(temp);
+        }
         System.out.println("Welcome Back " + playerArrayList.get(0).getName() + ", " +
                 playerArrayList.get(1).getName() + "!");
         showGame();
@@ -201,6 +215,7 @@ public class Game {
 
     public Game(Player player1, Player player2, Player player3, Menu menu,
                 String theWord, String hiddenWord, String usedChars, String numberOfHangedPlayers) {
+        createArrayOfWords();
         THREE_PLAYER_GAME = true;
         this.player1 = player1;
         this.player2 = player2;
@@ -218,6 +233,10 @@ public class Game {
         this.numberOfHangedPlayers = Integer.parseInt(numberOfHangedPlayers);
         charArray = theWord.toCharArray();
         numberOfChars = charArray.length;
+        for (int i = 0; i < numberOfChars; i++) {
+            char temp = hiddenWord.charAt(i);
+            updatedArray[i] = String.valueOf(temp);
+        }
         System.out.println("Welcome Back " + playerArrayList.get(0).getName() + ", " +
                 playerArrayList.get(1).getName() + ", " + playerArrayList.get(2).getName() + "!");
         showGame();
@@ -232,6 +251,7 @@ public class Game {
 
     public Game(Player player1, Player player2, Player player3, Player player4, Menu menu,
                 String theWord, String hiddenWord, String usedChars, String numberOfHangedPlayers) {
+        createArrayOfWords();
         FOUR_PLAYER_GAME = true;
         this.player1 = player1;
         this.player2 = player2;
@@ -252,6 +272,10 @@ public class Game {
         this.numberOfHangedPlayers = Integer.parseInt(numberOfHangedPlayers);
         charArray = theWord.toCharArray();
         numberOfChars = charArray.length;
+        for (int i = 0; i < numberOfChars; i++) {
+            char temp = hiddenWord.charAt(i);
+            updatedArray[i] = String.valueOf(temp);
+        }
         System.out.println("Welcome Back " + playerArrayList.get(0).getName() + ", " +
                 playerArrayList.get(1).getName() + ", " + playerArrayList.get(2).getName() + ", "
                 + playerArrayList.get(3).getName() + "!");
@@ -326,7 +350,9 @@ public class Game {
                     if (ONE_PLAYER_GAME && numberOfHangedPlayers == 1) {
                         numberOfHangedPlayers = 0;
                         player1.updatePlayerData();
+                        menu.getHighScoreObject().updateHighScore(player1.getName(), player1.getCurrentGamePoints());
                         gameOverDisplay();
+                        displayHighScore();
                         player1.setResetLives();
                         player1.resetCurrentGamePoints();
                         player1.setPlayerGameOver(false);
@@ -338,7 +364,10 @@ public class Game {
                         identifyingWinners();
                         player1.updatePlayerData();
                         player2.updatePlayerData();
+                        menu.getHighScoreObject().updateHighScore(player1.getName(), player1.getCurrentGamePoints());
+                        menu.getHighScoreObject().updateHighScore(player2.getName(), player2.getCurrentGamePoints());
                         gameOverDisplay();
+                        displayHighScore();
                         player1.setResetLives();
                         player2.setResetLives();
                         player1.resetCurrentGamePoints();
@@ -354,7 +383,11 @@ public class Game {
                         player1.updatePlayerData();
                         player2.updatePlayerData();
                         player3.updatePlayerData();
+                        menu.getHighScoreObject().updateHighScore(player1.getName(), player1.getCurrentGamePoints());
+                        menu.getHighScoreObject().updateHighScore(player2.getName(), player2.getCurrentGamePoints());
+                        menu.getHighScoreObject().updateHighScore(player3.getName(), player3.getCurrentGamePoints());
                         gameOverDisplay();
+                        displayHighScore();
                         player1.setResetLives();
                         player2.setResetLives();
                         player3.setResetLives();
@@ -374,7 +407,12 @@ public class Game {
                         player2.updatePlayerData();
                         player3.updatePlayerData();
                         player4.updatePlayerData();
+                        menu.getHighScoreObject().updateHighScore(player1.getName(), player1.getCurrentGamePoints());
+                        menu.getHighScoreObject().updateHighScore(player2.getName(), player2.getCurrentGamePoints());
+                        menu.getHighScoreObject().updateHighScore(player3.getName(), player3.getCurrentGamePoints());
+                        menu.getHighScoreObject().updateHighScore(player4.getName(), player4.getCurrentGamePoints());
                         gameOverDisplay();
+                        displayHighScore();
                         player1.setResetLives();
                         player2.setResetLives();
                         player3.setResetLives();
@@ -448,15 +486,7 @@ public class Game {
      * @return
      */
     public String getWord() {
-        try {
-            scannerWordFile = new Scanner(wordFile);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
         long wordRandomizeNr = Math.round(Math.random() * 194433);
-        for (int i = 0; scannerWordFile.hasNext(); i++) {
-            wordArray194k[i] = scannerWordFile.next();
-        }
         theWord = wordArray194k[(int) wordRandomizeNr];
         charArray = theWord.toCharArray();
         numberOfChars = charArray.length;
@@ -467,6 +497,16 @@ public class Game {
         }
         usedChars = "";
         return theWord;
+    }
+    public void createArrayOfWords(){
+        try {
+            scannerWordFile = new Scanner(wordFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; scannerWordFile.hasNext(); i++) {
+            wordArray194k[i] = scannerWordFile.next();
+        }
     }
 
     public void healthBarDisplay(int lives) {
@@ -671,7 +711,7 @@ public class Game {
         System.out.print("Score: " + playerArrayList.get(0).getCurrentGamePoints());
         System.out.print(" Max points: " + playerArrayList.get(0).getMaxPoints());
         System.out.println(" Total points: " + playerArrayList.get(0).getTotalPoints());
-        System.out.print(" Average points: " + playerArrayList.get(0).getAveragePoints());
+        System.out.print("Average points: " + playerArrayList.get(0).getAveragePoints());
         System.out.print(" Games played: " + playerArrayList.get(0).getGamesPlayed());
         System.out.println(" Games won: " + playerArrayList.get(0).getGamesWon());
         System.out.println();
@@ -731,25 +771,29 @@ public class Game {
             returnValue += firstPlayer.getGamesPlayed() + " ";
             returnValue += firstPlayer.getGamesWon() + " ";
             returnValue += firstPlayer.getLives() + " ";
-            returnValue += firstPlayer.isPlayerGameOver();
+            returnValue += firstPlayer.isPlayerGameOver() + " ";
+            returnValue += firstPlayer.getCurrentGamePoints();
         } else if (number == 1) {
             returnValue += secondPlayer.getName() + " ";
             returnValue += secondPlayer.getGamesPlayed() + " ";
             returnValue += secondPlayer.getGamesWon() + " ";
             returnValue += secondPlayer.getLives() + " ";
-            returnValue += secondPlayer.isPlayerGameOver();
+            returnValue += secondPlayer.isPlayerGameOver() + " ";
+            returnValue += secondPlayer.getCurrentGamePoints();
         } else if (number == 2) {
             returnValue += thirdPlayer.getName() + " ";
             returnValue += thirdPlayer.getGamesPlayed() + " ";
             returnValue += thirdPlayer.getGamesWon() + " ";
             returnValue += thirdPlayer.getLives() + " ";
-            returnValue += thirdPlayer.isPlayerGameOver();
+            returnValue += thirdPlayer.isPlayerGameOver() + " ";
+            returnValue += thirdPlayer.getCurrentGamePoints();
         } else if (number == 3) {
             returnValue += fourthPlayer.getName() + " ";
             returnValue += fourthPlayer.getGamesPlayed() + " ";
             returnValue += fourthPlayer.getGamesWon() + " ";
             returnValue += fourthPlayer.getLives() + " ";
-            returnValue += fourthPlayer.isPlayerGameOver();
+            returnValue += fourthPlayer.isPlayerGameOver() + " ";
+            returnValue += fourthPlayer.getCurrentGamePoints();
         }
         return returnValue;
     }
@@ -812,5 +856,14 @@ public class Game {
                 playerArrayList.get(3).setCurrentGameWinner();
             }
         }
+    }
+    public void displayHighScore(){
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        String string = menu.getHighScoreObject().showHighScoreList();
+        System.out.println(string);
     }
 }

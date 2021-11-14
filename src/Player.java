@@ -12,7 +12,7 @@ public class Player {
 
     private int currentGamePoints = 0;
 
-    final private int FULL_HEALTH = 3;
+    final private int FULL_HEALTH = 10;
     private int lives = FULL_HEALTH;
     private boolean playerGameOver = false;
 
@@ -34,18 +34,22 @@ public class Player {
      * @param gamesPlayed
      * @param gamesWon
      */
-    public Player(String name, int gamesPlayed, int gamesWon){
+    public Player(String name, int gamesPlayed, int gamesWon, int totalPoints, int maxPoints, String averagePoints){
         this.name = name;
         this.gamesPlayed = gamesPlayed;
         this.gamesWon = gamesWon;
+        this.totalPoints = totalPoints;
+        this.maxPoints = maxPoints;
+        this.averagePoints = Double.parseDouble(averagePoints);
         savePlayer(this);
     }
-
-    public Player(String name, String gamesPlayed, String gamesWon, String lives, String isGameOver){
+//LOAD game
+    public Player(String name, String gamesPlayed, String gamesWon, String lives, String isGameOver, String currentGamePoints){
         this.name = name;
         this.gamesPlayed = Integer.parseInt(gamesPlayed);
         this.gamesWon = Integer.parseInt(gamesWon);
         this.lives = Integer.parseInt(lives);
+        this.currentGamePoints = Integer.parseInt(currentGamePoints);
         if (isGameOver.equals("false")){
             this.playerGameOver = false;
         } else {
@@ -135,6 +139,7 @@ public class Player {
         }
         totalPoints += currentGamePoints;
         averagePoints = (double) totalPoints / (double) gamesPlayed;
+        averagePoints = Math.floor(averagePoints * 100)/100;
     }
 
     public boolean isPlayerGameOver() {
@@ -162,6 +167,9 @@ public class Player {
             out.println(player.getName());
             out.println(player.gamesPlayed);
             out.println(player.gamesWon);
+            out.println(player.totalPoints);
+            out.println(player.maxPoints);
+            out.println(player.averagePoints);
             out.close();
         } catch (FileNotFoundException exception) {
         }

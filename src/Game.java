@@ -16,6 +16,7 @@ public class Game {
     private Player fourthPlayer = null;
     private Player holderPlayer = null;
     private Menu menu = null;
+    Gui gui;
     private String hiddenWord = "";
     private String usedChars = "X";
     private String hangMeterAsterisk = "";
@@ -52,8 +53,10 @@ public class Game {
      * @param player1
      * @param menu
      */
-    public Game(Player player1, Menu menu) {
+
+    public Game(Player player1, Menu menu, Gui gui) {
         createArrayOfWords();
+        this.gui = gui;
         ONE_PLAYER_GAME = true;
         this.player1 = player1;
         playerArrayList.add(this.player1);
@@ -465,6 +468,7 @@ public class Game {
      * nytt. Vi kollar om seger eller förlust har uppnåtts och vi uppdaterar även spelarens data.
      */
     public void showGame() {
+        gui.textArea.setText("Test text");//test
         System.out.println("\nHi " + firstPlayer.getName() + "\nI'm thinking about an English word with: " + numberOfChars + " characters");
         System.out.println("So far you have correctly guessed: " + hiddenWord);
         System.out.println("The following letters have been guessed: " + usedChars);

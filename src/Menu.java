@@ -113,7 +113,7 @@ public class Menu {
                 String playerName = getString();
                 player1 = new Player(playerName);
                 System.out.println(player1.getName());
-                new Game(player1, this);
+                //new Game(player1, this);
                 break;
             }
             case SINGLE_PLAYER_LOAD_PLAYER: { //9
@@ -135,7 +135,7 @@ public class Menu {
                     System.out.println();
                     show(currentMenu);
                 }
-                new Game(player1, this);
+                //new Game(player1, this);
                 break;
             }
             case MULTI_PLAYER_NEW_PLAYER: { //10
@@ -218,7 +218,7 @@ public class Menu {
                 break;
             }
             case SINGLE_PLAYER_START_NEW_GAME: { //12
-                new Game(player1, this);
+                //new Game(player1, this);
                 break;
             }
             case MULTI_PLAYER_START_NEW_GAME: { //13

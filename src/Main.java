@@ -18,7 +18,9 @@ Stefan Johansson, Toros Kutlu, Jonathan Tesfazion och Emily Arnelid
 
 public class Main {
     public static void main(String[] args) {
+        Gui gui = new Gui();
         Menu menu = new Menu();
+
     }
 }
 

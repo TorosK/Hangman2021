@@ -18,7 +18,7 @@ public class Game {
     private Menu menu = null;
     Gui gui;
     private String hiddenWord = "";
-    private String usedChars = "X";
+    private String usedChars; // ändrat från "x"
     private String hangMeterAsterisk = "";
     private String theWord = "";
     private String word = "";
@@ -46,17 +46,16 @@ public class Game {
     private Scanner scannerWordFile;
 
     /**
-     * Konstruktorn tar emot en spelare och meny. Anropar getWord() för att få ett ord att spela med. Anropar showGame()
+     * Konstruktorerna nedan är för att skapa nya spel. De tar emot en spelare och meny. Anropar getWord() för att få ett ord att spela med. Anropar showGame()
      * för att skriva ut spelet. While loopar spelarens förslag, anropar getAlpha() för att kontrollera inmatning och
      * sedan update() för att uppdatera spelet med den gissade bokstaven.
      *
      * @param player1
      * @param menu
      */
-
-    public Game(Player player1, Menu menu, Gui gui) {
+    public Game(Player player1, Menu menu) {
+        this.usedChars = "->";
         createArrayOfWords();
-        this.gui = gui;
         ONE_PLAYER_GAME = true;
         this.player1 = player1;
         playerArrayList.add(this.player1);
@@ -74,6 +73,7 @@ public class Game {
     }
 
     public Game(Player player1, Player player2, Menu menu) {
+        this.usedChars = "->";
         createArrayOfWords();
         TWO_PLAYER_GAME = true;
         this.player1 = player1;
@@ -97,6 +97,7 @@ public class Game {
     }
 
     public Game(Player player1, Player player2, Player player3, Menu menu) {
+        this.usedChars = "->";
         createArrayOfWords();
         THREE_PLAYER_GAME = true;
         this.player1 = player1;
@@ -124,6 +125,7 @@ public class Game {
     }
 
     public Game(Player player1, Player player2, Player player3, Player player4, Menu menu) {
+        this.usedChars = "->";
         createArrayOfWords();
         FOUR_PLAYER_GAME = true;
         this.player1 = player1;
@@ -154,6 +156,16 @@ public class Game {
         }
     }
 
+    /**
+     * Konstruktorer nedan används för att ladda spel
+     *
+     * @param player1
+     * @param menu
+     * @param theWord
+     * @param hiddenWord
+     * @param usedChars
+     * @param numberOfHangedPlayers
+     */
     public Game(Player player1, Menu menu,
                 String theWord, String hiddenWord, String usedChars, String numberOfHangedPlayers) {
         createArrayOfWords();
@@ -468,10 +480,9 @@ public class Game {
      * nytt. Vi kollar om seger eller förlust har uppnåtts och vi uppdaterar även spelarens data.
      */
     public void showGame() {
-        gui.textArea.setText("Test text");//test
         System.out.println("\nHi " + firstPlayer.getName() + "\nI'm thinking about an English word with: " + numberOfChars + " characters");
         System.out.println("So far you have correctly guessed: " + hiddenWord);
-        System.out.println("The following letters have been guessed: " + usedChars);
+        System.out.println("The following letters have been guessed " + usedChars);
         System.out.print("HealthBar: ");
         healthBarDisplay(firstPlayer.getLives());
         System.out.println();
@@ -499,10 +510,14 @@ public class Game {
             hiddenWord += "_";
             updatedArray[i] = "_";
         }
-        usedChars = "";
+        usedChars = "->";
         return theWord;
     }
-    public void createArrayOfWords(){
+
+    /**
+     * Skapar array av ord.
+     */
+    public void createArrayOfWords() {
         try {
             scannerWordFile = new Scanner(wordFile);
         } catch (FileNotFoundException e) {
@@ -754,6 +769,11 @@ public class Game {
         System.out.println();
     }
 
+    /**
+     * returnerar om spelet är 1, 2, 3 eller 4 player game
+     *
+     * @return
+     */
     public int getGameType() {
         int returnValue = 0;
         if (ONE_PLAYER_GAME) {
@@ -861,7 +881,8 @@ public class Game {
             }
         }
     }
-    public void displayHighScore(){
+
+    public void displayHighScore() {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {

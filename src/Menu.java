@@ -1,10 +1,12 @@
 // vi måste fixa spara statistik efter spel avklarad, auto.
 //fortsätta med loadgame på rad 377
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 /**
  * Vi har skapat två stringarrayer där vi lagt in strängar för de menyval vi vill ha med. Vi har använt oss av två stycken
  * konstruktorer för att skapa menyerna.
@@ -48,7 +50,7 @@ public class Menu {
     private String[] singlePlayerEndOfGameMenu = {SINGLE_PLAYER_START_NEW_GAME + ": Start New Game",
             RETURN_TO_MAIN_MENU + ": Return to Main Menu"};
     private String[] multiPlayerEndOfGameMenu = {MULTI_PLAYER_START_NEW_GAME + ": Start New Game",
-            RETURN_TO_MAIN_MENU+ ": Return to Main Menu"};
+            RETURN_TO_MAIN_MENU + ": Return to Main Menu"};
     private String[] singlePlayerMenu = {SINGLE_PLAYER_NEW_PLAYER + ": New Player",
             SINGLE_PLAYER_LOAD_PLAYER + ": Load Player"};
     private String[] multiPlayerMenu = {"2 to 4 Players only\n",
@@ -56,12 +58,14 @@ public class Menu {
     private String[] multiPlayerMenuPlusStart = {"2 to 4 Players only\n",
             MULTI_PLAYER_NEW_PLAYER + ": New Player", MULTI_PLAYER_LOAD_PLAYER + ": Load Player",
             MULTI_PLAYER_START_NEW_GAME + ": Start New Game"};
+
     public Menu() {
         highScore = new HighScore();
         highScore.loadHighScoreList();
         currentMenu = startMenu;
         show(startMenu);
     }
+
     /**
      * show visar våra menyer.
      * Vi har en switch för att välja menyval. Vi använder metoden getInt för att fånga upp
@@ -91,7 +95,7 @@ public class Menu {
                 show(multiPlayerMenu);
                 break;
             }
-            case LOAD_GAME:{
+            case LOAD_GAME: {
                 loadGame();
                 break;
             }
@@ -111,23 +115,25 @@ public class Menu {
             case SINGLE_PLAYER_NEW_PLAYER: { //8
                 System.out.println("Please give your player a name: ");
                 String playerName = getString();
+                playerName = playerName.toUpperCase();
                 player1 = new Player(playerName);
                 System.out.println(player1.getName());
-                //new Game(player1, this);
+                new Game(player1, this);
                 break;
             }
             case SINGLE_PLAYER_LOAD_PLAYER: { //9
                 try {
                     System.out.println("Input name of player: ");
                     String name = getString();
+                    name = name.toUpperCase();
                     File file = new File("HangmanPlayerFile" + name + ".txt");
                     Scanner scannerFile = new Scanner(file);
                     while (scannerFile.hasNext()) {
                         if (name.equals(scannerFile.next())) {
                             player1 = new Player(name, scannerFile.nextInt(), scannerFile.nextInt(),
                                     scannerFile.nextInt(), scannerFile.nextInt(), scannerFile.next());
-                            }
                         }
+                    }
                     scannerFile.close();
                 } catch (FileNotFoundException e) {//fixat att ladda spelare som inte finns
                     System.out.println();
@@ -135,12 +141,13 @@ public class Menu {
                     System.out.println();
                     show(currentMenu);
                 }
-                //new Game(player1, this);
+                new Game(player1, this);
                 break;
             }
             case MULTI_PLAYER_NEW_PLAYER: { //10
                 System.out.println("Please give your player a name: ");
                 String playerName = getString();
+                playerName = playerName.toUpperCase();
                 Player player = new Player(playerName);
                 numberOfPlayersCounter++;
                 if (numberOfPlayersCounter == 1) {
@@ -148,24 +155,21 @@ public class Menu {
                     System.out.println("Player 1: " + player1.getName() + " is created.");
                     System.out.println("List of Players: \n" + player1.getName() + "\n");
                     show(currentMenu);
-                }
-                else if (numberOfPlayersCounter == 2) {
+                } else if (numberOfPlayersCounter == 2) {
                     currentMenu = multiPlayerMenuPlusStart;
                     player2 = player;
                     System.out.println("Player 2: " + player2.getName() + " is created.");
                     System.out.println("List of Players: \n" + player1.getName() + "\n" + player2.getName() + "\n");
                     show(currentMenu);
 
-                }
-                else if (numberOfPlayersCounter == 3) {
+                } else if (numberOfPlayersCounter == 3) {
                     currentMenu = multiPlayerMenuPlusStart;
                     player3 = player;
                     System.out.println("Player 3: " + player3.getName() + " is created.");
                     System.out.println("List of Players: \n" + player1.getName() + "\n" + player2.getName()
                             + "\n" + player3.getName() + "\n");
                     show(currentMenu);
-                }
-                else if (numberOfPlayersCounter == 4) {
+                } else if (numberOfPlayersCounter == 4) {
                     player4 = player;
                     new Game(player1, player2, player3, player4, this);
                 }
@@ -175,6 +179,7 @@ public class Menu {
                 try {
                     System.out.println("Input name of player: ");
                     String name = getString();
+                    name = name.toUpperCase();
                     File file = new File("HangmanPlayerFile" + name + ".txt");
                     Scanner scannerFile = new Scanner(file);
                     while (scannerFile.hasNext()) {
@@ -187,22 +192,19 @@ public class Menu {
                                 System.out.println("Player 1: " + player1.getName() + " is created.");
                                 System.out.println("List of Players: \n" + player1.getName() + "\n");
                                 show(currentMenu);
-                            }
-                            else if (numberOfPlayersCounter == 2) {
+                            } else if (numberOfPlayersCounter == 2) {
                                 player2 = currentPlayer;
                                 currentMenu = multiPlayerMenuPlusStart;
                                 System.out.println("Player 2: " + player2.getName() + " is created.");
                                 System.out.println("List of Players: \n" + player1.getName() + "\n" + player2.getName() + "\n");
                                 show(currentMenu);
-                            }
-                            else if (numberOfPlayersCounter == 3) {
+                            } else if (numberOfPlayersCounter == 3) {
                                 player3 = currentPlayer;
                                 System.out.println("Player 3: " + player3.getName() + " is created.");
                                 System.out.println("List of Players: \n" + player1.getName() + "\n" + player2.getName()
                                         + "\n" + player3.getName() + "\n");
                                 show(currentMenu);
-                            }
-                            else if (numberOfPlayersCounter == 4) {
+                            } else if (numberOfPlayersCounter == 4) {
                                 player4 = currentPlayer;
                                 new Game(player1, player2, player3, player4, this);
                             }
@@ -218,17 +220,15 @@ public class Menu {
                 break;
             }
             case SINGLE_PLAYER_START_NEW_GAME: { //12
-                //new Game(player1, this);
+                new Game(player1, this);
                 break;
             }
             case MULTI_PLAYER_START_NEW_GAME: { //13
                 if (numberOfPlayersCounter == 2) {
                     new Game(player1, player2, this);
-                }
-                else if (numberOfPlayersCounter == 3){
+                } else if (numberOfPlayersCounter == 3) {
                     new Game(player1, player2, player3, this);
-                }
-                else if (numberOfPlayersCounter == 4) {
+                } else if (numberOfPlayersCounter == 4) {
                     new Game(player1, player2, player3, player4, this);
                 }
                 break;
@@ -262,22 +262,21 @@ public class Menu {
                         input == SINGLE_PLAYER_LOAD_PLAYER)) {
                     loop = false;
                     scanner.nextLine();
-                }else if (currentMenu == singlePlayerEndOfGameMenu && (input == SINGLE_PLAYER_START_NEW_GAME ||
+                } else if (currentMenu == singlePlayerEndOfGameMenu && (input == SINGLE_PLAYER_START_NEW_GAME ||
                         input == RETURN_TO_MAIN_MENU)) {
                     loop = false;
                     scanner.nextLine();
                 } else if (currentMenu == multiPlayerEndOfGameMenu && (input == MULTI_PLAYER_START_NEW_GAME ||
-                        input == RETURN_TO_MAIN_MENU) ) {
+                        input == RETURN_TO_MAIN_MENU)) {
                     loop = false;
                     scanner.nextLine();
-                }else if ((currentMenu == multiPlayerMenu ||
+                } else if ((currentMenu == multiPlayerMenu ||
                         currentMenu == multiPlayerMenuPlusStart) && (input == MULTI_PLAYER_NEW_PLAYER ||
                         input == MULTI_PLAYER_LOAD_PLAYER ||
                         input == MULTI_PLAYER_START_NEW_GAME)) {
                     loop = false;
                     scanner.nextLine();
-                }
-                else {
+                } else {
                     System.out.println("Incorrect input. Try again");
                     scanner.nextLine();
                 }
@@ -288,9 +287,11 @@ public class Menu {
         }
         return input;
     }
+
     /**
      * Vi använder den här metoden för att läsa in spelarens namn. Vi trimmar bort blanksteg. Vi kollar även att
      * strängen inte är helt tom.
+     *
      * @return
      */
     public String getString() {
@@ -314,8 +315,11 @@ public class Menu {
         }
         return inputTrim;
     }
-    /** Vi använder den här metoden för att kontrollera i spelet, användarens input. Vi kollar att det verkligen bara
+
+    /**
+     * Vi använder den här metoden för att kontrollera i spelet, användarens input. Vi kollar att det verkligen bara
      * är ett tecken och att det är en bokstav.
+     *
      * @return
      */
     public char getAlpha(Game game) {
@@ -327,7 +331,7 @@ public class Menu {
                 input = scanner.next();
                 if (input.length() == 1) {
                     ch = input.charAt(0);
-                    if(ch == '+'){
+                    if (ch == '+') {
                         saveGame(game);
                         currentMenu = startMenu;
                         show(startMenu);
@@ -352,27 +356,32 @@ public class Menu {
         }
         return ch;
     }
+
     public Scanner getScanner() {
         return scanner;
     }
-    public void newScanner(){
+
+    public void newScanner() {
         scanner = new Scanner(System.in);
     }
+
     public String[] getSinglePlayerEndOfGameMenu() {
         currentMenu = singlePlayerEndOfGameMenu;
         return singlePlayerEndOfGameMenu;
     }
+
     public String[] getMultiPlayerEndOfGameMenu() {
         currentMenu = multiPlayerEndOfGameMenu;
         return multiPlayerEndOfGameMenu;
     }
-    public void saveGame(Game game){
+
+    public void saveGame(Game game) {
         System.out.println("Type name of game: ");
         String fileName = getString();
         int numberOfPlayers = game.getGameType();
         try {
-            PrintWriter outSaveGame = new PrintWriter("HangmanSaveFile"+fileName + ".txt");
-            for(int i = 0; i < numberOfPlayers; i++){
+            PrintWriter outSaveGame = new PrintWriter("HangmanSaveFile" + fileName + ".txt");
+            for (int i = 0; i < numberOfPlayers; i++) {
                 outSaveGame.println(game.getPlayerInfo(i));
             }
             outSaveGame.println(game.getGameInfo());
@@ -380,7 +389,8 @@ public class Menu {
         } catch (FileNotFoundException exception) {
         }
     }
-    public void loadGame(){
+
+    public void loadGame() {
         ArrayList<String> loadList = new ArrayList<>();
         int fileRowCounter = 0;
         int filePlayerRowCounter = 0;
@@ -421,37 +431,40 @@ public class Menu {
                 }
                 scannerFile.close();
             }
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println("File not found");
+            show(startMenu);
         }
 
-            if (fileRowCounter-filePlayerRowCounter == 1 && filePlayerRowCounter == 1) {
-                    String string = loadList.get(1);
-                    Scanner scanner = new Scanner(string);
-                    new Game(player1, this, scanner.next(), scanner.next(),
-                            scanner.next(), scanner.next());
-                }
-            if (fileRowCounter-filePlayerRowCounter == 1 && filePlayerRowCounter == 2) {
-                    String string = loadList.get(2);
-                    Scanner scanner = new Scanner(string);
-                    new Game(player1, player2, this, scanner.next(), scanner.next(),
-                            scanner.next(), scanner.next());
-                }
-            if (fileRowCounter-filePlayerRowCounter == 1 && filePlayerRowCounter == 3) {
-                    String string = loadList.get(3);
-                    Scanner scanner = new Scanner(string);
-                    new Game(player1, player2, player3, this, scanner.next(), scanner.next(),
-                            scanner.next(), scanner.next());
-                }
-            if (fileRowCounter-filePlayerRowCounter == 1 && filePlayerRowCounter == 4) {
-                    String string = loadList.get(4);
-                    Scanner scanner = new Scanner(string);
-                    new Game(player1, player2, player3, player4, this, scanner.next(), scanner.next(),
-                            scanner.next(), scanner.next());
-                }
-            }
-            public HighScore getHighScoreObject(){
-                return highScore;
-            }
+        if (fileRowCounter - filePlayerRowCounter == 1 && filePlayerRowCounter == 1) {
+            String string = loadList.get(1);
+            Scanner scanner = new Scanner(string);
+            new Game(player1, this, scanner.next(), scanner.next(),
+                    scanner.next(),
+                    scanner.next());
         }
+        if (fileRowCounter - filePlayerRowCounter == 1 && filePlayerRowCounter == 2) {
+            String string = loadList.get(2);
+            Scanner scanner = new Scanner(string);
+            new Game(player1, player2, this, scanner.next(), scanner.next(),
+                    scanner.next(), scanner.next());
+        }
+        if (fileRowCounter - filePlayerRowCounter == 1 && filePlayerRowCounter == 3) {
+            String string = loadList.get(3);
+            Scanner scanner = new Scanner(string);
+            new Game(player1, player2, player3, this, scanner.next(), scanner.next(),
+                    scanner.next(), scanner.next());
+        }
+        if (fileRowCounter - filePlayerRowCounter == 1 && filePlayerRowCounter == 4) {
+            String string = loadList.get(4);
+            Scanner scanner = new Scanner(string);
+            new Game(player1, player2, player3, player4, this, scanner.next(), scanner.next(),
+                    scanner.next(), scanner.next());
+        }
+    }
+
+    public HighScore getHighScoreObject() {
+        return highScore;
+    }
+}
 

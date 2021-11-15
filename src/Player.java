@@ -12,7 +12,7 @@ public class Player {
 
     private int currentGamePoints = 0;
 
-    final private int FULL_HEALTH = 10;
+    final private int FULL_HEALTH = 3;
     private int lives = FULL_HEALTH;
     private boolean playerGameOver = false;
 
@@ -21,6 +21,7 @@ public class Player {
 
     /**
      * Skapar en spelare med ett namn, gamesplayed och gameswon är satta till 0 by default;
+     *
      * @param name
      */
     public Player(String name) {
@@ -30,11 +31,12 @@ public class Player {
 
     /**
      * Den här kontruktorn skapar en spelare när man har hämtat informationen från textfil.
+     *
      * @param name
      * @param gamesPlayed
      * @param gamesWon
      */
-    public Player(String name, int gamesPlayed, int gamesWon, int totalPoints, int maxPoints, String averagePoints){
+    public Player(String name, int gamesPlayed, int gamesWon, int totalPoints, int maxPoints, String averagePoints) {
         this.name = name;
         this.gamesPlayed = gamesPlayed;
         this.gamesWon = gamesWon;
@@ -43,14 +45,15 @@ public class Player {
         this.averagePoints = Double.parseDouble(averagePoints);
         savePlayer(this);
     }
-//LOAD game
-    public Player(String name, String gamesPlayed, String gamesWon, String lives, String isGameOver, String currentGamePoints){
+
+    //LOAD game
+    public Player(String name, String gamesPlayed, String gamesWon, String lives, String isGameOver, String currentGamePoints) {
         this.name = name;
         this.gamesPlayed = Integer.parseInt(gamesPlayed);
         this.gamesWon = Integer.parseInt(gamesWon);
         this.lives = Integer.parseInt(lives);
         this.currentGamePoints = Integer.parseInt(currentGamePoints);
-        if (isGameOver.equals("false")){
+        if (isGameOver.equals("false")) {
             this.playerGameOver = false;
         } else {
             this.playerGameOver = true;
@@ -129,17 +132,17 @@ public class Player {
         this.currentGamePoints = 0;
     }
 
-    public void updatePlayerData(){
+    public void updatePlayerData() {
         gamesPlayed++;
-        if(this.currentGameWinner) {
+        if (this.currentGameWinner) {
             gamesWon++;
         }
-        if(currentGamePoints > maxPoints) {
+        if (currentGamePoints > maxPoints) {
             maxPoints = currentGamePoints;
         }
         totalPoints += currentGamePoints;
         averagePoints = (double) totalPoints / (double) gamesPlayed;
-        averagePoints = Math.floor(averagePoints * 100)/100;
+        averagePoints = Math.floor(averagePoints * 100) / 100;
     }
 
     public boolean isPlayerGameOver() {
@@ -157,11 +160,12 @@ public class Player {
     public void setCurrentGameWinner() {
         this.currentGameWinner = true;
     }
+
     public boolean getCurrentGameWinner() {
         return this.currentGameWinner;
     }
 
-    public void savePlayer (Player player){
+    public void savePlayer(Player player) {
         try {
             PrintWriter out = new PrintWriter("HangmanPlayerFile" + player.getName() + ".txt");
             out.println(player.getName());

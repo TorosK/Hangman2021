@@ -14,7 +14,7 @@ public class Gui extends JFrame {
     Menu oldMenu;
     Gui gui;
 
-    public Gui(){
+    public Gui() {
         gui = this;
         oldMenu = new Menu();
         menu = new JMenu("Menu");
@@ -25,7 +25,7 @@ public class Gui extends JFrame {
         item4 = new JMenuItem("Quit");
         askForNameJOptionPane = new JOptionPane();
         textArea = new JTextArea();
-        textArea.setBounds(30,30,300,300);
+        textArea.setBounds(30, 30, 300, 300);
         menu.add(item1);
         menu.add(item2);
         menu.add(item3);
@@ -46,11 +46,11 @@ public class Gui extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String string = JOptionPane.showInputDialog("Please give your player a name: ");
                 player = new Player(string);
-                new Game(player, oldMenu, gui);
+                new Game(player, oldMenu);
             }
         });
 
-        this.setSize(600,600);
+        this.setSize(600, 600);
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }

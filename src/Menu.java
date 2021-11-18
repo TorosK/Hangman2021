@@ -329,6 +329,7 @@ public class Menu {
         while (loop) {
             if (scanner.hasNext()) {
                 input = scanner.next();
+                input = input.toLowerCase();    // hantering av när stora bokstäver matas in
                 if (input.length() == 1) {
                     ch = input.charAt(0);
                     if (ch == '+') {

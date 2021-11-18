@@ -12,7 +12,7 @@ public class Player {
 
     private int currentGamePoints = 0;
 
-    final private int FULL_HEALTH = 3;
+    final private int FULL_HEALTH = 10;
     private int lives = FULL_HEALTH;
     private boolean playerGameOver = false;
 
